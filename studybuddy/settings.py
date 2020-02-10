@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'studdybuddy.urls'
+ROOT_URLCONF = 'studybuddy.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'studdybuddy.wsgi.application'
+WSGI_APPLICATION = 'studybuddy.wsgi.application'
 
 
 # Database
