@@ -10,17 +10,18 @@
   transition-duration: 150ms;
   transition-timing-function: ease-in-out;
   padding: 0;
+}
 
-  &:focus,
-  &:hover {
-    box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
-  }
+.google-button:focus,
+.google-button:hover {
+  box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
+  background-color: #e5e5e5;
+}
 
-  &:active {
-    background-color: #e5e5e5;
-    box-shadow: none;
-    transition-duration: 10ms;
-  }
+.google-button:active {
+  background-color: #A0A0A0;
+  box-shadow: none;
+  transition-duration: 10ms;
 }
 
 .google-button__icon {
@@ -39,6 +40,10 @@
   font-size: 14px;
   font-weight: bold;
   font-family: 'Roboto',arial,sans-serif;
+}
+
+.profile-pic {
+  border-radius: 39px;
 }
 
 html, body {

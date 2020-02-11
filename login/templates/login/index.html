@@ -14,7 +14,8 @@
   <body>
       {% if user.is_authenticated %}
         <div>
-          Hi {{ user }}!
+          Signed in as {{ extra_data.name }}
+          <img src="{{ extra_data.picture }}" alt="Profile Picture" class="profile-pic" style="width:78px;height:78px;">
           <form action="{% url 'login:signout' %}">
             <button type="submit" class="btn btn-default btn-sm">
               <span class="glyphicon glyphicon-log-out"></span> Log out
