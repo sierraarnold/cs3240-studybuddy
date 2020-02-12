@@ -1,0 +1,28 @@
+{% load filters %}
+{% load static %}
+<!DOCTYPE html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript"  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'login/style.css' %}">
+  </head>
+  {% if courses %}
+      <div class="container">
+        <h1>Courses</h1>
+        <ul class="list-group three">
+          {% for course in courses|makeList:'name' %}
+            <a class="list-group-item list-group-item-action">
+              {{course|get_index:0}} {{course|get_index:1}} - {{course|get_index:2}}
+            </a>
+          {% endfor %}
+        </ul>
+      </div>
+
+  {% else %}
+      <p>No courses are available.</p>
+  {% endif %}
+</html>

@@ -1,0 +1,67 @@
+{% load filters %}
+{% load static %}
+<!DOCTYPE html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/style.css' %}">
+  </head>
+  {% if school_list %}
+      <div class="container">
+        <h1>Departments</h1>
+        <div class="row">
+          <div class="col-md-offset-1 col-md-10">
+            <div id="prefetch" class="md-form mt-0">
+              <input class="typeahead-input form-control" id="course" type="text" placeholder="Search">
+            </div>
+
+            <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+            <script type="text/javascript"  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+            <script type="text/javascript">
+              var courseNames = new Array();
+              var courses = JSON.parse("{{classes|escapejs}}")
+                $.each(courses, function ( key, course )
+              {
+                  courseNames.push( key + ' - ' + course );
+              } );
+              $( '#course' ).typeahead( { source:courseNames } );
+            </script>
+
+            <div id="accordion" class="myaccordion">
+              <div class="panel-group" id="accordion{{ forloop.counter0 }}" role="tablist" aria-multiselectable="false">
+                {% for school in school_list %}
+                  <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="heading{{ forloop.counter0 }}">
+                          <h4 class="panel-title">
+                              <a class="d-flex align-items-center justify-content-between btn btn-link collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter0 }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter0 }}">
+                                  {{school}}
+                              </a>
+                          </h4>
+                      </div>
+                      <div id="collapse{{ forloop.counter0 }}" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="heading{{ forloop.counter0 }}">
+                        <div class="panel-body">
+                            <ul class="list-group three">
+                              {% for section in section_list|get_index:forloop.counter0|sort:"name" %}
+                                <form action="{% url 'login:get_section' %}" method="post">
+                                  {% csrf_token %}
+                                  <button name="choice" value={{section|get_index:0}} class="list-group-item list-group-item-action" type="submit">{{section|get_index:1}}</button>
+                                </form>
+                              {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  {% else %}
+      <p>No schools are available.</p>
+  {% endif %}
+</html>

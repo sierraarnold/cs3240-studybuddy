@@ -1,0 +1,564 @@
+{
+    "Arts & Sciences Departments": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=AAS",
+            "African-American & African Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Mathematics",
+            "Mathematics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Anthropology",
+            "Anthropology"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=MDST",
+            "Media Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Art",
+            "Art"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=MESA",
+            "Middle Eastern & South Asian Languages & Cultures"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Astronomy",
+            "Astronomy"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Music",
+            "Music"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Biology",
+            "Biology"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Philosophy",
+            "Philosophy"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Chemistry",
+            "Chemistry"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Physics",
+            "Physics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Classics",
+            "Classics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Politics",
+            "Politics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Drama",
+            "Drama"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PHS",
+            "Public Health Sciences"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EALC",
+            "East Asian Languages, Literatures & Cultures"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Psychology",
+            "Psychology"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Economics",
+            "Economics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ReliStu",
+            "Religious Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=English",
+            "English"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Slavic",
+            "Slavic Languages & Literatures"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EnviSci",
+            "Environmental Sciences"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Sociology",
+            "Sociology"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=French",
+            "French Language & Literature"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SPAN",
+            "Spanish, Italian & Portuguese"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=German",
+            "German Languages & Literatures"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Statistics",
+            "Statistics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=History",
+            "History"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=WGS",
+            "Women, Gender, and Sexuality"
+        ]
+    ],
+    "Arts & Sciences Programs, Seminars, and Institutes": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ASL",
+            "American Sign Language"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=INST",
+            "Interdisciplinary Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=AMST",
+            "American Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=JWST",
+            "Jewish Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Archaeology",
+            "Archaeology"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=LAS",
+            "Latin American Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CogSci",
+            "Cognitive Science"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=LEAD",
+            "Leadership & Public Policy"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=COLA",
+            "College Advising Seminars"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=LASE",
+            "Liberal Arts Seminars"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CompSci",
+            "Computer Science"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Linguistics",
+            "Linguistics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CreativeWriting",
+            "Creative Writing"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=MSP",
+            "Medieval Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=DisabilityStudiesInitiative",
+            "Disability Studies Initiative"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=MESP",
+            "Middle Eastern Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EAS",
+            "East Asian Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Neuroscience",
+            "Neuroscience"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ELA",
+            "Engaging the Liberal Arts"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=OutsideTheCollege",
+            "Outside Arts & Sciences"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ETP",
+            "Environmental Thought & Practice Practice"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PST",
+            "Political & Social Thought"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EuropeanStudies",
+            "European Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SASP",
+            "South Asian Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=GCIAIT",
+            "Global Citizenry in Action and in Translation"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PAVS",
+            "Pavilion Seminars"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=GS",
+            "Global Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=USEM",
+            "University Seminars"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=IHGC",
+            "Institute of the Humanities and Global Culture"
+        ]
+    ],
+    "Arts & Sciences Curriculum and Requirementsto Save the Humanities": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Engagements",
+            "Engagements"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EngagementsAesthetics",
+            "Engaging Aesthetics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EngagementsEmpiricalScientific",
+            "Empirical and Scientific Engagement"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EngagementsDifferences",
+            "Engaging Differences"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EngagementsEthical",
+            "Ethical Engagement"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=WorldLanguages",
+            "World Languages"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=FirstWriting",
+            "First Writing Requirement"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SecondWriting",
+            "Second Writing Requirement"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=QuantificationComputationAndDataAnalysis",
+            "Quantification, Computation, & Data Analysis"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ArtisticInterpretiveAndPhilosophicalInquiry",
+            "Artistic, Interpretive, & Philosophical Inquiry"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ChemicalMathematicalAndPhysicalUniverse",
+            "Chemical, Mathematical, and Physical Universe"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CASOTW",
+            "Cultures & Societies of the World"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=HistoricalPerspectives",
+            "Historical Perspectives"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=LivingSystems",
+            "Living Systems"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SocialAndEconomicSystems",
+            "Social & Economic Systems"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ScienceAndSociety",
+            "Science & Society"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Forums",
+            "Forums"
+        ],
+        [
+            "https://louslist.org/reqs.php",
+            "Arts & Sciences Curriculum and Requirements by Mnemonics"
+        ],
+        [
+            "https://louslist.org/indexOldRequirements.php",
+            "Old Arts & Sciences Curriculum and Requirements"
+        ]
+    ],
+    "Engineering & Applied Sciences Departments": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=APMA",
+            "Applied Mathematics"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ECE",
+            "Electrical & Computer Engineering"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=BME",
+            "Biomedical Engineering"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=MSE",
+            "Materials Science & Engineering"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CHE",
+            "Chemical Engineering"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=MAE",
+            "Mechanical & Aerospace Engineering"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CEE",
+            "Civil & Environmental Engineering"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=STS",
+            "Science, Technology & Society"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CompSci",
+            "Computer Science"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SYS",
+            "Systems & Information Engineering"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ENGR",
+            "Cross-Disciplinary Courses"
+        ]
+    ],
+    "Curry School of Education and Human Development Departments": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EDHS",
+            "Human Services"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EDIS",
+            "Curriculum, Instruction, and Special Education"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=EDLF",
+            "Education Leadership, Foundations and Policy"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=KINE",
+            "Kinesiology"
+        ]
+    ],
+    "School of Continuing and Professional Studies": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=BIS",
+            "Bacholor of Interdisciplinary Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PSHM",
+            "Bacholor of Professional Studies in\n     Health Sciences Management"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=ACCT",
+            "Accounting-Graduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PC",
+            "Procurement and Contracts Management-Graduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=BUS",
+            "Cyber Security Management-Graduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PSHMC",
+            "Health Sciences Management-Graduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=FAC",
+            "Federal Acquisition-Undergraduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PSLP",
+            "Leadership-Graduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=HR",
+            "Leadership in Human Resources Management-Undergraduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PSPA",
+            "Public Administration-Graduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=IT",
+            "Information Technology-Graduate and Undergraduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PSPM",
+            "Project Management-Graduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=NCBM",
+            "Public Relations-Noncredit"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SEC",
+            "Cyber Security Analysis-Undergraduate"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=NCPR",
+            "Certified Financial Planning-Noncredit"
+        ]
+    ],
+    "Other Schools at the University of Virginia": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SARC",
+            "Architecture"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=LAW",
+            "Law School"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=BIS",
+            "Bachelor of Interdisciplinary Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=MED",
+            "Medical School"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=DARD",
+            "Business (Darden School)"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=NURS",
+            "Nursing School"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=COMM",
+            "Commerce (McIntire School)"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=PPOL",
+            "Public Policy (Batten School)"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CrossDisciplinary",
+            "Cross Disciplinary (For All Schools)"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=USEM",
+            "University Seminars"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SEAS",
+            "Engineering and Applied Sciences"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=UNST",
+            "University Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=INST",
+            "Interdisciplinary Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=SEAS",
+            ""
+        ]
+    ],
+    "Other Programs, Seminars, and Institutes": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CivicCommunityEngagement",
+            "Civic and Community Engagement"
+        ],
+        [
+            "https://www.commerce.virginia.edu/mbi",
+            "McIntire Business Institute"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1166&Type=Group&Group=MBI",
+            "(Summer 2016)"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CrossDisciplinary",
+            "Cross Disciplinary (For All Schools)"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=UNST",
+            "University Studies"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=DataScience",
+            "Data Science"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=YSI",
+            "Youth and Social Innovation"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=GlobalSustainability",
+            "Global Sustainability"
+        ]
+    ],
+    "Special Listings and Raw Data": [
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CS",
+            "Complete UVa Schedule"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CLAS",
+            "Complete Arts & Sciences Schedule"
+        ],
+        [
+            "https://louslist.org/html/helpAandS.html",
+            "here"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Topics",
+            "Topics Courses"
+        ],
+        [
+            "https://louslist.org/requestEnrollmentData.php?Semester=1202",
+            "ZipArchive of complete enrollment data for the 1202 semester"
+        ],
+        [
+            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=TopicsClassesWithoutTopics",
+            "Topics Classes Without Topics"
+        ]
+    ]
+}

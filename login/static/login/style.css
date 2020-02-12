@@ -20,3 +20,57 @@ li a {
     color:black;
     text-align: center;
   }
+
+.list-group-item {
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.list-group-item:hover {
+  color: black;
+  background-color: E8E8E8;
+  cursor: pointer;
+}
+
+.three {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+}
+
+button:focus {
+  outline:0;
+}
+
+.myaccordion {
+  margin: 50px auto;
+  box-shadow: 0 0 1px rgba(0,0,0,0.1);
+}
+
+.myaccordion .card,
+.myaccordion .card:last-child .card-header {
+  border: none;
+}
+
+.myaccordion .card-header {
+  border-bottom-color: #EDEFF0;
+  background: transparent;
+}
+
+.myaccordion .btn {
+  width: 100%;
+  font-weight: bold;
+  color: #004987;
+  padding: 0;
+}
+
+.myaccordion .btn-link:hover,
+.myaccordion .btn-link:focus {
+  text-decoration: none;
+  color: black;
+}
+
+.myaccordion li + li {
+  margin-top: 10px;
+}
