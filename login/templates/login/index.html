@@ -18,9 +18,6 @@
           <img src="{{ extra_data.picture }}" alt="Profile Picture" class="profile-pic" style="width:78px;height:78px;">
           <form action="{% url 'login:signout' %}">
             <button type="submit" class="btn btn-default btn-sm">
-                {% load account %}
-
-                {% user_display user %}
               <span class="glyphicon glyphicon-log-out"></span> Log out
             </button>
           </form>
