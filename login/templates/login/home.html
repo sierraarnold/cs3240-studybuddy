@@ -1,4 +1,6 @@
 {% extends 'login/base.html' %}
 {% load static %}
 {% block content %}
+{% load account %}
+{% user_display user %}
 {% endblock %}
