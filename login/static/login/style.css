@@ -1,0 +1,33 @@
+li a {
+    color: lightblue;
+}
+
+.jumbotron{
+    background-color: lightblue;
+    text-align: center;
+}
+#content {
+    background: white url("images/kirby.gif") no-repeat;
+    background-size: auto;
+    position:absolute;
+    top:300px;
+    left:20px;
+    bottom:0;
+    right:0;
+    height:100%;
+    width:100%;
+}
+
+#text {
+    text-align: center;
+}
+
+#footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: lightblue;
+    color:black;
+    text-align: center;
+  }
