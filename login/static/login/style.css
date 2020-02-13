@@ -7,6 +7,11 @@ li a {
     text-align: center;
 }
 
+#name {
+  margin: 8px 0 8px 8px;
+  text-align: center;
+}
+
 #text {
     text-align: center;
 }
@@ -18,10 +23,5 @@ li a {
     width: 100%;
     background-color: lightblue;
     color:black;
-    text-align: center;
-  }
-
-  #name {
-    margin: 8px 0 8px 8px;
     text-align: center;
   }

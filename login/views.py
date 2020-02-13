@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 
-from allauth.account.forms import LoginForm 
+from allauth.account.forms import LoginForm
 
 """class MyCustomLoginForm(LoginForm):
 
@@ -28,6 +28,4 @@ def index(request):
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
-        return HttpResponseRedirect(reverse('login:home', args=()))
-
-
+        return HttpResponseRedirect(reverse('login:index', args=()))
