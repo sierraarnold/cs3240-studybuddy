@@ -17,11 +17,11 @@
                               </li>
                               {% if user.is_authenticated %}
                               <li class="nav-item">
-                                <a class="nav-link" href="{% url 'login:index' %}">Google Login</a>
+                                <a class="nav-link" href="{% url 'login:signout' %}">Logout</a>
                               </li>
                               {% else %}
                               <li class="nav-item">
-                                <a class="nav-link" href="{% url 'login:index' %}">Logout</a>
+                                <a class="nav-link" href="{% url 'login:index' %}">Google Login</a>
                               </li>
                               {% endif %}
                               <li class="nav-item">
@@ -29,6 +29,9 @@
                               </li>
                               <li class="nav-item">
                                 <a class="nav-link" href="{% url 'login:schools' %}">Add class</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login:edit_profile' %}">Edit Profile</a>
                               </li>
                             </ul>
 

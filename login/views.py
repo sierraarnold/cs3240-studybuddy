@@ -5,7 +5,9 @@ from django.urls import reverse
 import json
 import requests
 from bs4 import BeautifulSoup
-from django.template import loader
+from .forms import UserForm, ProfileForm
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
 
 from allauth.account.forms import LoginForm
 
@@ -30,6 +32,27 @@ def signout(request):
     if request.user.is_authenticated:
         logout(request)
         return HttpResponseRedirect(reverse('login:home', args=()))
+
+@login_required
+@transaction.atomic
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            print('Your profile was successfully updated!')
+            return redirect('login:home')
+        else:
+            print('Please correct the error below.')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'login/edit_profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
 
 def schools(request):
     classes = get_classes()
