@@ -2,6 +2,8 @@
 {% load static %}
 {% block content %}
 {% load account %}
+{% if user.is_authenticated %}
 <span id = 'name'>
      Welcome {% user_display user %}, need a tutor? </span>
+{% endif %}
 {% endblock %}

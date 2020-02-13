@@ -28,6 +28,6 @@ def index(request):
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
-        return HttpResponseRedirect(reverse('login:index', args=()))
+        return HttpResponseRedirect(reverse('login:home', args=()))
 
 
