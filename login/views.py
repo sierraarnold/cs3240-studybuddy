@@ -5,6 +5,17 @@ from django.urls import reverse
 import json
 import requests
 from bs4 import BeautifulSoup
+from django.template import loader
+
+from allauth.account.forms import LoginForm
+
+"""class MyCustomLoginForm(LoginForm):
+
+    def login(self, *args, **kwargs):
+        # Add your own processing here.
+        # You must return the original result.
+        save_user(self, request, user, form)
+        return super(MyCustomLoginForm, self).login(*args, **kwargs)"""
 
 def home(request):
     return render(request, 'login/home.html')
@@ -18,7 +29,7 @@ def index(request):
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
-        return HttpResponseRedirect(reverse('login:index', args=()))
+        return HttpResponseRedirect(reverse('login:home', args=()))
 
 def schools(request):
     classes = get_classes()
