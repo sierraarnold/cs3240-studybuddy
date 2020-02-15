@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +135,12 @@ AUTHENTICATION_BACKENDS = (
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
+SOCIALACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_ADAPTER = "studybuddy.adapter.MyLoginAccountAdapter"
+SOCIALACCOUNT_ADAPTER = 'studybuddy.adapter.MySocialAccountAdapter'
+SOCIALACCOUNT_AUTO_SIGNUP = True
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

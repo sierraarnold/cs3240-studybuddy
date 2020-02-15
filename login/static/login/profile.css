@@ -6,12 +6,6 @@
   cursor: pointer;
 }
 
-.list-group-item:hover {
-  color: black;
-  background-color: E8E8E8;
-  cursor: pointer;
-}
-
 .list-group input[type="checkbox"] + .list-group-item:before {
   content: "\2713";
   color: transparent;
@@ -78,7 +72,7 @@ button {
 
 .dropdown-item {
   min-width: 100%;
-  white-space: nowrap;
+  white-space: pre-line;
 }
 
 .dropdown-item:hover {
@@ -101,26 +95,24 @@ button {
 }
 
 a {
-  font-family: 'Roboto', sans-serif;
-  align-self: center;
-  font-style: italic;
-}
-
-p {
-  width: 90%;
-}
-
-input {
-  width: 100%;
-  border: 2px solid lightblue;
-  border-radius: 4px;
-  padding: 5px;
   font-size: 13px;
+  font-family: 'Roboto', sans-serif;
+  text-align: left;
 }
 
 label {
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
+}
+
+p {
+  align-self: flex-start;
+  margin-left: 5%;
+  font-family: 'Roboto', sans-serif;
+}
+
+b {
+  color: #777;
 }
 
 .column {
@@ -135,14 +127,11 @@ label {
   content: "";
   display: table;
   clear: both;
-  width:100%
+  width:90%
 }
 
 .classSection {
-  text-align: center;
-  float:left;
-  display:inline;
-  width: 49%;
+  width: 75%;
 }
 
 .container-fluid {
@@ -163,5 +152,46 @@ form {
 .input-group {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  width: 80%;
+}
+
+.modal-dialog {
+  width: 75vw;
+}
+
+.modal-body {
+  display: flex;
+  align-items: center;
   justify-content: center;
+}
+
+.saveButton {
+  background-color: grey;
+  color: white;
+  border-color: rgba(0,0,0,.14);
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,.12);
+  font-size: 15px;
+  line-height: 18px;
+  padding: 8px 15px;
+  text-align: center;
+  transition: all 100ms ease-out;
+}
+
+.saveButton:hover {
+  background-color: A0A0A0;
+  cursor: pointer;
+}
+
+.fa-plus-square {
+  color: grey;
+}
+
+.fa-plus-square:hover {
+  color: A0A0A0;
+  cursor: pointer;
 }

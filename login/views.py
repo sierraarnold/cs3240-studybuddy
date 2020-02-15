@@ -11,20 +11,19 @@ from django.db import transaction
 from django.contrib import messages
 from .models import Profile, StudentCourse, TutorCourse
 
-def home(request):
-    return render(request, 'login/home.html')
-
-def index(request):
-    extra_data = []
-    if request.user.is_authenticated:
-        extra_data = request.user.socialaccount_set.all()[0].extra_data
-    return render(request, 'login/index.html', {'extra_data': extra_data})
-
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
         messages.success(request, 'Signed out')
         return HttpResponseRedirect(reverse('login:home', args=()))
+
+def tutor(request):
+    if not request.user.is_authenticated:
+        return render(request, 'login/map.html')
+    else:
+        student_courses = StudentCourse.objects.filter(user=request.user.profile)
+        tutor_courses = TutorCourse.objects.filter(user=request.user.profile)
+        return render(request, 'login/map.html', {'profile': request.user.profile, 'student_courses': student_courses, 'tutor_courses': tutor_courses})
 
 @login_required
 @transaction.atomic

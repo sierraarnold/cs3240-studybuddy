@@ -1,11 +1,9 @@
 {% load static %}
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
 <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
@@ -31,49 +29,53 @@
 
     <div class="row">
       <div class="column">
-        <div class="input-group">
-          <p class="classSection">Classes I want help with</p>
-          <span type="button" class="btn btn-primary addButton" data-section="Student" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">Add</span>
+        <div class="input-group"> 
+          <b class="classSection">Classes I want help with</b>
+          <span type="button" class="btn" data-section="Student" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">
+            <i class="fa fa-plus-square icon fa-3x"></i>
+          </span>
         </div>
 
         <div id="student_courses" class="list-group">
           {% for course in profile_form.student_courses %}
-            <input type="checkbox" name="CBNameStudent{{ forloop.counter0 }}" value="{{ course.id }}" id="CheckBoxStudent{{ forloop.counter0 }}" />
-            <label class="list-group-item" for="CheckBoxStudent{{ forloop.counter0 }}">{{ course.dept }} {{course.number}}: {{ course.name }}</label>
+            <input type="checkbox" name="CBNameStudent{{ forloop.counter0 }}" value="{{ course.id }}" id="CheckBoxStudent:{{course.dept}} {{course.number}} - {{ course.name}}" />
+            <label class="list-group-item list-group-item-action" for="CheckBoxStudent:{{course.dept}} {{course.number}} - {{ course.name}}">{{ course.dept }} {{course.number}}: {{ course.name }}</label>
           {% endfor %}
         </div>
       </div>
 
       <div class="column">
          <div class="input-group">
-           <p class="classSection column">Classes I would like to tutor</p>
-           <span type="button" class="btn btn-primary addButton" data-section="Tutor" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">Add</span>
+           <b class="classSection">Classes I would like to tutor</b>
+           <span type="button" class="btn" data-section="Tutor" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">
+             <i class="fa fa-plus-square icon fa-3x"></i>
+           </span>
          </div>
 
         <div id="tutor_courses" class="list-group">
           {% for course in profile_form.tutor_courses %}
-            <input type="checkbox" name="CBNameTutor{{ forloop.counter0 }}" value="{{ course.id }}" id="CheckBoxTutor{{ forloop.counter0 }}" />
-            <label class="list-group-item" for="CheckBoxTutor{{ forloop.counter0 }}">{{ course.dept }} {{course.number}} - {{ course.name }}</label>
+            <input type="checkbox" name="CBNameTutor{{ forloop.counter0 }}" value="{{ course.id }}" id="CheckBoxTutor:{{course.dept}} {{course.number}} - {{ course.name}}" />
+            <label class="list-group-item list-group-item-action" for="CheckBoxTutor:{{course.dept}} {{course.number}} - {{ course.name}}">{{ course.dept }} {{course.number}} - {{ course.name }}</label>
           {% endfor %}
         </div>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save changes</button>
+    <button type="submit" class="btn saveButton mt-5">Save</button>
   </form>
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Add class</h5>
+        <b class="modal-title" id="exampleModalLongTitle">Add class</b>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div id="prefetch" class="autocomplete">
-          <input class="form-control" id="course" type="text" placeholder="Search" autocomplete="off">
+          <input class="form-control" id="course" autofocus type="text" placeholder="Search" autocomplete="off">
         </div>
       </div>
     </div>
@@ -104,6 +106,9 @@
       ul.appendChild(checkCopy);
       ul.appendChild(check);
       ul.appendChild(li);
+      $('#exampleModalCenter').modal('toggle');
+    }
+    else{
       $('#exampleModalCenter').modal('toggle');
     }
   }
