@@ -1,0 +1,167 @@
+.list-group input[type="checkbox"] {
+  display: none;
+}
+
+.list-group input[type="checkbox"] + .list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  color: black;
+  background-color: E8E8E8;
+  cursor: pointer;
+}
+
+.list-group input[type="checkbox"] + .list-group-item:before {
+  content: "\2713";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.list-group input[type="checkbox"]:checked + .list-group-item {
+  background-color: #DC143C;
+  color: #FFF;
+}
+
+.list-group input[type="checkbox"]:checked + .list-group-item:before {
+  color: inherit;
+  font-family: 'FontAwesome';
+  content: "\f00d";
+}
+
+.list-group input[type="radio"] {
+  display: none;
+}
+
+.list-group input[type="radio"] + .list-group-item {
+  cursor: pointer;
+
+}
+
+.list-group input[type="radio"] + .list-group-item:before {
+  content: "\2022";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.list-group input[type="radio"]:checked + .list-group-item {
+  background-color: #0275D8;
+  color: #FFF;
+}
+
+.list-group input[type="radio"]:checked + .list-group-item:before {
+  color: inherit;
+}
+
+.list-group-item {
+  user-select: none;
+  text-align: left;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.list-group {
+    display: flex;
+    width: 80%;
+}
+
+button {
+  align-self: flex-start;
+  margin-left: 5%;
+}
+
+.dropdown-menu {
+  width: 95%;
+}
+
+.dropdown-item {
+  min-width: 100%;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  color: black;
+  background-color: E8E8E8;
+  cursor: pointer;
+}
+
+.autocomplete {
+  width: 100%;
+}
+
+.form-control {
+  font-family: 'Roboto', sans-serif;
+}
+
+.strong {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+a {
+  font-family: 'Roboto', sans-serif;
+  align-self: center;
+  font-style: italic;
+}
+
+p {
+  width: 90%;
+}
+
+input {
+  width: 100%;
+  border: 2px solid lightblue;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 13px;
+}
+
+label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.row {
+  content: "";
+  display: table;
+  clear: both;
+  width:100%
+}
+
+.classSection {
+  text-align: center;
+  float:left;
+  display:inline;
+  width: 49%;
+}
+
+.container-fluid {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+form {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

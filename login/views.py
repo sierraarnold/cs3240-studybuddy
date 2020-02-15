@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -8,16 +8,8 @@ from bs4 import BeautifulSoup
 from .forms import UserForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-
-from allauth.account.forms import LoginForm
-
-"""class MyCustomLoginForm(LoginForm):
-
-    def login(self, *args, **kwargs):
-        # Add your own processing here.
-        # You must return the original result.
-        save_user(self, request, user, form)
-        return super(MyCustomLoginForm, self).login(*args, **kwargs)"""
+from django.contrib import messages
+from .models import Profile, StudentCourse, TutorCourse
 
 def home(request):
     return render(request, 'login/home.html')
@@ -31,28 +23,59 @@ def index(request):
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
+        messages.success(request, 'Signed out')
         return HttpResponseRedirect(reverse('login:home', args=()))
 
 @login_required
 @transaction.atomic
 def update_profile(request):
+    classes = get_classes()
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        saveClasses(request.POST.items(), request.user.profile.id)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            print('Your profile was successfully updated!')
+            messages.success(request, 'Your profile was successfully updated')
             return redirect('login:home')
         else:
-            print('Please correct the error below.')
+            messages.error(request, 'Please correct the error below')
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
     return render(request, 'login/edit_profile.html', {
         'user_form': user_form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'classes': classes
     })
+
+def saveClasses(postedItems, user_id):
+    for key, value in postedItems:
+        if(key.startswith('CBNameTutor')):
+            if(value == 'new'):
+                (dept, number, name) = parseCourse(key)
+                tutor_course = TutorCourse(dept=dept, number=number, name=name, user_id=user_id)
+                tutor_course.save()
+            elif value != 'recentlyAdded':
+                TutorCourse.objects.filter(id=value).delete()
+        if(key.startswith('CBNameStudent')):
+            if(value == 'new'):
+                (dept, number, name) = parseCourse(key)
+                student_course = StudentCourse(dept=dept, number=number, name=name, user_id=user_id)
+                student_course.save()
+            elif value != 'recentlyAdded':
+                StudentCourse.objects.filter(id=value).delete()
+
+def parseCourse(course_name):
+    course = course_name.split(':')[1]
+    parts = course.split('-')
+    dept_number = parts[0].rstrip()
+    name = parts[1].lstrip()
+    dept_parts = dept_number.split(' ')
+    dept = dept_parts[0]
+    number = dept_parts[1]
+    return (dept, number, name)
 
 def schools(request):
     classes = get_classes()
