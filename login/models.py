@@ -11,8 +11,8 @@ class Profile(models.Model):
         return self.username
 
 class TutorCourse(models.Model):
-    name = models.CharField(max_length=30)
-    dept = models.CharField(max_length=30)
+    name = models.CharField(max_length=200)
+    dept = models.CharField(max_length=200)
     number = models.IntegerField()
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
@@ -20,8 +20,8 @@ class TutorCourse(models.Model):
         return self.name
 
 class StudentCourse(models.Model):
-    name = models.CharField(max_length=30)
-    dept = models.CharField(max_length=30)
+    name = models.CharField(max_length=200)
+    dept = models.CharField(max_length=200)
     number = models.IntegerField()
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
