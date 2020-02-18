@@ -11,11 +11,11 @@ class CourseInlineStudent(admin.TabularInline):
 
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['username', ]}),
+        (None, {'fields': ['username', 'phone_number']}),
     ]
     inlines = [CourseInlineTutor, CourseInlineStudent]
     list_display = ('user', 'username', )
-    search_fields = ['username']
+    search_fields = ['username', 'phone_number']
 
 class StudentCourseAdmin(admin.ModelAdmin):
     fieldsets = [

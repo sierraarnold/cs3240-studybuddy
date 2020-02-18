@@ -1,10 +1,16 @@
 {% extends "login/base.html" %}
 {% load static %}
+{% load filters %}
 {% block content %}
   <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'login/map.css' %}">
       <div class="container">
           <div class="map-example">
+              <div id="prefetch" class="autocomplete">
+                <input class="form-control" id="course" type="text" placeholder="Search for a class" autocomplete="off">
+              </div>
               <div class="row">
                   <div class="col-lg-6">
                       <div id="map"></div>
@@ -13,17 +19,19 @@
                       <div class="heading">
                           <h3 id='studySpace'>Study Space</h3>
                       </div>
-                      <div class="info">
-                          <p id="description1">Description</p>
-                          <p id="description2">Description 2</p>
+                      <div class="info" id="info">
+                          <p id="description0">Description</p>
+                          <p id="description1">Description 2</p>
                       </div>
-                      <div class="gallery">
-                          <h4>Photos</h4>
-                          <div class="row">
-                            <div class="col-md-4"><a href="static/login/images/image2.jpg"><img class="img-fluid image" src="static/login/images/image2.jpg"></a></div>
-                            <div class="col-md-4"><a href="static/login/images/image3.jpg"><img class="img-fluid image" src="static/login/images/image3.jpg"></a></div>
-                            <div class="col-md-4"><a href="static/login/images/image4.jpg"><img class="img-fluid image" src="static/login/images/image4.jpg"></a></div>
-                          </div>
+                      <div class="dropdown" id="filterButton">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Filter
+                        </button>
+                        <div class="dropdown-menu filterDropdown" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item filterDropdownItem" href="#">Action</a>
+                          <a class="dropdown-item filterDropdownItem" href="#">Another action</a>
+                          <a class="dropdown-item filterDropdownItem" href="#">Something else here</a>
+                        </div>
                       </div>
                   </div>
               </div>
@@ -59,8 +67,8 @@
                   map: map,
                   icon: icon,
                   title: locations[i][0],
-                  description1: locations[i][3],
-                  description2: locations[i][4],
+                  description0: locations[i][3],
+                  description1: locations[i][4],
                   infowindow: locationInfowindow
               });
               markers.push(marker);
@@ -104,13 +112,83 @@
 
         function selectStudySpace(marker){
           document.getElementById('studySpace').innerHTML = marker.title;
-          document.getElementById('description1').innerHTML = marker.description1;
-          document.getElementById('description2').innerHTML = marker.description2;
+          const infoNode = document.getElementById("info");
+          while (infoNode.firstChild) {
+            infoNode.removeChild(infoNode.lastChild);
+          }
+          const description0 = document.createElement('p');
+          const description1 = document.createElement('p');
+          description0.setAttribute('id', 'description0');
+          description1.setAttribute('id', 'description1');
+          description0.innerHTML = marker.description0;
+          description1.innerHTML = marker.description1;
+          infoNode.appendChild(description0);
+          infoNode.appendChild(description1);
         }
 
         initMap()
         selectStudySpace(markers[0]);
         markers[0].infowindow.open(map, markers[0]);
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function selectClass(course){
+          var csrftoken = getCookie('csrftoken');
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                const infoNode = document.getElementById("info");
+                while (infoNode.firstChild) {
+                  infoNode.removeChild(infoNode.lastChild);
+                }
+              }
+          });
+          $.ajax({
+              url : '',
+              type : "POST",
+              dataType: "json",
+              data : { course : $('#course').val() }
+          }).done(function(returned_data){
+            document.getElementById('studySpace').innerHTML = returned_data['course']
+            const infoNode = document.getElementById("info");
+            const tutors = returned_data['filtered_tutors'];
+            for(var i = 0; i<tutors.length; i++){
+              var courses = "";
+              for(var j = 0; j<tutors[i].tutorCourses.length; j++){
+                courses += tutors[i].tutorCourses[j].dept + " " + tutors[i].tutorCourses[j].number + " - " + tutors[i].tutorCourses[j].name + "<br>";
+              }
+              infoNode.insertAdjacentHTML('beforeend',
+              '<div class="card"><div class="card-header">' + tutors[i].username +
+              '</div><div class="card-body"><div><p>' +
+              tutors[i].user.email + "<br>" + tutors[i].phone_number + "<br><h5>Teaches:</h5>" + '</p><footer class="footer">' +
+              courses + '</footer></div></div></div>');
+            }
+            if(tutors.length == 0){
+              infoNode.insertAdjacentHTML('beforeend',
+              '<div class="card"><div class="card-header">No Tutors available' +
+              '</div><div class="card-body"><div><footer class="footer"></footer></div></div></div>')
+            }
+          });
+        }
+
+        var courseNames = new Array();
+        var courses = JSON.parse("{{classes|escapejs}}")
+        $.each(courses, function ( key, course ){ courseNames.push( key + ' - ' + course );} );
+        $( '#course' ).typeahead({ items:5, source:courseNames, afterSelect: function (course) {selectClass(course)}});
       </script>
 
   </body>

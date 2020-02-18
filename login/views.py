@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.core.serializers import serialize
 from django.urls import reverse
 import json
 import requests
@@ -10,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib import messages
 from .models import Profile, StudentCourse, TutorCourse
+from login.serializers import ProfileSerializer, StudentCourseSerializer, TutorCourseSerializer
+
 
 def signout(request):
     if request.user.is_authenticated:
@@ -21,9 +24,24 @@ def tutor(request):
     if not request.user.is_authenticated:
         return render(request, 'login/map.html')
     else:
+        classes = get_classes()
         student_courses = StudentCourse.objects.filter(user=request.user.profile)
         tutor_courses = TutorCourse.objects.filter(user=request.user.profile)
-        return render(request, 'login/map.html', {'profile': request.user.profile, 'student_courses': student_courses, 'tutor_courses': tutor_courses})
+        if request.method == 'POST' and request.is_ajax():
+            course = request.POST['course']
+            course = course.split('-')[1].lstrip()
+            filtered_tutors = Profile.objects.filter(tutorcourse__name=course)
+            student_courses = list(student_courses)
+            tutor_courses = list(tutor_courses)
+            filtered_tutors = list(filtered_tutors)
+            for i in range(len(student_courses)):
+                student_courses[i] = StudentCourseSerializer(student_courses[i]).data
+            for i in range(len(tutor_courses)):
+                tutor_courses[i] = TutorCourseSerializer(tutor_courses[i]).data
+            for i in range(len(filtered_tutors)):
+                filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
+            return JsonResponse({'filtered_tutors': filtered_tutors, 'course': course})
+        return render(request, 'login/map.html', {'profile': request.user.profile, 'classes': classes})
 
 @login_required
 @transaction.atomic
