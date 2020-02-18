@@ -11,14 +11,7 @@
                   </div>
                   <div class="col-lg-6">
                       <div class="heading">
-                          <h3 id='tutorName'>Tutor name</h3>
-                          <div class="rating" id="theRating">
-                            <i class="fa fa-star icon"></i>
-                            <i class="fa fa-star icon"></i>
-                            <i class="fa fa-star icon"></i>
-                            <i class="fa fa-star icon"></i>
-                            <i class="fa fa-star-o icon"></i>
-                          </div>
+                          <h3 id='studySpace'>Study Space</h3>
                       </div>
                       <div class="info">
                           <p id="description1">Description</p>
@@ -43,16 +36,11 @@
         var map;
         var markers = [];
         var locations = [
-          /*['Bob 1', 38.036664, -78.50038, 5, "Hey", "Hey2"],
-          ['Bob 2', 38.0339, -78.4991, 4, "Hey", "Hey2"],
-          ['Bob 3', 38.03411, -78.49932, 3, "Hey", "Hey2"],
-          ['Bob 4', 38.03267, -78.49445, 2, "Hey", "Hey2"],
-          ['Bob 5', 38.035, -78.5003, 1, "Hey", "Hey2"],*/
-          ['Clemons', 38.036528, -78.506079, 1, "Clemons Library", "Library"],
-          ['Alderman', 38.036727, -78.505325, 1,  "Alderman Library", "Library"],
-          ['Clark', 38.033088, -78.507951, 1,  "Charles L. Brown Science & Engineering Library", "Library"],
-          ['1515', 38.035386, -78.500454, 1, "1515 on the Corner", "Study Space"],
-          ['Rice Hall', 38.031838, -78.510867, 1, "Rice Hall", "Study Space"]
+          ['Clemons', 38.036528, -78.506079, "Clemons Library", "Library"],
+          ['Alderman', 38.036727, -78.505325,  "Alderman Library", "Library"],
+          ['Clark', 38.033088, -78.507951,  "Charles L. Brown Science & Engineering Library", "Library"],
+          ['1515', 38.035386, -78.500454, "1515 on the Corner", "Study Space"],
+          ['Rice Hall', 38.031838, -78.510867, "Rice Hall", "Study Space"]
         ];
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
@@ -60,7 +48,7 @@
             center: new google.maps.LatLng(38.031850, -78.493410)
           });
           infoWindow = new google.maps.InfoWindow
-          var icon = "{% static 'login/images/tutor.png' %}"
+          var icon = "{% static 'login/images/library.png' %}"
 
           for (var i = 0; i < locations.length; i++) {
               var locationInfowindow = new google.maps.InfoWindow({
@@ -71,15 +59,14 @@
                   map: map,
                   icon: icon,
                   title: locations[i][0],
-                  rating: locations[i][3],
-                  description1: locations[i][4],
-                  description2: locations[i][5],
+                  description1: locations[i][3],
+                  description2: locations[i][4],
                   infowindow: locationInfowindow
               });
               markers.push(marker);
               (function(marker, i) {
                   google.maps.event.addListener(marker, 'click', function() {
-                      selectTutor(marker);
+                      selectStudySpace(marker);
                       hideAllInfoWindows(map);
                       marker.infowindow.open(map, marker);
                   });
@@ -115,32 +102,15 @@
           });
         }
 
-        function selectTutor(marker){
-          document.getElementById('tutorName').innerHTML = marker.title;
-          var ratings = document.getElementById('theRating');
-          while (ratings.firstChild) {
-            ratings.removeChild(ratings.firstChild);
-          }
-          for(var i = 0; i<marker.rating; i++){
-            var star = document.createElement("i");
-            star.classList.add('fa');
-            star.classList.add('fa-star');
-            star.classList.add('icon');
-            ratings.appendChild(star)
-          }
-          for(var i = 0; i<5-marker.rating; i++){
-            var star = document.createElement("i");
-            star.classList.add('fa');
-            star.classList.add('fa-star-o');
-            star.classList.add('icon');
-            ratings.appendChild(star)
-          }
+        function selectStudySpace(marker){
+          document.getElementById('studySpace').innerHTML = marker.title;
           document.getElementById('description1').innerHTML = marker.description1;
           document.getElementById('description2').innerHTML = marker.description2;
         }
 
         initMap()
-        selectTutor(markers[0]);
+        selectStudySpace(markers[0]);
+        markers[0].infowindow.open(map, markers[0]);
       </script>
 
   </body>
