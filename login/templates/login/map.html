@@ -6,6 +6,49 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'login/map.css' %}">
+    <script type="text/javascript">
+
+      function getMyClasses(){
+        var csrftoken = getCookie('csrftoken');
+        const profile = JSON.parse("{{profile|escapejs}}")
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              const infoNode = document.getElementById("info");
+              while (infoNode.firstChild) {
+                infoNode.removeChild(infoNode.lastChild);
+              }
+            }
+        });
+        $.ajax({
+            url : '',
+            type : "POST",
+            dataType: "json",
+            data : { courses : JSON.stringify(profile.studentCourses) }
+        }).done(function(returned_data){
+          document.getElementById('studySpace').innerHTML = "Tutors for my courses"
+          const infoNode = document.getElementById("info");
+          const tutors = returned_data['filtered_tutors'];
+          for(var i = 0; i<tutors.length; i++){
+            var courses = "";
+            for(var j = 0; j<tutors[i].tutorCourses.length; j++){
+              courses += tutors[i].tutorCourses[j].dept + " " + tutors[i].tutorCourses[j].number + " - " + tutors[i].tutorCourses[j].name + "<br>";
+            }
+            infoNode.insertAdjacentHTML('beforeend',
+            '<div class="card"><div class="card-header">' + tutors[i].username +
+            '</div><div class="card-body"><div><p>' +
+            tutors[i].user.email + "<br>" + tutors[i].phone_number + "<br><h5>Teaches:</h5>" + '</p><footer class="footer">' +
+            courses + '</footer></div></div></div>');
+          }
+          if(tutors.length == 0){
+            infoNode.insertAdjacentHTML('beforeend',
+            '<div class="card"><div class="card-header">No Tutors available' +
+            '</div><div class="card-body"><div><footer class="footer"></footer></div></div></div>')
+          }
+        });
+      }
+
+    </script>
       <div class="container">
           <div class="map-example">
               <div id="prefetch" class="autocomplete">
@@ -28,7 +71,7 @@
                           Filter
                         </button>
                         <div class="dropdown-menu filterDropdown" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item filterDropdownItem" href="#">Action</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:getMyClasses();">Tutors for my classes</a>
                           <a class="dropdown-item filterDropdownItem" href="#">Another action</a>
                           <a class="dropdown-item filterDropdownItem" href="#">Something else here</a>
                         </div>

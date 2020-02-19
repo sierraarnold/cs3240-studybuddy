@@ -25,23 +25,30 @@ def tutor(request):
         return render(request, 'login/map.html')
     else:
         classes = get_classes()
-        student_courses = StudentCourse.objects.filter(user=request.user.profile)
-        tutor_courses = TutorCourse.objects.filter(user=request.user.profile)
+        student_courses = list(StudentCourse.objects.filter(user=request.user.profile))
+        tutor_courses = list(TutorCourse.objects.filter(user=request.user.profile))
+        profile = json.dumps(ProfileSerializer(request.user.profile).data)
+        filtered_tutors = []
+        for i in range(len(student_courses)):
+            student_courses[i] = StudentCourseSerializer(student_courses[i]).data
+        for i in range(len(tutor_courses)):
+            tutor_courses[i] = TutorCourseSerializer(tutor_courses[i]).data
         if request.method == 'POST' and request.is_ajax():
-            course = request.POST['course']
-            course = course.split('-')[1].lstrip()
-            filtered_tutors = Profile.objects.filter(tutorcourse__name=course)
-            student_courses = list(student_courses)
-            tutor_courses = list(tutor_courses)
-            filtered_tutors = list(filtered_tutors)
-            for i in range(len(student_courses)):
-                student_courses[i] = StudentCourseSerializer(student_courses[i]).data
-            for i in range(len(tutor_courses)):
-                tutor_courses[i] = TutorCourseSerializer(tutor_courses[i]).data
+            course = request.POST.get('course', "No class found")
+            if course == "No class found":
+                courses = json.loads(request.POST.get('courses', []))
+                course_names = []
+                for class_ in courses:
+                    course_names.append(class_['name'])
+                filtered_tutors = list(Profile.objects.filter(tutorcourse__name__in=course_names))
+            elif course != "No class found":
+                course = course.split('-')[1].lstrip()
+                filtered_tutors = list(Profile.objects.filter(tutorcourse__name=course))
+                
             for i in range(len(filtered_tutors)):
                 filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
-            return JsonResponse({'filtered_tutors': filtered_tutors, 'course': course})
-        return render(request, 'login/map.html', {'profile': request.user.profile, 'classes': classes})
+            return JsonResponse({'profile': profile, 'filtered_tutors': filtered_tutors, 'course': course})
+        return render(request, 'login/map.html', {'profile': profile, 'classes': classes})
 
 @login_required
 @transaction.atomic

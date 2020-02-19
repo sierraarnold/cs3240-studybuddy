@@ -1,4 +1,6 @@
 from django import template
+import django.utils.html as utils
+import json
 register = template.Library()
 
 @register.filter
