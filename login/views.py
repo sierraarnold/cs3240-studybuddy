@@ -15,6 +15,7 @@ from fcm_django.models import FCMDevice
 from .models import Profile, StudentCourse, TutorCourse, MobileNotification
 from login.serializers import ProfileSerializer, StudentCourseSerializer, TutorCourseSerializer
 from .tasks import send_new_message_push_notification
+import logging
 
 def signout(request):
     if request.user.is_authenticated:
@@ -38,7 +39,8 @@ def renderTutorPage(request):
         if request.method == 'POST' and request.is_ajax():
             course = request.POST.get('course', "")
             pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
-            print(pushToken_registration)
+            logger = logging.getLogger('testlogger')
+            logger.info(pushToken_registration)
             if course == "" and not bool(pushToken_registration):
                 courses = json.loads(request.POST.get('courses', []))
                 course_names = []
