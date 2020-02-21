@@ -78,6 +78,7 @@
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
   break-inside: avoid;
+  height: 100%;
 }
 
 .list-group-item:hover {
