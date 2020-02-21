@@ -160,33 +160,33 @@ AUTHENTICATION_BACKENDS = (
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
     'formatters': {
-        'verbose': {
-            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
-                       'pathname=%(pathname)s lineno=%(lineno)s ' +
-                       'funcname=%(funcName)s %(message)s'),
-            'datefmt': '%Y-%m-%d %H:%M:%S'
+        'debug_format': {
+            'format': 'Log level: %(levelname)s, DateTime: %(asctime)s, Module: %(module)s, Process ID: %(process)d'
+                      'Thread ID: %(thread)d, Message: %(message)s'
         },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
+        'info_format': {
+            'format': 'Log level: %(levelname)s - Message: %(message)s'
         }
     },
     'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'logging.NullHandler',
+        'console_info': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'info_format'
         },
-        'console': {
+        'console_debug': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
+            'formatter': 'debug_format',
+            'filters': ['require_debug_true'],
         }
     },
     'loggers': {
-        'testlogger': {
-            'handlers': ['console'],
-            'level': 'INFO',
+        'django': {
+            'handlers': ['console_info', 'console_debug'],
+            'propagate': True
         }
     }
 }
