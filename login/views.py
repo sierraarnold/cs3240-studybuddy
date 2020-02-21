@@ -52,6 +52,7 @@ def renderTutorPage(request):
                 recipient = request.user
                 request.user.profile.push_token = pushToken_registration['registration_id']
                 request.user.profile.save()
+                print(pushToken_registration['type'])
                 FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
                 return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile, 'filtered_tutors': filtered_tutors, 'course': course})
             for i in range(len(filtered_tutors)):
