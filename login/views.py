@@ -39,7 +39,7 @@ def renderTutorPage(request):
         if request.method == 'POST' and request.is_ajax():
             course = request.POST.get('course', "")
             pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
-            logger = logging.getLogger('django')
+            logger = logging.getLogger('django.server')
             logger.info(pushToken_registration)
             print(pushToken_registration)
             if course == "" and not bool(pushToken_registration):
