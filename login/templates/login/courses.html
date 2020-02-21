@@ -10,7 +10,7 @@
       <div class="container">
         <h1>Courses</h1>
         <ul class="list-group d-flex flex-row flex-wrap">
-          {% for course in courses|makeList:'name' %}
+          {% for course in courses|makeList %}
           <div id="theDepartment">
             <a class="list-group-item list-group-item-action">
               {{course|get_index:0}} {{course|get_index:1}} - {{course|get_index:2}}

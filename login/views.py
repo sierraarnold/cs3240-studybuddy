@@ -5,14 +5,16 @@ from django.core.serializers import serialize
 from django.urls import reverse
 import json
 import requests
+from django.views.generic import View
 from bs4 import BeautifulSoup
 from .forms import UserForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib import messages
-from .models import Profile, StudentCourse, TutorCourse
+from fcm_django.models import FCMDevice
+from .models import Profile, StudentCourse, TutorCourse, MobileNotification
 from login.serializers import ProfileSerializer, StudentCourseSerializer, TutorCourseSerializer
-
+from .tasks import send_new_message_push_notification
 
 def signout(request):
     if request.user.is_authenticated:
@@ -20,11 +22,11 @@ def signout(request):
         messages.success(request, 'Signed out')
         return HttpResponseRedirect(reverse('login:home', args=()))
 
-def tutor(request):
+def renderTutorPage(request):
     if not request.user.is_authenticated:
-        return render(request, 'login/map.html')
+        return render(request, 'login/tutorSearch.html')
     else:
-        classes = get_classes()
+        classes = get_classes_fromtxt()
         student_courses = list(StudentCourse.objects.filter(user=request.user.profile))
         tutor_courses = list(TutorCourse.objects.filter(user=request.user.profile))
         profile = json.dumps(ProfileSerializer(request.user.profile).data)
@@ -34,21 +36,28 @@ def tutor(request):
         for i in range(len(tutor_courses)):
             tutor_courses[i] = TutorCourseSerializer(tutor_courses[i]).data
         if request.method == 'POST' and request.is_ajax():
-            course = request.POST.get('course', "No class found")
-            if course == "No class found":
+            course = request.POST.get('course', "")
+            pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
+            if course == "" and not bool(pushToken_registration):
                 courses = json.loads(request.POST.get('courses', []))
                 course_names = []
                 for class_ in courses:
                     course_names.append(class_['name'])
                 filtered_tutors = list(Profile.objects.filter(tutorcourse__name__in=course_names))
-            elif course != "No class found":
+            elif course != "":
                 course = course.split('-')[1].lstrip()
                 filtered_tutors = list(Profile.objects.filter(tutorcourse__name=course))
-                
+            elif bool(pushToken_registration):
+                sender = request.user
+                recipient = request.user
+                request.user.profile.push_token = pushToken_registration['registration_id']
+                request.user.profile.save()
+                FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
+                return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile, 'filtered_tutors': filtered_tutors, 'course': course})
             for i in range(len(filtered_tutors)):
                 filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
             return JsonResponse({'profile': profile, 'filtered_tutors': filtered_tutors, 'course': course})
-        return render(request, 'login/map.html', {'profile': profile, 'classes': classes})
+        return render(request, 'login/tutorSearch.html', {'profile': profile, 'classes': classes})
 
 @login_required
 @transaction.atomic
@@ -91,6 +100,10 @@ def saveClasses(postedItems, user_id):
             elif value != 'recentlyAdded':
                 StudentCourse.objects.filter(id=value).delete()
 
+class ServiceWorkerView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'login/firebase-messaging-sw.js', content_type="application/x-javascript")
+
 def parseCourse(course_name):
     course = course_name.split(':')[1]
     parts = course.split('-')
@@ -102,8 +115,8 @@ def parseCourse(course_name):
     return (dept, number, name)
 
 def schools(request):
-    classes = get_classes()
-    school_data = get_schools()
+    classes = get_classes_fromtxt()
+    school_data = get_schools_fromtxt()
     school_list = list(school_data.keys())
     section_list = list(school_data.values())
     return render(request, 'login/schools.html', {'school_list': school_list, 'section_list': section_list, 'classes': classes})
@@ -119,7 +132,7 @@ def get_section(request):
         courses = get_courses(link)
         request.session['courses'] = json.dumps(courses)
     except:
-        school_data = get_schools()
+        school_data = get_schools_fromtxt()
         school_list = list(school_data.keys())
         section_list = list(school_data.values())
         return render(request, 'login/schools.html', {'school_list': school_list, 'section_list': section_list})
@@ -146,12 +159,12 @@ def get_courses(url):
     else:
         return []
 
-def get_schools():
+def get_schools_fromtxt():
     with open('staticfiles/login/class_sections.txt') as json_file:
         schools = json.load(json_file)
         return schools
 
-def get_classes():
+def get_classes_fromtxt():
     with open('staticfiles/login/classes.txt') as json_file:
         data = json.load(json_file)
         return json.dumps(data)

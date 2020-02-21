@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, TutorCourse, StudentCourse
+from .models import Profile, TutorCourse, StudentCourse, MobileNotification, InAppMessage
 
 class CourseInlineTutor(admin.TabularInline):
     model = TutorCourse
@@ -11,11 +11,11 @@ class CourseInlineStudent(admin.TabularInline):
 
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['username', 'phone_number']}),
+        (None, {'fields': ['username', 'phone_number', 'push_token']}),
     ]
     inlines = [CourseInlineTutor, CourseInlineStudent]
-    list_display = ('user', 'username', )
-    search_fields = ['username', 'phone_number']
+    list_display = ('user', 'username', 'push_token')
+    search_fields = ['username', 'phone_number',]
 
 class StudentCourseAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -29,6 +29,20 @@ class TutorCourseAdmin(admin.ModelAdmin):
     ]
     list_display = [field.name for field in TutorCourse._meta.get_fields()]
 
+class MobileAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': [field.name for field in MobileNotification._meta.get_fields()]}),
+    ]
+    list_display = [field.name for field in MobileNotification._meta.get_fields()]
+
+class InAppAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': [field.name for field in InAppMessage._meta.get_fields()]}),
+    ]
+    list_display = [field.name for field in InAppMessage._meta.get_fields()]
+
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(StudentCourse, StudentCourseAdmin)
 admin.site.register(TutorCourse, TutorCourseAdmin)
+admin.site.register(MobileNotification, MobileAdmin)
+admin.site.register(InAppMessage, InAppAdmin)

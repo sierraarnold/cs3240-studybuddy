@@ -5,19 +5,19 @@
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'login/map.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/tutorSearch.css' %}">
     <script type="text/javascript">
 
       function getMyClasses(){
         var csrftoken = getCookie('csrftoken');
         const profile = JSON.parse("{{profile|escapejs}}")
+        const infoNode = document.getElementById("info");
+        while (infoNode.firstChild) {
+          infoNode.removeChild(infoNode.lastChild);
+        }
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
               xhr.setRequestHeader("X-CSRFToken", csrftoken);
-              const infoNode = document.getElementById("info");
-              while (infoNode.firstChild) {
-                infoNode.removeChild(infoNode.lastChild);
-              }
             }
         });
         $.ajax({
@@ -63,8 +63,8 @@
                           <h3 id='studySpace'>Study Space</h3>
                       </div>
                       <div class="info" id="info">
-                          <p id="description0">Description</p>
-                          <p id="description1">Description 2</p>
+                          <p id="description0"></p>
+                          <p id="description1"></p>
                       </div>
                       <div class="dropdown" id="filterButton">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -167,11 +167,12 @@
           description1.innerHTML = marker.description1;
           infoNode.appendChild(description0);
           infoNode.appendChild(description1);
+          map.panTo(marker.position);
         }
-
         initMap()
         selectStudySpace(markers[0]);
         markers[0].infowindow.open(map, markers[0]);
+        map.panTo(markers[0].position);
 
         function getCookie(name) {
             var cookieValue = null;
@@ -189,7 +190,7 @@
             return cookieValue;
         }
 
-        function selectClass(course){
+        function searchByClass(){
           var csrftoken = getCookie('csrftoken');
           $.ajaxSetup({
               beforeSend: function(xhr, settings) {
@@ -231,7 +232,7 @@
         var courseNames = new Array();
         var courses = JSON.parse("{{classes|escapejs}}")
         $.each(courses, function ( key, course ){ courseNames.push( key + ' - ' + course );} );
-        $( '#course' ).typeahead({ items:5, source:courseNames, afterSelect: function (course) {selectClass(course)}});
+        $( '#course' ).typeahead({ items:5, source:courseNames, afterSelect: function (course) {searchByClass()}});
       </script>
 
   </body>

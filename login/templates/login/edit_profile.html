@@ -9,18 +9,6 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{% static 'login/profile.css' %}">
 
-<script type="text/javascript">
-  function handleSelectedClasses(){
-    var courses = $('[id^="CheckBox"]');
-    for(var i = 0; i < courses.length; i++){
-      if(courses[i].value == 'recentlyAdded'){
-        var copy = document.getElementById(courses[i].id + 'hidden');
-        copy.checked = !courses[i].checked;
-      }
-    }
-  }
-</script>
-
 <div class="container-fluid">
   <form method="post" onsubmit="handleSelectedClasses()">
     {% csrf_token %}
@@ -88,6 +76,16 @@
 </div>
 
 <script type="text/javascript">
+
+  function handleSelectedClasses(){
+    var courses = $('[id^="CheckBox"]');
+    for(var i = 0; i < courses.length; i++){
+      if(courses[i].value == 'recentlyAdded'){
+        var copy = document.getElementById(courses[i].id + 'hidden');
+        copy.checked = !courses[i].checked;
+      }
+    }
+  }
 
   function setAttributes(el, attrs) {
     for(var key in attrs) {

@@ -103,7 +103,7 @@
 #filterButton {
   position: absolute;
   top: 0px;
-  right: 0px;
+  right: 10%;
   display: flex;
   justify-content: flex-end;
   width:60%;

@@ -8,11 +8,11 @@ def get_index(indexable, i):
     return indexable[i]
 
 @register.filter
-def sort(lst, key_name):
+def sort(lst):
     return sorted(lst)
 
 @register.filter
-def makeList(the_string, key_name):
+def makeList(the_string):
     strs = the_string.replace('[','').split('],')
     lst = [map(str, s.replace(']','').split(',')) for s in strs]
     for (i, map_object) in enumerate(lst):

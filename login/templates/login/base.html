@@ -17,6 +17,103 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.9.0/firebase-messaging.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyAbKG0p096vmi75oPf2ZA5gkOfhTSpOIjk",
+      authDomain: "study-buddy-103.firebaseapp.com",
+      databaseURL: "https://study-buddy-103.firebaseio.com",
+      projectId: "study-buddy-103",
+      storageBucket: "study-buddy-103.appspot.com",
+      messagingSenderId: "803195332373",
+      appId: "1:803195332373:web:3c9c5b1a4fc27d1f562b1c",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const messaging = firebase.messaging();
+
+    messaging.onTokenRefresh(function() {
+      messaging.getToken()
+      .then(function(refreshedToken) {
+        setTokenSentToServer(false);
+        sendTokenToServer(refreshedToken);
+      })
+      .catch(function(err) {
+      });
+    });
+
+    messaging.onMessage(function(payload) {
+      document.getElementById('toastBody').innerHTML = payload.notification.title + ": " + payload.notification.body;
+      $('.toast').toggleClass('ew-toast-show');
+      $(".toast").toast('show')
+    });
+
+    async function sendTokenToServer() {
+        var csrftoken = getCookie('csrftoken');
+        const token = await messaging.getToken();
+        const type = getDeviceType();
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        });
+        $.ajax({
+            url : '',
+            type : "POST",
+            dataType: "json",
+            data : { pushToken_registration : JSON.stringify({
+              'registration_id': token,
+              'type': type,
+            }) }
+        }).done(function(response){
+          setTokenSentToServer(true);
+        });
+    }
+
+    function getDeviceType() {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      if (/android/i.test(userAgent)) {
+          return 'android';
+      }
+      else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          return 'ios';
+      }
+      return 'web';
+    }
+
+    function isTokenSentToServer() {
+      if (window.localStorage.getItem('sentToServer') == 1) {
+        return true;
+      }
+      return false;
+    }
+
+    function setTokenSentToServer(sent) {
+      if (sent) {
+        window.localStorage.setItem('sentToServer', 1);
+      } else {
+        window.localStorage.setItem('sentToServer', 0);
+      }
+    }
+
+    function requestPermission() {
+      messaging.requestPermission()
+      .then(function() {
+        if (!isTokenSentToServer()) {
+          sendTokenToServer();
+        }
+      })
+      .catch(function(err) {
+      });
+    }
+
+    $( document ).ready(function() {
+        requestPermission()
+    });
+  </script>
 
   <nav class="navbar navbar-light navbar-expand-lg bg-white page-navbar">
       <div class="container">

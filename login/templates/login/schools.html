@@ -16,7 +16,7 @@
 
               <div id="collapse{{ forloop.counter0 }}" class="collapse" aria-labelledby="heading{{ forloop.counter0 }}" data-parent="#accordion">
                 <ul class="list-group d-flex flex-row flex-wrap">
-                  {% for section in section_list|get_index:forloop.counter0|sort:"name" %}
+                  {% for section in section_list|get_index:forloop.counter0|sort %}
                     <form id="theDepartment" action="{% url 'login:get_section' %}" method="post">
                       {% csrf_token %}
                       <button name="choice" value={{section|get_index:0}} class="list-group-item list-group-item-action" type="submit">{{section|get_index:1}}</button>
