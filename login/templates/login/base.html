@@ -33,7 +33,6 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-
     const messaging = firebase.messaging();
     navigator.serviceWorker.register('firebase-messaging-sw.js')
     .then((registration) => {
@@ -117,7 +116,7 @@
     }
 
     $( document ).ready(function() {
-        requestPermission()
+        setTimeout(requestPermission(), 1000);
     });
   </script>
 
