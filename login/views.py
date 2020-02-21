@@ -62,7 +62,7 @@ def renderTutorPage(request):
 @login_required
 @transaction.atomic
 def update_profile(request):
-    classes = get_classes()
+    classes = get_classes_fromtxt()
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)

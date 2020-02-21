@@ -102,9 +102,7 @@
     function requestPermission() {
       messaging.requestPermission()
       .then(function() {
-        if (!isTokenSentToServer()) {
-          sendTokenToServer();
-        }
+        sendTokenToServer();
       })
       .catch(function(err) {
       });
