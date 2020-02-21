@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 FCM_DJANGO_SETTINGS = {
         "APP_VERBOSE_NAME": "StudyBuddy",
         "FCM_SERVER_KEY": "AAAAuwIsJxU:APA91bF4jBMtCqZg6hHouAaFcbaPjF_0W8CB4lHfU8bdgsv2QasbURrab4ZpdQkC0lFUub9E8kQXzwoWFDc9vAvgFlZl0Xl7_sRRNkWJRgPQzD2qkpKzR-rVJtPq7otEK8_D2TuZfa0d",
-        "ONE_DEVICE_PER_USER": False,
+        "ONE_DEVICE_PER_USER": True,
         "DELETE_INACTIVE_DEVICES": False,
 }
 
