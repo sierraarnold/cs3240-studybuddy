@@ -35,7 +35,10 @@
     firebase.initializeApp(firebaseConfig);
 
     const messaging = firebase.messaging();
-
+    navigator.serviceWorker.register('firebase-messaging-sw.js')
+    .then((registration) => {
+      messaging.useServiceWorker(registration);
+    });
     messaging.usePublicVapidKey("BNsUHpdad2rIShHNd90fyt733Um-wvNGMVl4bqE6njkVEC5W2GcHkKpvQH83M7Zq3ouqtT0-naS9LWvGb3CSRZ8");
 
     messaging.onTokenRefresh(function() {
