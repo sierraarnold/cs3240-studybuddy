@@ -54,7 +54,7 @@ FCM_DJANGO_SETTINGS = {
         "APP_VERBOSE_NAME": "StudyBuddy",
         "FCM_SERVER_KEY": "AAAAuwIsJxU:APA91bF4jBMtCqZg6hHouAaFcbaPjF_0W8CB4lHfU8bdgsv2QasbURrab4ZpdQkC0lFUub9E8kQXzwoWFDc9vAvgFlZl0Xl7_sRRNkWJRgPQzD2qkpKzR-rVJtPq7otEK8_D2TuZfa0d",
         "ONE_DEVICE_PER_USER": True,
-        "DELETE_INACTIVE_DEVICES": False,
+        "DELETE_INACTIVE_DEVICES": True,
 }
 
 MIDDLEWARE = [
@@ -157,39 +157,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 )
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'debug_format': {
-            'format': 'Log level: %(levelname)s, DateTime: %(asctime)s, Module: %(module)s, Process ID: %(process)d'
-                      'Thread ID: %(thread)d, Message: %(message)s'
-        },
-        'info_format': {
-            'format': 'Log level: %(levelname)s - Message: %(message)s'
-        }
-    },
-    'handlers': {
-        'console_info': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'info_format'
-        },
-        'console_debug': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'debug_format',
-            'filters': ['require_debug_true'],
-        }
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console_info', 'console_debug'],
-            'propagate': True
-        }
-    }
-}
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_USERNAME_REQUIRED = False

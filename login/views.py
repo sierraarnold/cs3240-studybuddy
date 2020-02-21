@@ -15,7 +15,6 @@ from fcm_django.models import FCMDevice
 from .models import Profile, StudentCourse, TutorCourse, MobileNotification
 from login.serializers import ProfileSerializer, StudentCourseSerializer, TutorCourseSerializer
 from .tasks import send_new_message_push_notification
-import logging
 
 def signout(request):
     if request.user.is_authenticated:
@@ -39,8 +38,6 @@ def renderTutorPage(request):
         if request.method == 'POST' and request.is_ajax():
             course = request.POST.get('course', "")
             pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
-            logger = logging.getLogger('django')
-            logger.info(pushToken_registration)
             print(pushToken_registration)
             if course == "" and not bool(pushToken_registration):
                 courses = json.loads(request.POST.get('courses', []))
@@ -56,7 +53,13 @@ def renderTutorPage(request):
                 recipient = request.user
                 request.user.profile.push_token = pushToken_registration['registration_id']
                 request.user.profile.save()
-                FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
+                try:
+                    device = FCMDevice.objects.get(device_id=request.user.id)
+                    device.registration_id=pushToken_registration['registration_id']
+                    device.type=pushToken_registration['type']
+                    device.save()
+                except:
+                    FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
                 return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile, 'filtered_tutors': filtered_tutors, 'course': course})
             for i in range(len(filtered_tutors)):
                 filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
