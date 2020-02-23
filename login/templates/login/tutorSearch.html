@@ -39,7 +39,6 @@
           </div>
       </div>
 
-      <script src="https://maps.google.com/maps/api/js?key=AIzaSyCzpXEnrlPfHixWPz9MNVsmyPtASla3jNU"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.js"></script>
       <script type="text/javascript">
         var map;
@@ -54,7 +53,7 @@
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
-            center: new google.maps.LatLng(38.031850, -78.493410)
+            center: new google.maps.LatLng(38.036528, -78.506079)
           });
           infoWindow = new google.maps.InfoWindow
           var icon = "{% static 'login/images/library.png' %}"
@@ -82,19 +81,22 @@
               })(marker, i);
           }
 
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-              var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-              };
-              // map.setCenter(pos);
-            }, function() {
-              handleLocationError(true, infoWindow, map.getCenter());
-            });
-          } else {
-            handleLocationError(false, infoWindow, map.getCenter());
-          }
+          selectStudySpace(markers[0]);
+          markers[0].infowindow.open(map, markers[0]);
+
+          // if (navigator.geolocation) {
+          //   navigator.geolocation.getCurrentPosition(function(position) {
+          //     var pos = {
+          //       lat: position.coords.latitude,
+          //       lng: position.coords.longitude
+          //     };
+          //     // map.setCenter(pos);
+          //   }, function() {
+          //     handleLocationError(true, infoWindow, map.getCenter());
+          //   });
+          // } else {
+          //   handleLocationError(false, infoWindow, map.getCenter());
+          // }
         }
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -127,10 +129,6 @@
           infoNode.appendChild(description1);
           map.panTo(marker.position);
         }
-        initMap()
-        selectStudySpace(markers[0]);
-        markers[0].infowindow.open(map, markers[0]);
-        map.panTo(markers[0].position);
 
         function getCookie(name) {
             var cookieValue = null;
@@ -261,6 +259,7 @@
         $.each(courses, function ( key, course ){ courseNames.push( key + ' - ' + course );} );
         $( '#course' ).typeahead({ items:5, source:courseNames, afterSelect: function (course) {searchByClass()}});
       </script>
+      <script src="https://maps.google.com/maps/api/js?key=AIzaSyCzpXEnrlPfHixWPz9MNVsmyPtASla3jNU&callback=initMap" async defer></script>
 
   </body>
 {% endblock %}
