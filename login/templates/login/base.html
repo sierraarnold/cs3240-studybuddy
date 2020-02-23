@@ -9,9 +9,9 @@
   <link rel="stylesheet" type="text/css" href="{% static 'login/styleGoogle.css' %}">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>StudyBuddy</title>
   <meta name="google-site-verification" content="_MFjvYB8sV50hBtcYVExd5WZY9N89fawbYKGo-mqo0c" />
   <link rel="manifest" href="{% static 'login/manifest.json' %}">
+  <link rel="shortcut icon" type="image/png" href="{% static 'login/images/favicon.ico' %}"/>
 </head>
 
 <body>
@@ -119,10 +119,12 @@
     const messaging = firebase.messaging();
     navigator.serviceWorker.register('firebase-messaging-sw.js')
     .then((registration) => {
-      console.log(registration)
       messaging.useServiceWorker(registration);
       messaging.usePublicVapidKey("BNsUHpdad2rIShHNd90fyt733Um-wvNGMVl4bqE6njkVEC5W2GcHkKpvQH83M7Zq3ouqtT0-naS9LWvGb3CSRZ8");
-    });
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 
     messaging.onTokenRefresh(function() {
       messaging.getToken()
@@ -144,7 +146,6 @@
         var csrftoken = getCookie('csrftoken');
         const token = await messaging.getToken();
         const type = getDeviceType();
-        console.log(type)
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
               xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -159,7 +160,6 @@
               'type': type,
             }) }
         }).done(function(response){
-          console.log(response)
           setTokenSentToServer(true);
         });
     }

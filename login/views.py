@@ -37,10 +37,9 @@ def renderTutorPage(request):
             tutor_courses[i] = TutorCourseSerializer(tutor_courses[i]).data
         if request.method == 'POST' and request.is_ajax():
             course = request.POST.get('course', "")
+            courses = json.loads(request.POST.get('courses', '[]'))
             pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
-            print(pushToken_registration)
-            if course == "" and not bool(pushToken_registration):
-                courses = json.loads(request.POST.get('courses', []))
+            if len(courses) > 0:
                 course_names = []
                 for class_ in courses:
                     course_names.append(class_['name'])
@@ -60,7 +59,11 @@ def renderTutorPage(request):
                     device.save()
                 except:
                     FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
-                return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile, 'filtered_tutors': filtered_tutors, 'course': course})
+                return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile})
+            else:
+                tutor = json.loads(request.POST.get('tutor', '{}'))
+                send_new_message_push_notification(sender_id=request.user.id, recipient_id=tutor['user']['id'], title="Message from " + request.user.email, message="Tutor request")
+                messages.success(request, 'Request Sent')
             for i in range(len(filtered_tutors)):
                 filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
             return JsonResponse({'profile': profile, 'filtered_tutors': filtered_tutors, 'course': course})

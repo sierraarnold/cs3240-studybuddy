@@ -40,14 +40,9 @@ class MobileNotification(models.Model):
 class InAppMessage(models.Model):
     sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
     recipient = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
-    content = models.CharField(max_length=512)
-
-@receiver(post_save, sender=InAppMessage)
-def send_new_message_notification(sender, **kwargs):
-    message = kwargs['instance']
-    send_new_message_push_notification(sender_id=message.sender.id,
-                                       recipient_id=message.recipient.id,
-                                       content=message.content)
+    title = models.CharField(max_length=512)
+    message = models.TextField()
+    status = models.CharField(max_length=10, default='unread')
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

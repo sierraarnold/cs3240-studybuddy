@@ -201,3 +201,7 @@ form {
 .form-group {
   margin-left: 5%;
 }
+
+.addButton {
+  background-color: white;
+}

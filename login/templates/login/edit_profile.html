@@ -1,4 +1,8 @@
 {% load static %}
+<head>
+  <title>Profile</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'login/images/favicon.ico' %}"/>
+</head>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
@@ -24,7 +28,7 @@
       <div class="column">
         <div class="input-group">
           <b class="classSection">Classes I want help with</b>
-          <span type="button" class="btn" data-section="Student" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">
+          <span type="button" class="btn addButton" data-section="Student" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">
             <i class="fa fa-plus-square icon fa-3x"></i>
           </span>
         </div>
@@ -40,7 +44,7 @@
       <div class="column">
          <div class="input-group">
            <b class="classSection">Classes I would like to tutor</b>
-           <span type="button" class="btn" data-section="Tutor" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">
+           <span type="button" class="btn addButton" data-section="Tutor" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">
              <i class="fa fa-plus-square icon fa-3x"></i>
            </span>
          </div>
