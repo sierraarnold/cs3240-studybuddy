@@ -10,6 +10,6 @@ def send_new_message_push_notification(**kwargs):
     notification.save()
     try:
         device = FCMDevice.objects.get(user=recipient)
-        device.send_message(notification.tile, message)
+        device.send_message(title=notification.title, body=notification.message)
     except:
         pass

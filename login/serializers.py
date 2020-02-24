@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, TutorCourse, StudentCourse
+from .models import Profile, TutorCourse, StudentCourse, MobileNotification, InAppMessage
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,6 +20,19 @@ class StudentCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentCourse
         fields = [ 'name', 'dept', 'number']
+
+class MobileNotificationSerializer(serializers.ModelSerializer):
+    recipient = UserSerializer(many=False, read_only=True, source="user_device_notifications")
+    class Meta:
+        model = MobileNotification
+        fields = [ 'title', 'message', 'status', 'recipient', 'id']
+
+class InAppMessageSerializer(serializers.ModelSerializer):
+    sender = UserSerializer(many=False, read_only=True)
+    recipient = UserSerializer(many=False, read_only=True)
+    class Meta:
+        model = InAppMessage
+        fields = [ 'title', 'message', 'status', 'sender', 'recipient', 'id']
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False, read_only=True)

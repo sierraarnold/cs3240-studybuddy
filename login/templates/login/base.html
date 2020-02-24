@@ -31,11 +31,21 @@
                   <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:home' %}">Find a Tutor</a></li>
                   <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:schools' %}">View Classes</a></li>
                   {% if user.is_authenticated %}
+                    {% if request.session.notificationCount == 0 %}
+                      <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Messages</a></li>
+                      {% else %}
+                        <li class="nav-item item" role="presentation">
+                          <a class="nav-link" href="{% url 'login:notifications' %}">
+                            Messages<span class="badge badge-pill badge-danger">{{request.session.notificationCount}}</span>
+                          </a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:edit_profile' %}">Edit Profile</a></li>
                     <li class="nav-item item" role="presentation">
                       <a class="nav-link" href="{% url 'login:signout' %}">Logout</a>
                     </li>
                   {% else %}
+                    <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Messages</a></li>
                     <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Edit Profile</a></li>
                     <a href="{% provider_login_url 'google' %}">
                       <button type="button" class="google-button">
@@ -74,11 +84,12 @@
     </div>
   </div>
 
-  <div id="toastDiv" class="position-absolute">
-    <div class="toast" role="alert" data-delay="1750" data-autohide="true">
-        <div id="toastBody" class="toast-body"></div>
+    <div class="toastDiv position-absolute">
+      <div id="toast1" class="toast" role="alert" data-delay="3000" data-autohide="true">
+          <div id="toastBody" class="toast-body"></div>
+      </div>
     </div>
-</div>
+
 
   {% block content %}
   {% endblock %}
@@ -94,8 +105,8 @@
       {% for message in messages %}
         <script type="text/javascript">
             document.getElementById('toastBody').innerHTML = '{{message}}';
-            $('.toast').toggleClass('ew-toast-show');
-            $(".toast").toast('show')
+            $('#toast1').toggleClass('ew-toast-show');
+            $('#toast1').toast('show')
         </script>
       {% endfor %}
   </ul>
@@ -137,9 +148,10 @@
     });
 
     messaging.onMessage(function(payload) {
+      console.log(payload)
       document.getElementById('toastBody').innerHTML = payload.notification.title + ": " + payload.notification.body;
-      $('.toast').toggleClass('ew-toast-show');
-      $(".toast").toast('show')
+      $("#toast1").toggleClass('ew-toast-show');
+      $("#toast1").toast('show');
     });
 
     async function sendTokenToServer() {

@@ -39,6 +39,13 @@
           </div>
       </div>
 
+      <div class="toastDiv position-absolute">
+        <div id="toast2" class="toast" role="alert" data-delay="3000" data-autohide="true">
+            <div id="toastBody2" class="toast-body"></div>
+        </div>
+      </div>
+
+
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.js"></script>
       <script type="text/javascript">
         var map;
@@ -205,10 +212,10 @@
               type : "POST",
               dataType: "json",
               data : { courses : JSON.stringify(profile.studentCourses) }
-          }).done(function(returned_data){
+          }).done(function(response){
             document.getElementById('studySpace').innerHTML = "Tutors for my courses"
             const infoNode = document.getElementById("info");
-            const tutors = returned_data['filtered_tutors'];
+            const tutors = response['filtered_tutors'];
             populateTutors(tutors, infoNode);
           });
         }
@@ -229,10 +236,10 @@
               type : "POST",
               dataType: "json",
               data : { course : $('#course').val() }
-          }).done(function(returned_data){
-            document.getElementById('studySpace').innerHTML = returned_data['course']
+          }).done(function(response){
+            document.getElementById('studySpace').innerHTML = response['course']
             const infoNode = document.getElementById("info");
-            const tutors = returned_data['filtered_tutors'];
+            const tutors = response['filtered_tutors'];
             populateTutors(tutors, infoNode);
           });
         }
@@ -249,8 +256,10 @@
               type : "POST",
               dataType: "json",
               data : { tutor : JSON.stringify(tutor) }
-          }).done(function(returned_data){
-            console.log('success')
+          }).done(function(response){
+            document.getElementById('toastBody2').innerHTML = "Message sent to " + response.tutor.username;
+            $("#toast2").toggleClass('ew-toast-show');
+            $("#toast2").toast('show')
           });
         }
 

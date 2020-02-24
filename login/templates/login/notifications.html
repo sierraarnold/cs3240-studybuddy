@@ -1,0 +1,79 @@
+{% extends "login/base.html" %}
+{% load static %}
+{% load filters %}
+{% block content %}
+  <head><title>StudyBuddy</title></head>
+  <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/tutorSearch.css' %}">
+      <div class="container">
+          <div class="map-example">
+              {% if all_notifications %}
+
+                <h1>Messages</h1>
+                <ul class="list-group d-flex flex-wrap">
+                  {% for message in all_notifications|makeList %}
+                    <div class="card">
+                      <div class="card-header">
+                        {{message|get_value:"sender"|get_value:"username"}}
+                      </div>
+                      <div class="card-body">
+                        <h5 class="card-title">{{message|get_value:"sender"|get_value:"email"}}</h5>
+                        <p class="card-text">{{message|get_value:"message"}}</p>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </ul>
+
+              {% else %}
+                  <p>No messages</p>
+              {% endif %}
+          </div>
+      </div>
+
+      <div class="toastDiv position-absolute">
+        <div id="toast2" class="toast" role="alert" data-delay="3000" data-autohide="true">
+            <div id="toastBody2" class="toast-body"></div>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function getMyClasses(){
+          var csrftoken = getCookie('csrftoken');
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          });
+          $.ajax({
+              url : '',
+              type : "POST",
+              dataType: "json",
+              data : {  }
+          }).done(function(response){
+            console.log(response)
+          });
+        }
+
+        const notifications = JSON.parse("{{all_notifications|escapejs}}")
+
+      </script>
+
+  </body>
+{% endblock %}
