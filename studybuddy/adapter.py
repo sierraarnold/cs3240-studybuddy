@@ -22,11 +22,6 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
         pass    # TODOFuture: To perform some actions right after successful login
 
-    def is_open_for_signup(self, request, sociallogin):
-        if sociallogin.user.email != "virginia.edu":
-            return False
-        return super(SocialAccountAdapter, self).is_open_for_signup(request, sociallogin)
-
 @receiver(pre_social_login)
 def link_to_local_user(sender, request, sociallogin, **kwargs):
     email_address = sociallogin.account.extra_data['email']
