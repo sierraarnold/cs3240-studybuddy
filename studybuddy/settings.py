@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,13 +27,16 @@ SECRET_KEY = 'e@i*k#zh%y8_h_ue4c#_@g=4b!1&xxu18t-bnja(y4+4-#u^9q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'studdybuddy.herokuapp.com']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'fcm_django',
+    'whitenoise.runserver_nostatic',
     'login',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sites',
@@ -46,8 +50,16 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
+FCM_DJANGO_SETTINGS = {
+        "APP_VERBOSE_NAME": "StudyBuddy",
+        "FCM_SERVER_KEY": "AAAAuwIsJxU:APA91bF4jBMtCqZg6hHouAaFcbaPjF_0W8CB4lHfU8bdgsv2QasbURrab4ZpdQkC0lFUub9E8kQXzwoWFDc9vAvgFlZl0Xl7_sRRNkWJRgPQzD2qkpKzR-rVJtPq7otEK8_D2TuZfa0d",
+        "ONE_DEVICE_PER_USER": True,
+        "DELETE_INACTIVE_DEVICES": True,
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,10 +94,17 @@ WSGI_APPLICATION = 'studybuddy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'studybuddy',
+        'USER': 'Matt',
+        'PASSWORD': 'abc123',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -127,6 +146,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+MEDIA_URL = '/media/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
