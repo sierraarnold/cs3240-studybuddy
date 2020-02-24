@@ -25,11 +25,16 @@
   <form method="post" onsubmit="handleSelectedClasses()">
     {% csrf_token %}
     {{ user_form.as_p }}
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address:</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="email" disabled value={{user_form.email}}>
+      <small id="emailHelp" class="form-text text-muted">If you want to change this, create a new account.</small>
+  </div>
     {{ profile_form.as_p }}
 
     <div class="row">
       <div class="column">
-        <div class="input-group"> 
+        <div class="input-group">
           <b class="classSection">Classes I want help with</b>
           <span type="button" class="btn" data-section="Student" data-toggle="modal" data-target="#exampleModalCenter" data-backdrop="false">
             <i class="fa fa-plus-square icon fa-3x"></i>

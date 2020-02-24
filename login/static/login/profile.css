@@ -127,7 +127,8 @@ b {
   content: "";
   display: table;
   clear: both;
-  width:90%
+  width:90%;
+  margin-left: 5%
 }
 
 .classSection {
@@ -144,8 +145,9 @@ form {
   width: 100%;
   height: 80%;
   display: flex;
+  align-self: center;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
 }
 
@@ -194,4 +196,8 @@ form {
 .fa-plus-square:hover {
   color: A0A0A0;
   cursor: pointer;
+}
+
+.form-group {
+  margin-left: 5%;
 }
