@@ -3,6 +3,8 @@ python:
 - '3.8'
 install:
 - pip install -r requirements-travis.txt
+- sudo systemctl start postgresql
+- sudo systemctl enable postgresql
 script:
 - python manage.py test
 deploy:
