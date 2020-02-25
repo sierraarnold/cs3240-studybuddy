@@ -6,7 +6,7 @@ install:
 - sudo systemctl start postgresql
 - sudo systemctl enable postgresql
 before_script:
-  - psql -c "CREATE DATBASE studybuddy;" -U postgres
+- psql -c "CREATE DATBASE studybuddy;" -U postgres
 - psql -c "CREATE USER Matt WITH PASSWORD 'abc123';" -U postgres
 script:
 - python manage.py test
