@@ -5,6 +5,8 @@ install:
 - pip install -r requirements-travis.txt
 - sudo systemctl start postgresql
 - sudo systemctl enable postgresql
+before_script:
+- psql -c "CREATE USER Matt WITH PASSWORD 'abc123';" -U postgres
 script:
 - python manage.py test
 deploy:
