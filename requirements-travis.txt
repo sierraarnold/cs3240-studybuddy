@@ -4,6 +4,7 @@ beautifulsoup4==4.8.2
 bootstrap4==0.1.0
 certifi==2019.11.28
 chardet==3.0.4
+django-heroku
 defusedxml==0.6.0
 dj-database-url==0.5.0
 django-allauth==0.41.0
