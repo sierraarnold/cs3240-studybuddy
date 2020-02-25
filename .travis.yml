@@ -6,6 +6,6 @@ install:
 script:
 - python manage.py test
 services:
-  - postgresql
+  - postgresql_psycopg2
 deploy:
   provider: heroku
