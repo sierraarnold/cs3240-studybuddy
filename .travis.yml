@@ -4,11 +4,12 @@ python:
 install:
 - pip install -r requirements-travis.txt
 services:
-  - postgresql: "12.2"
+  - postgresql: "10.7"
 before_script:
 - psql -c "CREATE DATABASE studybuddy;" -U postgres
 - psql -c "CREATE USER Matt WITH PASSWORD 'abc123';" -U postgres
 script:
+- python manage.py migrate
 - python manage.py test
 deploy:
   provider: heroku
