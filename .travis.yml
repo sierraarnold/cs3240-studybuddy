@@ -4,7 +4,7 @@ python:
 install:
 - pip install -r requirements-travis.txt
 services:
-  - postgresql
+  - postgresql: "12.2"
 before_script:
 - psql -c "CREATE DATABASE studybuddy;" -U postgres
 - psql -c "CREATE USER Matt WITH PASSWORD 'abc123';" -U postgres
