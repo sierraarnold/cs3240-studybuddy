@@ -101,13 +101,19 @@ button:focus {
 }
 
 .toast-body {
-  padding: 20px;
+  padding: 30px;
   color: black;
   font-weight: 500;
 }
 
+.closeButton {
+  position: absolute;
+  top: 5;
+  right: 2%;
+}
+
 .toastDiv {
-  top: 0px;
+  top: 70px;
   right: 2%;
 }
 
@@ -115,10 +121,6 @@ button:focus {
   border-radius: 10px;
   background-color: D3D3D3;
   transition: transform 0.5s;
-}
-
-.ew-toast-show {
-  transform: translateY(70px);
 }
 
 h5 {

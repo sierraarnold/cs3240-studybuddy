@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'studybuddy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'studybuddy',
+        'NAME': 'tutorsearch',
         'USER': 'Matt',
         'PASSWORD': 'abc123',
         'HOST': 'localhost',

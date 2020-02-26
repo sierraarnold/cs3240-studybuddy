@@ -84,11 +84,17 @@
     </div>
   </div>
 
-    <div class="toastDiv position-absolute">
-      <div id="toast1" class="toast" role="alert" data-delay="3000" data-autohide="true">
-          <div id="toastBody" class="toast-body"></div>
+
+
+  <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
+    <div id="toast1" class="toast">
+      <button type="button" class="close closeButton" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <div id="toastBody" class="toast-body">
       </div>
     </div>
+  </div>
 
 
   {% block content %}
@@ -105,8 +111,8 @@
       {% for message in messages %}
         <script type="text/javascript">
             document.getElementById('toastBody').innerHTML = '{{message}}';
-            $('#toast1').toggleClass('ew-toast-show');
-            $('#toast1').toast('show')
+            $('#toast1').toast({delay: 5000})
+            $("#toast1").toast('show')
         </script>
       {% endfor %}
   </ul>
@@ -150,8 +156,8 @@
     messaging.onMessage(function(payload) {
       console.log(payload)
       document.getElementById('toastBody').innerHTML = payload.notification.title + ": " + payload.notification.body;
-      $("#toast1").toggleClass('ew-toast-show');
-      $("#toast1").toast('show');
+      $("#toast1").toast({data: 5000});
+      $("#toast1").toast('show')
     });
 
     async function sendTokenToServer() {
@@ -214,6 +220,9 @@
     $( document ).ready(function() {
         setTimeout(requestPermission(), 1000);
     });
+    $('.closeButton').on('click',function(){
+        $('#toast1').toast('hide')
+    })
   </script>
 </body>
 </html>
