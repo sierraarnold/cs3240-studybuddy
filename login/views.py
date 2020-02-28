@@ -89,6 +89,23 @@ def update_profile(request):
         'classes': classes
     })
 
+def saveClasses(postedItems, user_id):
+    for key, value in postedItems:
+        if(key.startswith('CBNameTutor')):
+            if(value == 'new'):
+                (dept, number, name) = parseCourse(key)
+                tutor_course = TutorCourse(dept=dept, number=number, name=name, user_id=user_id)
+                tutor_course.save()
+            elif value != 'recentlyAdded':
+                TutorCourse.objects.filter(id=value).delete()
+        if(key.startswith('CBNameStudent')):
+            if(value == 'new'):
+                (dept, number, name) = parseCourse(key)
+                student_course = StudentCourse(dept=dept, number=number, name=name, user_id=user_id)
+                student_course.save()
+            elif value != 'recentlyAdded':
+                StudentCourse.objects.filter(id=value).delete()
+
 def getNotifications(request):
     inappmessages = list(InAppMessage.objects.filter(sender=request.user.id))
     inappmessages += list(InAppMessage.objects.filter(recipient=request.user.id))
@@ -125,23 +142,6 @@ def notifications(request):
     request.session['notificationCount'] = 0
     return render(request, 'login/notifications.html', {'all_notifications': all_notifications})
 
-def saveClasses(postedItems, user_id):
-    for key, value in postedItems:
-        if(key.startswith('CBNameTutor')):
-            if(value == 'new'):
-                (dept, number, name) = parseCourse(key)
-                tutor_course = TutorCourse(dept=dept, number=number, name=name, user_id=user_id)
-                tutor_course.save()
-            elif value != 'recentlyAdded':
-                TutorCourse.objects.filter(id=value).delete()
-        if(key.startswith('CBNameStudent')):
-            if(value == 'new'):
-                (dept, number, name) = parseCourse(key)
-                student_course = StudentCourse(dept=dept, number=number, name=name, user_id=user_id)
-                student_course.save()
-            elif value != 'recentlyAdded':
-                StudentCourse.objects.filter(id=value).delete()
-
 class ServiceWorkerView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'login/firebase-messaging-sw.js', content_type="application/x-javascript")
@@ -156,28 +156,26 @@ def parseCourse(course_name):
     number = dept_parts[1]
     return (dept, number, name)
 
-def schools(request):
+def departments(request):
     classes = get_classes_fromtxt()
-    school_data = get_schools_fromtxt()
-    school_list = list(school_data.keys())
-    section_list = list(school_data.values())
-    return render(request, 'login/schools.html', {'school_list': school_list, 'section_list': section_list, 'classes': classes})
+    department_data = get_departments_fromtxt()
+    department_list = list(department_data.keys())
+    department_section_list = list(department_data.values())
+    return render(request, 'login/departments.html', {'department_list': department_list, 'department_section_list': department_section_list, 'classes': classes})
 
 def courses(request):
     courses = request.session['courses']
     return render(request, 'login/courses.html', {'courses':courses})
 
-def get_section(request):
+def get_department_section(request):
     try:
         courses = []
         link = request.POST['choice']
         courses = get_courses(link)
         request.session['courses'] = json.dumps(courses)
     except:
-        school_data = get_schools_fromtxt()
-        school_list = list(school_data.keys())
-        section_list = list(school_data.values())
-        return render(request, 'login/schools.html', {'school_list': school_list, 'section_list': section_list})
+        messages.error(request, 'Cannot get courses at this time')
+        return HttpResponseRedirect(reverse('login:departments'))
     return HttpResponseRedirect(reverse('login:courses'))
 
 def get_courses(url):
@@ -201,10 +199,9 @@ def get_courses(url):
     else:
         return []
 
-def get_schools_fromtxt():
+def get_departments_fromtxt():
     with open('staticfiles/login/class_sections.txt') as json_file:
-        schools = json.load(json_file)
-        return schools
+        return json.load(json_file)
 
 def get_classes_fromtxt():
     with open('staticfiles/login/classes.txt') as json_file:

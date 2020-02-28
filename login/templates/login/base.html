@@ -29,7 +29,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="nav navbar-nav ml-auto">
                   <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:home' %}">Find a Tutor</a></li>
-                  <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:schools' %}">View Classes</a></li>
+                  <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:departments' %}">View Classes</a></li>
                   {% if user.is_authenticated %}
                     {% if request.session.notificationCount == 0 %}
                       <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Messages</a></li>
@@ -111,7 +111,6 @@
       {% for message in messages %}
         <script type="text/javascript">
             document.getElementById('toastBody').innerHTML = '{{message}}';
-            $('#toast1').toast({delay: 5000})
             $("#toast1").toast('show')
         </script>
       {% endfor %}
@@ -156,7 +155,6 @@
     messaging.onMessage(function(payload) {
       console.log(payload)
       document.getElementById('toastBody').innerHTML = payload.notification.title + ": " + payload.notification.body;
-      $("#toast1").toast({data: 5000});
       $("#toast1").toast('show')
     });
 

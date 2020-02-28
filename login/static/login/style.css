@@ -115,6 +115,7 @@ button:focus {
 .toastDiv {
   top: 70px;
   right: 2%;
+  z-index:99;
 }
 
 .toast {

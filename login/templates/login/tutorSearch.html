@@ -262,7 +262,6 @@
               data : { tutor : JSON.stringify(tutor) }
           }).done(function(response){
             document.getElementById('toastBody2').innerHTML = "Message sent to " + response.tutor.username;
-            $("#toast2").toast({delay: 5000})
             $("#toast2").toast('show')
           });
         }
