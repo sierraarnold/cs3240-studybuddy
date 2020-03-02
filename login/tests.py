@@ -97,6 +97,24 @@ class ClassSaveTests(TestCase):
         self.assertEqual(tester.profile.username, "tester")
         self.assertEqual(tester.profile.phone_number, "3018523444")
         tester.delete()
+class SimpleTest(unittest.TestCase):
+    def setUp(self):
+        # Every test needs a client.
+        self.client = Client()
+
+    def test_main(self):
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 200)
+    def test_profile(self):
+        response = self.client.get('/profile')
+        self.assertEqual(response.status_code, 302)
+class SimpleTest2(TestCase):
+    def setUp(self):
+        # Every test needs a client.
+        self.client = Client()
+    def test_redirect(self):
+        response = self.client.get('/profile')
+        self.assertRedirects(response, '/accounts/login/?next=/profile', status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
 # class UpdateProfileTests(LiveServerTestCase):
 #     port = 8000
