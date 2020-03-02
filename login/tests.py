@@ -19,6 +19,7 @@ class UserModelTests(TestCase):
         """
         tester = User(email="tester@virginia.edu")
         self.assertEqual(tester.__str__(), "")
+
 class SimpleLogin(unittest.TestCase):
     def setUp(self):
         person = Profile(username = 'holly')
@@ -100,6 +101,13 @@ class ClassSaveTests(TestCase):
         form.save()
         self.assertEqual(tester.profile.username, "tester")
         self.assertEqual(tester.profile.phone_number, "3018523444")
+        tester.delete()
+    
+    def test_profileAndLogin(self):
+        c = Client()
+        tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester.save()
+        self.assertFalse(c.login(username='test', password='1234'))
         tester.delete()
 class HomepageTest(unittest.TestCase):
     def setUp(self):
