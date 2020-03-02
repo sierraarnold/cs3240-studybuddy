@@ -19,6 +19,9 @@ class UserModelTests(TestCase):
         """
         tester = User(email="tester@virginia.edu")
         self.assertEqual(tester.__str__(), "")
+class SimpleLogin(unittest.TestCase):
+    def setUp(self):
+        person = Profile(username = 'holly')
 
 class ClassFileTests(TestCase):
     def test_get_departments_fromtxt(self):
