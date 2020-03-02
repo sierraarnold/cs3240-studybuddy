@@ -98,7 +98,7 @@ class ClassSaveTests(TestCase):
         self.assertEqual(tester.profile.username, "tester")
         self.assertEqual(tester.profile.phone_number, "3018523444")
         tester.delete()
-class SimpleTest(unittest.TestCase):
+class HomepageTest(unittest.TestCase):
     def setUp(self):
         # Every test needs a client.
         self.client = Client()
@@ -109,7 +109,7 @@ class SimpleTest(unittest.TestCase):
     def test_profile(self):
         response = self.client.get('/profile')
         self.assertEqual(response.status_code, 302)
-class SimpleTest2(TestCase):
+class RedirectTests(TestCase):
     def setUp(self):
         # Every test needs a client.
         self.client = Client()
