@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .models import Profile, TutorCourse, StudentCourse, MobileNotification, InAppMessage
 from login.views import *
 from login.forms import UserForm, ProfileForm
+from login.tasks import *
 from selenium import webdriver
 import unittest
 import time
@@ -174,19 +175,24 @@ class RedirectTests(TestCase):
 #         driver.close()
 
 class MobileNotificationModelTests(TestCase):
-#TEST must begin with the string test
-    def test_username_string(self):
-        """
-        input username is returned by to string method
-        """
-        p = Profile(username="holly")
-        self.assertEqual(p.__str__(), "holly")
+    def create_mobile_notification(self, recipient="Name", title="title test", message="message test"):
+        return MobileNotification.objects.create(recipient=recipient, title=title, message=message)
+
+    def test_mobile_notification(self):
+        mn = self.create_mobile_notification()
+        self.assertTrue(isinstance(mn, MobileNotification))
+        self.assertEqual(mn.title.__str__(), "title test")
+        self.assertEqual(mn.message.__str__(), "message test")
+        self.assertEqual(mn.status, "Unread")
 
 class InAppMessageModelTests(TestCase):
-#TEST must begin with the string test
-    def test_username_string(self):
-        """
-        input username is returned by to string method
-        """
-        p = Profile(username="holly")
-        self.assertEqual(p.__str__(), "holly")
+    # test method from tasks.py
+    def test_send_new_message_push_notification(self):
+        c = Client()
+        tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester.save()
+        c.login(username='tester', password='12345')        
+        msg = tester.send_new_message_push_notification(sender_id="123",recipient_id="321", title="Title")
+        self.assertEqual(msg.title, "Title")
+        self.assertEqual(msg.message, " sent you a message")
+        tester.delete()
