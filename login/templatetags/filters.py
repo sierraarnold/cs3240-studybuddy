@@ -3,6 +3,7 @@ import django.utils.html as utils
 import json
 register = template.Library()
 
+#Helper methods for templates. Syntax in templates is using | with function name
 @register.filter
 def get_index(indexable, i):
     return indexable[i]

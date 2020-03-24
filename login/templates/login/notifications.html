@@ -8,10 +8,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'login/tutorSearch.css' %}">
       <div class="container">
           <div class="map-example">
+              <!-- all_notifications is mobile notifications and device notifications combined -->
               {% if all_notifications %}
 
                 <h1>Messages</h1>
                 <ul class="list-group d-flex flex-wrap">
+                  <!-- Show a card with the sender username, sender email, and message -->
                   {% for message in all_notifications|makeList %}
                     <div class="card">
                       <div class="card-header">
@@ -31,6 +33,7 @@
           </div>
       </div>
 
+      <!-- Toast notification -->
       <div class="toastDiv position-absolute">
         <div id="toast2" class="toast" role="alert" data-delay="3000" data-autohide="true">
             <div id="toastBody2" class="toast-body"></div>
@@ -38,6 +41,8 @@
       </div>
 
       <script type="text/javascript">
+
+        //Gets cookie for csrftoken
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -54,6 +59,7 @@
             return cookieValue;
         }
 
+        // Does nothing right now
         function getMyClasses(){
           var csrftoken = getCookie('csrftoken');
           $.ajaxSetup({

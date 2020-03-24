@@ -1,6 +1,7 @@
 importScripts('https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/7.8.2/firebase-messaging.js');
 
+//Firebase notifications configuration
 var firebaseConfig = {
   apiKey: "AIzaSyAbKG0p096vmi75oPf2ZA5gkOfhTSpOIjk",
   authDomain: "study-buddy-103.firebaseapp.com",
@@ -14,6 +15,7 @@ firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
+//When website is in background show a browser notification
 messaging.setBackgroundMessageHandler(function(payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
   const notificationTitle = 'Background Message Title';

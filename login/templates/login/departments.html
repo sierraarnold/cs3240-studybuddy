@@ -7,6 +7,10 @@
       <div class="container">
         <h1>Departments</h1>
           <div id="accordion" class="myaccordion" aria-multiselectable="false">
+            <!--
+                For every department render an expandable section
+                Departments are like Arts and Sciences or Engineering and Applied Sciences
+            -->
             {% for department in department_list %}
             <div class="card" id="accordion{{ forloop.counter0 }}">
               <div class="card-header" id="heading{{ forloop.counter0 }}">
@@ -17,6 +21,10 @@
 
               <div id="collapse{{ forloop.counter0 }}" class="collapse" aria-labelledby="heading{{ forloop.counter0 }}" data-parent="#accordion">
                 <ul class="list-group d-flex flex-row flex-wrap">
+                  <!--
+                    For every section render a button
+                    A section is like Computer Science or BME
+                  -->
                   {% for section in department_section_list|get_index:forloop.counter0|sort %}
                     <form id="theDepartment" action="{% url 'login:get_department_section' %}" method="post">
                       {% csrf_token %}

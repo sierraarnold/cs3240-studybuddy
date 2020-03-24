@@ -19,6 +19,7 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
+  <!-- Navbar -->
   <nav class="navbar navbar-light navbar-expand-lg bg-white page-navbar">
       <div class="container">
           <a class="navbar-brand logo" href="javascript:void(0)">StudyBuddy</a>
@@ -30,6 +31,16 @@
               <ul class="nav navbar-nav ml-auto">
                   <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:home' %}">Find a Tutor</a></li>
                   <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:departments' %}">View Classes</a></li>
+
+                  <!--
+                    If authenticated:
+                      Allow user to edit profile and view messages. Shows message count.
+                      If no new messages:
+                        Don't show badge
+                      Else show badge
+                    If not authenticated:
+                      Show login popup when edit profile and messages are clicked
+                  -->
                   {% if user.is_authenticated %}
                     {% if request.session.notificationCount == 0 %}
                       <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Messages</a></li>
@@ -61,6 +72,7 @@
       </div>
   </nav>
 
+  <!-- Bootstrap modal with google login button-->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog text-center modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -84,8 +96,7 @@
     </div>
   </div>
 
-
-
+  <!-- Bootstrap toast that shows notifications-->
   <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
     <div id="toast1" class="toast">
       <button type="button" class="close closeButton" aria-label="Close">
@@ -96,16 +107,18 @@
     </div>
   </div>
 
-
+  <!-- Render whatever page between navbar and footer-->
   {% block content %}
   {% endblock %}
 
+  <!-- Footer -->
   <footer class="page-footer">
       <div class="container">
           <div class="links"><a href="#">Information</a><a href="#">About Us</a><a href="#">Contact Us</a></div>
       </div>
   </footer>
 
+  <!-- For every django message show a toast notification-->
   {% if messages %}
   <ul class="messages">
       {% for message in messages %}
@@ -120,6 +133,7 @@
   <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-messaging.js"></script>
 
+  <!-- Configure firebase notifications and service worker-->
   <script>
     var firebaseConfig = {
       apiKey: "AIzaSyAbKG0p096vmi75oPf2ZA5gkOfhTSpOIjk",
@@ -142,6 +156,10 @@
       console.log(error)
     })
 
+    /*
+      When pushtoken refreshes send a POST request to update pushtoken field on profile
+      and update firebase cloud messaging device model
+    */
     messaging.onTokenRefresh(function() {
       messaging.getToken()
       .then(function(refreshedToken) {
@@ -152,12 +170,14 @@
       });
     });
 
+    // When a message is recieved show a toast notification
     messaging.onMessage(function(payload) {
       console.log(payload)
       document.getElementById('toastBody').innerHTML = payload.notification.title + ": " + payload.notification.body;
       $("#toast1").toast('show')
     });
 
+    // Send ajax POST request with device type and token
     async function sendTokenToServer() {
         var csrftoken = getCookie('csrftoken');
         const token = await messaging.getToken();
@@ -180,6 +200,7 @@
         });
     }
 
+    // Gets user's device type
     function getDeviceType() {
       var userAgent = navigator.userAgent || navigator.vendor || window.opera;
       if (/android/i.test(userAgent)) {
@@ -191,6 +212,7 @@
       return 'web';
     }
 
+    // Check if token is sent to server yet
     function isTokenSentToServer() {
       if (window.localStorage.getItem('sentToServer') == 1) {
         return true;
@@ -198,6 +220,7 @@
       return false;
     }
 
+    // Set local storage to know whether token is sent yet
     function setTokenSentToServer(sent) {
       if (sent) {
         window.localStorage.setItem('sentToServer', 1);
@@ -206,6 +229,7 @@
       }
     }
 
+    // Requests notification permission
     function requestPermission() {
       messaging.requestPermission()
       .then(function() {
@@ -215,6 +239,7 @@
       });
     }
 
+    // Requests permission 1000 ms after js loads
     $( document ).ready(function() {
         setTimeout(requestPermission(), 1000);
     });

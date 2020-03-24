@@ -9,13 +9,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'login/tutorSearch.css' %}">
       <div class="container">
           <div class="map-example">
+              <!-- Searchbar -->
               <div id="prefetch" class="autocomplete">
                 <input class="form-control" id="course" type="text" placeholder="Search for a class" autocomplete="off">
               </div>
               <div class="row">
                   <div class="col-lg-6">
+                      <!-- Map -->
                       <div id="map"></div>
                   </div>
+                  <!-- Search panel -->
                   <div class="col-lg-6">
                       <div class="heading">
                           <h3 id='studySpace'>Study Space</h3>
@@ -39,6 +42,8 @@
           </div>
       </div>
 
+
+      <!-- Toast notification -->
       <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
         <div id="toast2" class="toast">
           <button type="button" class="close closeButton" aria-label="Close">
@@ -95,6 +100,7 @@
           selectStudySpace(markers[0]);
           markers[0].infowindow.open(map, markers[0]);
 
+          //This would get user location
           // if (navigator.geolocation) {
           //   navigator.geolocation.getCurrentPosition(function(position) {
           //     var pos = {
@@ -124,6 +130,7 @@
           });
         }
 
+        // This sets the search panel js with the correct study space name
         function selectStudySpace(marker){
           document.getElementById('studySpace').innerHTML = marker.title;
           const infoNode = document.getElementById("info");
@@ -141,6 +148,7 @@
           map.panTo(marker.position);
         }
 
+        //Gets cookie for csrftoken
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -157,6 +165,14 @@
             return cookieValue;
         }
 
+        /*
+          Creates js cards for each tutor - looks like
+          username  Request button
+          email
+          phonenumber
+          Teaches:
+          courses
+        */
         function populateTutors(tutors, infoNode){
           for(var i = 0; i<tutors.length; i++){
             var courses = "";
@@ -192,6 +208,7 @@
             card.appendChild(cardbody);
             infoNode.appendChild(card);
           }
+          // If no tutors say no tutors available
           if(tutors.length == 0){
             infoNode.insertAdjacentHTML('beforeend',
             '<div class="card"><div class="card-header">No Tutors available' +
@@ -199,9 +216,12 @@
           }
         }
 
+        //Sends an ajax POST request with all student courses of profile
         function getMyClasses(){
           var csrftoken = getCookie('csrftoken');
           const profile = JSON.parse("{{profile|escapejs}}");
+
+          // Clears previous search panel
           const infoNode = document.getElementById("info");
           while (infoNode.firstChild) {
             infoNode.removeChild(infoNode.lastChild);
@@ -217,6 +237,7 @@
               dataType: "json",
               data : { courses : JSON.stringify(profile.studentCourses) }
           }).done(function(response){
+            //Sets up search panel after recieving response from server
             document.getElementById('studySpace').innerHTML = "Tutors for my courses"
             const infoNode = document.getElementById("info");
             const tutors = response['filtered_tutors'];
@@ -224,6 +245,7 @@
           });
         }
 
+        //Sends an ajax POST request with class name
         function searchByClass(){
           var csrftoken = getCookie('csrftoken');
           $.ajaxSetup({
@@ -248,6 +270,7 @@
           });
         }
 
+        //Sends ajax POST request with the desired tutor to message
         function sendTutorMessage(tutor){
           var csrftoken = getCookie('csrftoken');
           $.ajaxSetup({
