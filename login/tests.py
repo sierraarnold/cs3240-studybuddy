@@ -66,17 +66,17 @@ class ClassFileTests(TestCase):
         tester.save()
         self.assertFalse(c.login(username='test', password='1234'))
         tester.delete()
-class HomepageTest(unittest.TestCase):
-    def setUp(self):
-        # Every test needs a client.
-        self.client = Client()
-
-    def test_main(self):
-        response = self.client.get('')
-        self.assertEqual(response.status_code, 200)
-    def test_profile(self):
-        response = self.client.get('/profile')
-        self.assertEqual(response.status_code, 302)
+#class HomepageTest(unittest.TestCase):
+ #   def setUp(self):
+#        # Every test needs a client.
+#        self.client = Client()
+#
+#    def test_main(self):
+#        response = self.client.get('')
+#        self.assertEqual(response.status_code, 200)
+#    def test_profile(self):
+#        response = self.client.get('/profile')
+#        self.assertEqual(response.status_code, 302)
 #class RedirectTests(TestCase):
 #    def setUp(self):
 #        # Every test needs a client.
