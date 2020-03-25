@@ -77,10 +77,10 @@ class HomepageTest(unittest.TestCase):
     def test_profile(self):
         response = self.client.get('/profile')
         self.assertEqual(response.status_code, 302)
-class RedirectTests(TestCase):
-    def setUp(self):
-        # Every test needs a client.
-        self.client = Client()
-    def test_redirect(self):
-        response = self.client.get('/profile')
-        self.assertRedirects(response, '/accounts/login/?next=/profile', status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
+#class RedirectTests(TestCase):
+#    def setUp(self):
+#        # Every test needs a client.
+#        self.client = Client()
+    #def test_redirect(self):
+     #   response = self.client.get('/profile')
+      #  self.assertRedirects(response, '/accounts/login/?next=/profile', status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
