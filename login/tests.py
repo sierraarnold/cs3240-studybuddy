@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-import datetimefrom django.test import TestCase, Client, LiveServerTestCase
+import datetime
+from django.test import TestCase, Client, LiveServerTestCase
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -244,7 +244,7 @@ class ClassFileTests(TestCase):
         form.save()
         self.assertEqual(tester.profile.username, "tester")
         tester.delete()
-    
+
     def test_profileAndLogin(self):
         c = Client()
         tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
