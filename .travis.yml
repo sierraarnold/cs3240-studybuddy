@@ -12,7 +12,6 @@ install:
 before_script:
 - psql -c "CREATE DATABASE studybuddy;" -U postgres
 - psql -c "CREATE USER Matt WITH PASSWORD 'abc123';" -U postgres
-- python manage.py collectstatic
 script:
 - python manage.py makemigrations
 - python manage.py migrate
