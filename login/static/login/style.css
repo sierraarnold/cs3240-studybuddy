@@ -38,46 +38,11 @@
   display:inline-block;
 }
 
-.map-example .heading .icon {
-  color:#ffb526;
-}
-
-.map-example {
-  margin-top:50px;
-  padding-bottom:100px;
-}
-
-.map-example .heading {
-  margin-bottom:20px;
-  border-bottom:1px solid #e4e4e4;
-  padding-bottom:30px;
-}
-
-.map-example .info {
-  margin-bottom:20px;
-  border-bottom:1px solid #e4e4e4;
-  padding-bottom:20px;
-  color:#636363;
-}
-
-.map-example .gallery h4 {
-  margin-bottom:30px;
-}
-
-.map-example .gallery .image {
-  margin-bottom:15px;
-  box-shadow:0px 2px 10px rgba(0, 0, 0, 0.15);
-}
-
-.map-example #map {
-  height: 300px;
-  margin-bottom: 20px;
-}
-
 .list-group-item {
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
   break-inside: avoid;
+  height: 100%;
 }
 
 .list-group-item:hover {
@@ -136,24 +101,27 @@ button:focus {
 }
 
 .toast-body {
-  padding: 20px;
+  padding: 30px;
   color: black;
   font-weight: 500;
 }
 
-#toastDiv {
-  top: 0px;
+.closeButton {
+  position: absolute;
+  top: 5;
   right: 2%;
+}
+
+.toastDiv {
+  top: 70px;
+  right: 2%;
+  z-index:99;
 }
 
 .toast {
   border-radius: 10px;
   background-color: D3D3D3;
   transition: transform 0.5s;
-}
-
-.ew-toast-show {
-  transform: translateY(70px);
 }
 
 h5 {

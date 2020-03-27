@@ -1,1 +1,1 @@
-web: gunicorn studybuddy.wsgi
+web: gunicorn studybuddy.wsgi --log-file -

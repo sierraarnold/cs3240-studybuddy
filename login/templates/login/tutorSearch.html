@@ -1,0 +1,303 @@
+{% extends "login/base.html" %}
+{% load static %}
+{% load filters %}
+{% block content %}
+  <head><title>StudyBuddy</title></head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/tutorSearch.css' %}">
+      <div class="container">
+          <div class="map-example">
+              <!-- Searchbar -->
+              <div id="prefetch" class="autocomplete">
+                <input class="form-control" id="course" type="text" placeholder="Search for a class" autocomplete="off">
+              </div>
+              <div class="row">
+                  <div class="col-lg-6">
+                      <!-- Map -->
+                      <div id="map"></div>
+                  </div>
+                  <!-- Search panel -->
+                  <div class="col-lg-6">
+                      <div class="heading">
+                          <h3 id='studySpace'>Study Space</h3>
+                      </div>
+                      <div class="info" id="info">
+                          <p id="description0"></p>
+                          <p id="description1"></p>
+                      </div>
+                      <div class="dropdown" id="filterButton">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Filter
+                        </button>
+                        <div class="dropdown-menu filterDropdown" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item filterDropdownItem" href="javascript:getMyClasses();">Tutors for my classes</a>
+                          <a class="dropdown-item filterDropdownItem" href="#">Another action</a>
+                          <a class="dropdown-item filterDropdownItem" href="#">Something else here</a>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+      <!-- Toast notification -->
+      <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
+        <div id="toast2" class="toast">
+          <button type="button" class="close closeButton" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div id="toastBody2" class="toast-body">
+          </div>
+        </div>
+      </div>
+
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.js"></script>
+      <script type="text/javascript">
+        var map;
+        var markers = [];
+        var locations = [
+          ['Clemons', 38.036528, -78.506079, "Clemons Library", "Library"],
+          ['Alderman', 38.036727, -78.505325,  "Alderman Library", "Library"],
+          ['Clark', 38.033088, -78.507951,  "Charles L. Brown Science & Engineering Library", "Library"],
+          ['1515', 38.035386, -78.500454, "1515 on the Corner", "Study Space"],
+          ['Rice Hall', 38.031838, -78.510867, "Rice Hall", "Study Space"]
+        ];
+        function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: new google.maps.LatLng(38.036528, -78.506079)
+          });
+          infoWindow = new google.maps.InfoWindow
+          var icon = "{% static 'login/images/library.png' %}"
+
+          for (var i = 0; i < locations.length; i++) {
+              var locationInfowindow = new google.maps.InfoWindow({
+                  content: locations[i][0],
+              });
+              var marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                  map: map,
+                  icon: icon,
+                  title: locations[i][0],
+                  description0: locations[i][3],
+                  description1: locations[i][4],
+                  infowindow: locationInfowindow
+              });
+              markers.push(marker);
+              (function(marker, i) {
+                  google.maps.event.addListener(marker, 'click', function() {
+                      selectStudySpace(marker);
+                      hideAllInfoWindows(map);
+                      marker.infowindow.open(map, marker);
+                  });
+              })(marker, i);
+          }
+
+          selectStudySpace(markers[0]);
+          markers[0].infowindow.open(map, markers[0]);
+
+          //This would get user location
+          // if (navigator.geolocation) {
+          //   navigator.geolocation.getCurrentPosition(function(position) {
+          //     var pos = {
+          //       lat: position.coords.latitude,
+          //       lng: position.coords.longitude
+          //     };
+          //     // map.setCenter(pos);
+          //   }, function() {
+          //     handleLocationError(true, infoWindow, map.getCenter());
+          //   });
+          // } else {
+          //   handleLocationError(false, infoWindow, map.getCenter());
+          // }
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(browserHasGeolocation ?
+                                'Error: The Geolocation service failed.' :
+                                'Error: Your browser doesn\'t support geolocation.');
+          infoWindow.open(map);
+        }
+
+        function hideAllInfoWindows(map) {
+           markers.forEach(function(marker) {
+             marker.infowindow.close(map, marker);
+          });
+        }
+
+        // This sets the search panel js with the correct study space name
+        function selectStudySpace(marker){
+          document.getElementById('studySpace').innerHTML = marker.title;
+          const infoNode = document.getElementById("info");
+          while (infoNode.firstChild) {
+            infoNode.removeChild(infoNode.lastChild);
+          }
+          const description0 = document.createElement('p');
+          const description1 = document.createElement('p');
+          description0.setAttribute('id', 'description0');
+          description1.setAttribute('id', 'description1');
+          description0.innerHTML = marker.description0;
+          description1.innerHTML = marker.description1;
+          infoNode.appendChild(description0);
+          infoNode.appendChild(description1);
+          map.panTo(marker.position);
+        }
+
+        //Gets cookie for csrftoken
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        /*
+          Creates js cards for each tutor - looks like
+          username  Request button
+          email
+          phonenumber
+          Teaches:
+          courses
+        */
+        function populateTutors(tutors, infoNode){
+          for(var i = 0; i<tutors.length; i++){
+            var courses = "";
+            for(var j = 0; j<tutors[i].tutorCourses.length; j++){
+              courses += tutors[i].tutorCourses[j].dept + " " + tutors[i].tutorCourses[j].number + " - " + tutors[i].tutorCourses[j].name + "<br>";
+            }
+            const tutor = tutors[i];
+            var card = document.createElement('div');
+            card.setAttribute('class', 'card');
+            var cardheader = document.createElement('div');
+            cardheader.className += "card-header row";
+            var username = document.createElement('div');
+            username.innerHTML = tutors[i].username;
+            username.setAttribute('class', 'col');
+            var request = document.createElement('button');
+            request.className += "btn btn-secondary col";
+            request.onclick = function(){sendTutorMessage(tutor)} ;
+            request.innerHTML = "Request";
+            cardheader.appendChild(username);
+            cardheader.appendChild(request);
+            var cardbody = document.createElement('div');
+            cardbody.setAttribute('class', 'card-body');
+            var cont = document.createElement('div');
+            var pgraph = document.createElement('p');
+            pgraph.innerHTML = tutors[i].user.email + '<br />' + tutors[i].phone_number + '<br /><h5>Teaches:</h5>';
+            var footer = document.createElement('footer');
+            footer.setAttribute('class', 'footer');
+            footer.innerHTML = courses;
+            cont.appendChild(pgraph);
+            cont.appendChild(footer);
+            cardbody.appendChild(cont);
+            card.appendChild(cardheader);
+            card.appendChild(cardbody);
+            infoNode.appendChild(card);
+          }
+          // If no tutors say no tutors available
+          if(tutors.length == 0){
+            infoNode.insertAdjacentHTML('beforeend',
+            '<div class="card"><div class="card-header">No Tutors available' +
+            '</div><div class="card-body"><div><footer class="footer"></footer></div></div></div>')
+          }
+        }
+
+        //Sends an ajax POST request with all student courses of profile
+        function getMyClasses(){
+          var csrftoken = getCookie('csrftoken');
+          const profile = JSON.parse("{{profile|escapejs}}");
+
+          // Clears previous search panel
+          const infoNode = document.getElementById("info");
+          while (infoNode.firstChild) {
+            infoNode.removeChild(infoNode.lastChild);
+          }
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          });
+          $.ajax({
+              url : '',
+              type : "POST",
+              dataType: "json",
+              data : { courses : JSON.stringify(profile.studentCourses) }
+          }).done(function(response){
+            //Sets up search panel after recieving response from server
+            document.getElementById('studySpace').innerHTML = "Tutors for my courses"
+            const infoNode = document.getElementById("info");
+            const tutors = response['filtered_tutors'];
+            populateTutors(tutors, infoNode);
+          });
+        }
+
+        //Sends an ajax POST request with class name
+        function searchByClass(){
+          var csrftoken = getCookie('csrftoken');
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                const infoNode = document.getElementById("info");
+                while (infoNode.firstChild) {
+                  infoNode.removeChild(infoNode.lastChild);
+                }
+              }
+          });
+          $.ajax({
+              url : '',
+              type : "POST",
+              dataType: "json",
+              data : { course : $('#course').val() }
+          }).done(function(response){
+            document.getElementById('studySpace').innerHTML = response['course']
+            const infoNode = document.getElementById("info");
+            const tutors = response['filtered_tutors'];
+            populateTutors(tutors, infoNode);
+          });
+        }
+
+        //Sends ajax POST request with the desired tutor to message
+        function sendTutorMessage(tutor){
+          var csrftoken = getCookie('csrftoken');
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          });
+          $.ajax({
+              url : '',
+              type : "POST",
+              dataType: "json",
+              data : { tutor : JSON.stringify(tutor) }
+          }).done(function(response){
+            document.getElementById('toastBody2').innerHTML = "Message sent to " + response.tutor.username;
+            $("#toast2").toast('show')
+          });
+        }
+
+        var courseNames = new Array();
+        var courses = JSON.parse("{{classes|escapejs}}")
+        $.each(courses, function ( key, course ){ courseNames.push( key + ' - ' + course );} );
+        $( '#course' ).typeahead({ items:5, source:courseNames, afterSelect: function (course) {searchByClass()}});
+        $('.closeButton').on('click',function(){
+            $('#toast2').toast('hide')
+        })
+      </script>
+      <script src="https://maps.google.com/maps/api/js?key=AIzaSyCzpXEnrlPfHixWPz9MNVsmyPtASla3jNU&callback=initMap" async defer></script>
+
+  </body>
+{% endblock %}

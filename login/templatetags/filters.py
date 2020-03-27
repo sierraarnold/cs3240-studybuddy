@@ -1,20 +1,22 @@
 from django import template
+import django.utils.html as utils
+import json
 register = template.Library()
 
+#Helper methods for templates. Syntax in templates is using | with function name
 @register.filter
 def get_index(indexable, i):
     return indexable[i]
 
 @register.filter
-def sort(lst, key_name):
+def get_value(dictionary, key):
+    return dictionary.get(key)
+
+@register.filter
+def sort(lst):
     return sorted(lst)
 
 @register.filter
-def makeList(the_string, key_name):
-    strs = the_string.replace('[','').split('],')
-    lst = [map(str, s.replace(']','').split(',')) for s in strs]
-    for (i, map_object) in enumerate(lst):
-        lst[i] = list(map_object)
-        for (j, item) in enumerate(lst[i]):
-            lst[i][j] = item.replace('"', '')
+def makeList(the_string):
+    lst = json.loads(the_string)
     return lst

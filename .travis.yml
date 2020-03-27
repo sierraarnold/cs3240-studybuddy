@@ -15,10 +15,18 @@ before_script:
 script:
 - python manage.py makemigrations
 - python manage.py migrate
+<<<<<<< HEAD
+=======
+- python manage.py collectstatic
+>>>>>>> oldts
 - python manage.py test
 deploy:
   provider: heroku
   api_key:
     secure: KDuq8zK8KHrcSeuSDkeLv+6Yc+HrFsbDClXT2n7qGqn6GSlaABrgS+P7JobSax+1bzZ6LupjD1gHwavS8cVgRJCcpPoGCwE19ZgDRgWeSH5NJ7eEuolKi++33n/XyWYohBt7hYi2y7Aig+XX3mAI82v7qHa36VHuqddiv0y525tOblH1kkn6ebxTUSn6ihJmxtiDTRjtCb3RXaeutBidgPz0PWzeu1iBemSMi41aDSh3vCGkpNEAqlPLtm8Ov+1rl40ZfhQk/De/oBxaRHGu7oYs8qOtNFrftEJWpHBgiw1wtQHjREcY4lts6KBdmZdcIjgmeht4bLwHdzNVCspH305tH5daRtZ9GPxT4EhnBucPPOZv3H6TJgZo2awu1T2hv7gHYpjMSCMrMyQ1tXqWLp+I1yGacb0Yptd5HVDXqsEdOhSVJnLrayC5xdDnZpR9YZN5fO5gfzMdosXaleY9UVKMhmzLr9HFrHlSkuMUaSf5fNUDEvgapdsQq6qvH+567ymsHFCcJpA7WIQbUVjhkYaEbWvfrezuH2AVn+j98oVseUY8OXWxgZqixe0jxtQdKGGlzxYmTVb4ttKL2qTBE2JVTm1w1el+QuwM0M2PEkEbDlM3+jzOJQFRHJNXebXPDGi2bgrq8YwceyKbg5+TMngMWHtzO5wqJ4xVzRtdSBM=
+<<<<<<< HEAD
   on: master
+=======
+  on: tutorSearch
+>>>>>>> oldts
   app: studdybuddy103

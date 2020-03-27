@@ -1,23 +1,32 @@
 {% extends "login/base.html" %}
 {% load static %}
-{% block content %}
 {% load filters %}
-  {% if school_list %}
+{% block content %}
+<head><title>Departments</title></head>
+  {% if department_list %}
       <div class="container">
         <h1>Departments</h1>
           <div id="accordion" class="myaccordion" aria-multiselectable="false">
-            {% for school in school_list %}
+            <!--
+                For every department render an expandable section
+                Departments are like Arts and Sciences or Engineering and Applied Sciences
+            -->
+            {% for department in department_list %}
             <div class="card" id="accordion{{ forloop.counter0 }}">
               <div class="card-header" id="heading{{ forloop.counter0 }}">
                 <button class="d-flex align-items-center justify-content-between btn btn-link collapsed" data-toggle="collapse" data-target="#collapse{{ forloop.counter0 }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter0 }}">
-                  {{school}}
+                  {{department}}
                 </button>
               </div>
 
               <div id="collapse{{ forloop.counter0 }}" class="collapse" aria-labelledby="heading{{ forloop.counter0 }}" data-parent="#accordion">
                 <ul class="list-group d-flex flex-row flex-wrap">
-                  {% for section in section_list|get_index:forloop.counter0|sort:"name" %}
-                    <form id="theDepartment" action="{% url 'login:get_section' %}" method="post">
+                  <!--
+                    For every section render a button
+                    A section is like Computer Science or BME
+                  -->
+                  {% for section in department_section_list|get_index:forloop.counter0|sort %}
+                    <form id="theDepartment" action="{% url 'login:get_department_section' %}" method="post">
                       {% csrf_token %}
                       <button name="choice" value={{section|get_index:0}} class="list-group-item list-group-item-action" type="submit">{{section|get_index:1}}</button>
                     </form>
@@ -29,6 +38,6 @@
           </div>
       </div>
       {% else %}
-        <p>No schools are available.</p>
+        <p>No departments are available.</p>
   {% endif %}
 {% endblock %}
