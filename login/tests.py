@@ -173,20 +173,22 @@ class RedirectTests(TestCase):
 #         time.sleep(10)
 #         driver.close()
 
+
 class MobileNotificationModelTests(TestCase):
-#TEST must begin with the string test
-    def test_username_string(self):
-        """
-        input username is returned by to string method
-        """
-        p = Profile(username="holly")
-        self.assertEqual(p.__str__(), "holly")
+    def test_mobile_notification_model(self):
+        tester = User(email="abc@virginia.edu")
+        mn = MobileNotification(recipient=tester, title="Test", message= "This is a test message")
+        mn.save()
+        self.assertEqual(mn.title, "Test")
+        self.assertEqual(mn.message, "This is a test message")
+        self.assertEqual(mn.status, "unread")
 
 class InAppMessageModelTests(TestCase):
-#TEST must begin with the string test
-    def test_username_string(self):
-        """
-        input username is returned by to string method
-        """
-        p = Profile(username="holly")
-        self.assertEqual(p.__str__(), "holly")
+    def test_in_app_message_model(self):
+        tester = User(email="abc@virginia.edu")
+        tester2 = User(email="cba@virginia.edu")
+        inapp = InAppMessage(sender=tester, recipient=tester2, title="Test", message= "This is a test message")
+        inapp.save()
+        self.assertEqual(inapp.title, "Test")
+        self.assertEqual(inapp.message, "This is a test message")
+        self.assertEqual(inapp.status, "unread")
