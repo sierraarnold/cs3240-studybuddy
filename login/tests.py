@@ -177,6 +177,7 @@ class RedirectTests(TestCase):
 class MobileNotificationModelTests(TestCase):
     def test_mobile_notification_model(self):
         tester = User(email="abc@virginia.edu")
+        tester.save()
         mn = MobileNotification(recipient=tester, title="Test", message= "This is a test message")
         mn.save()
         self.assertEqual(mn.title, "Test")
@@ -186,7 +187,9 @@ class MobileNotificationModelTests(TestCase):
 class InAppMessageModelTests(TestCase):
     def test_in_app_message_model(self):
         tester = User(email="abc@virginia.edu")
+        tester.save()
         tester2 = User(email="cba@virginia.edu")
+        tester2.save()
         inapp = InAppMessage(sender=tester, recipient=tester2, title="Test", message= "This is a test message")
         inapp.save()
         self.assertEqual(inapp.title, "Test")
