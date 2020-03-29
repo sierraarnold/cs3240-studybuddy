@@ -109,6 +109,58 @@ class ClassSaveTests(TestCase):
         tester.save()
         self.assertFalse(c.login(username='test', password='1234'))
         tester.delete()
+
+class TutorSearch(unittest.TestCase):
+    def test_single_course_search(self):
+        c = Client()
+        tester = User.objects.create(username='tester', is_active=True, is_staff=True, is_superuser=True)
+        tester.set_password('12345')
+        tester.save()
+        postedItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        c.login(username='tester', password='12345')
+        saveClasses(postedItems.items(), tester.id)
+        response = c.post(reverse('login:home'), {'course': 'CS 3240 - Advanced Software Development Techniques'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['filtered_tutors']), 1)
+        tester.delete()
+    def test_my_student_courses(self):
+        c = Client()
+        tester = User.objects.create(username='tester', is_active=True, is_staff=True, is_superuser=True)
+        tester2 = User.objects.create(username='tester2', is_active=True, is_staff=True, is_superuser=True)
+        tester.set_password('12345')
+        tester.save()
+        tester2.save()
+        studentItems = {'CBNameStudent:CS 3240 - Advanced Software Development Techniques': 'new', 'CBNameStudent:CS 1234 - Test Course': 'new'}
+        tutorItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        saveClasses(studentItems.items(), tester.id)
+        saveClasses(tutorItems.items(), tester2.id)
+        c.login(username='tester', password='12345')
+        studentCourses = ProfileSerializer(tester.profile).data['studentCourses']
+        for i in range(len(studentCourses)):
+            studentCourses[i] = StudentCourseSerializer(studentCourses[i]).data
+        response = c.post(reverse('login:home'), {'courses': json.dumps(studentCourses)}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()['filtered_tutors']), 1)
+        tester.delete()
+        tester2.delete()
+    def test_request_tutor(self):
+        c = Client()
+        tester = User.objects.create(username='tester', is_active=True, is_staff=True, is_superuser=True)
+        tester2 = User.objects.create(username='tester2', is_active=True, is_staff=True, is_superuser=True)
+        tester.set_password('12345')
+        tester.save()
+        tester2.save()
+        c.login(username='tester', password='12345')
+        tutor = ProfileSerializer(tester2.profile).data
+        response = c.post(reverse('login:home'), {'tutor': json.dumps(tutor)}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(bool(response.json()['tutor']), True)
+        inappmessages = list(InAppMessage.objects.filter(sender=tester.id))
+        inappmessages += list(InAppMessage.objects.filter(recipient=tester.id))
+        self.assertNotEqual(len(inappmessages), 0)
+        tester.delete()
+        tester2.delete()
+
 class HomepageTest(unittest.TestCase):
     def setUp(self):
         # Every test needs a client.
@@ -120,6 +172,7 @@ class HomepageTest(unittest.TestCase):
     def test_profile(self):
         response = self.client.get('/profile')
         self.assertEqual(response.status_code, 302)
+
 class RedirectTests(TestCase):
     def setUp(self):
         # Every test needs a client.
@@ -127,51 +180,6 @@ class RedirectTests(TestCase):
     def test_redirect(self):
         response = self.client.get('/profile')
         self.assertRedirects(response, '/accounts/login/?next=/profile', status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
-
-# class UpdateProfileTests(LiveServerTestCase):
-#     port = 8000
-#     def test_update_profile(self):
-#         driver = webdriver.Chrome()
-#         my_admin = User.objects.create_superuser('matt', 'mjh3nv@virginia.com', 'abc123')
-#         c = Client()
-#         c.login(username='matt', password='kmbba123')
-#         driver.get(self.live_server_url + '/admin/')
-#         username = driver.find_element_by_name('username')
-#         username.send_keys('matt')
-#         password = driver.find_element_by_name('password')
-#         password.send_keys('abc123')
-#         password.submit()
-#         time.sleep(1)
-#         driver.get(self.live_server_url)
-#         time.sleep(1)
-#         profileButton = driver.find_element_by_xpath('//*[@id="navbarNav"]/ul/li[4]')
-#         profileButton.click()
-#         time.sleep(1)
-#         first_name = driver.find_element_by_name('first_name')
-#         first_name.send_keys('Matthew')
-#         time.sleep(1)
-#         last_name = driver.find_element_by_name('last_name')
-#         time.sleep(1)
-#         last_name.send_keys('Hunt')
-#         username = driver.find_element_by_name('username')
-#         time.sleep(1)
-#         username.send_keys('matthuntt')
-#         phone_number = driver.find_element_by_name('phone_number')
-#         time.sleep(1)
-#         phone_number.send_keys('3018523444')
-#         studentAdd = driver.find_element_by_xpath('/html/body/div/form/div[2]/div[1]/div[1]/span')
-#         tutorAdd = driver.find_element_by_xpath('/html/body/div/form/div[2]/div[2]/div[1]/span')
-#         time.sleep(1)
-#         studentAdd.click()
-#         input = driver.find_element_by_id('course')
-#         input.send_keys('CS 3240')
-#         time.sleep(1)
-#         phone_number.submit()
-#         time.sleep(1)
-#         profileButton = driver.find_element_by_xpath('//*[@id="navbarNav"]/ul/li[4]')
-#         profileButton.click()
-#         time.sleep(10)
-#         driver.close()
 
 class MobileNotificationModelTests(TestCase):
     def test_mobile_notification_model(self):
