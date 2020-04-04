@@ -63,7 +63,7 @@ def renderTutorPage(request):
             course = request.POST.get('course', "")
             courses = json.loads(request.POST.get('courses', '[]'))
             pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
-            tutor = {'username':'undefined'}
+            tutor = json.loads(request.POST.get('tutor', '{}'))
             if len(courses) > 0:
                 course_names = []
                 for class_ in courses:
@@ -85,8 +85,7 @@ def renderTutorPage(request):
                 except:
                     FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
                 return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile})
-            else:
-                tutor = json.loads(request.POST.get('tutor', '{}'))
+            elif bool(tutor):
                 send_new_message_push_notification(sender_id=request.user.id, recipient_id=tutor['user']['id'], title="Message from " + request.user.email, message="Tutor request")
             for i in range(len(filtered_tutors)):
                 filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
