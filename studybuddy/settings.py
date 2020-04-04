@@ -96,7 +96,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'tutorsearch',
-        'USER': 'Matt',
+        'USER': 'matt',
         'PASSWORD': 'abc123',
         'HOST': 'localhost',
         'PORT': '',
