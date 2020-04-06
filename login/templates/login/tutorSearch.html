@@ -185,19 +185,19 @@
             var cardheader = document.createElement('div');
             cardheader.className += "card-header row";
             var username = document.createElement('div');
-            username.innerHTML = tutors[i].username;
+            username.innerHTML = tutors[i].username;  // tutors[i].user.first_name + " " + tutors[i].user.last_name
             username.setAttribute('class', 'col');
             var request = document.createElement('button');
             request.className += "btn btn-secondary col";
             request.onclick = function(){sendTutorMessage(tutor)} ;
-            request.innerHTML = "Request";
+            request.innerHTML = "Request Tutor";
             cardheader.appendChild(username);
             cardheader.appendChild(request);
             var cardbody = document.createElement('div');
             cardbody.setAttribute('class', 'card-body');
             var cont = document.createElement('div');
             var pgraph = document.createElement('p');
-            pgraph.innerHTML = tutors[i].user.email + '<br />' + tutors[i].phone_number + '<br /><h5>Teaches:</h5>';
+            pgraph.innerHTML = tutors[i].user.email + '<br />' + tutors[i].phone_number + '<br /><h5>Teaches:</h5>';  // add "Email: " + "Phone: "
             var footer = document.createElement('footer');
             footer.setAttribute('class', 'footer');
             footer.innerHTML = courses;
