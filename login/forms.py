@@ -22,4 +22,4 @@ class ProfileForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
     class Meta:
         model = Profile
-        fields = ('username', 'phone_number')    #, 'year', 'bio')
+        fields = ('username', 'phone_number', 'year', 'bio')
