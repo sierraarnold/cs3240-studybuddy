@@ -96,6 +96,8 @@ class ClassSaveTests(TestCase):
         form = ProfileForm({
             'username': "tester",
             'phone_number': "3018523444",
+            'year': "Fourth",
+            'bio': "testing",
         }, instance=tester.profile)
         self.assertTrue(form.is_valid())
         form.save()
