@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "email", "id", "profile")
+        fields = ("username", "email", "first_name", "last_name", "id", "profile")
 
 class TutorCourseSerializer(serializers.ModelSerializer):
 
@@ -41,4 +41,4 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 1
         model = Profile
-        fields = ( "username", 'phone_number', "user", 'studentCourses', 'tutorCourses')    # 'year','bio',
+        fields = ( "username", 'phone_number', 'year','bio', "user", 'studentCourses', 'tutorCourses')
