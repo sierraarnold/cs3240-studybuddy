@@ -7,6 +7,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=30, default="")
+    year = models.CharField(max_length=10, default="")
+    bio = models.CharField(max_length=300, default="")
     push_token = models.CharField(max_length=200)
 
     def __str__(self):

@@ -13,8 +13,13 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{% static 'login/profile.css' %}">
 
-<div class="container-fluid">
+<div class="container">
+  <div class="row text-center pt-5"><h3>Edit Profile</h3></div>
+
+  <div class="row">
   <form method="post" onsubmit="handleSelectedClasses()">
+    <div class="row justify-content-center w-75">
+    <div class="col-md-12">
     {% csrf_token %}
 
     <!-- User form - first name, last name -->
@@ -25,10 +30,12 @@
       <label for="exampleInputEmail1">Email address:</label>
       <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="email" disabled value={{user_form.email}}>
       <small id="emailHelp" class="form-text text-muted">If you want to change this, create a new account.</small>
-  </div>
+    </div>
 
     <!-- Profile form - username, phonenumber -->
     {{ profile_form.as_p }}
+    </div>
+    </div>
 
     <!-- Row with two columns - one for student courses, one for tutor courses -->
     <div class="row">
@@ -69,8 +76,13 @@
       </div>
     </div>
 
+    <div class="row">
     <button type="submit" class="btn saveButton mt-5">Save</button>
+    </div>
   </form>
+</div>
+</div>
+
 
 <!-- Bootstrap modal with searchbar -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
