@@ -1,0 +1,96 @@
+.list-group input[type="checkbox"] {
+  display: none;
+}
+
+.list-group input[type="checkbox"] + .list-group-item {
+  cursor: pointer;
+}
+
+.list-group input[type="checkbox"] + .list-group-item:before {
+  content: "\2713";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.list-group input[type="checkbox"]:checked + .list-group-item {
+  background-color: #007AFF;
+  color: #FFF;
+}
+
+.list-group input[type="checkbox"]:checked + .list-group-item:before {
+  color: inherit;
+  font-family: 'FontAwesome';
+  content: "\f058";
+}
+
+.list-group input[type="radio"] {
+  display: none;
+}
+
+.list-group input[type="radio"] + .list-group-item {
+  cursor: pointer;
+}
+
+.list-group input[type="radio"] + .list-group-item:before {
+  content: "\2022";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.list-group input[type="radio"]:checked + .list-group-item {
+  background-color: #0275D8;
+  color: #FFF;
+}
+
+.list-group input[type="radio"]:checked + .list-group-item:before {
+  color: inherit;
+}
+
+.list-group-item {
+  user-select: none;
+  text-align: left;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+  border-color: white;
+  cursor: grab;
+}
+
+.list-group-item-course {
+  user-select: none;
+  text-align: left;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+  border-color: lightgray;
+}
+
+.list-group-item.active {
+  color: #777;
+  background-color: white;
+  border-color: white;
+  border-bottom-color: #007bff;
+  border-bottom-width: 2px;
+}
+
+.list-group {
+    display: flex;
+    width: 100%;
+}
+
+.row {
+  display: flex;
+  width:100%;
+  align-self: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 50%;
+}

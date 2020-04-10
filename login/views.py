@@ -241,6 +241,27 @@ def departments(request):
 #Renders courses page for a section of a department where a department is like Arts and Sciences, section is like CS and courses is like CS 2150...
 def courses(request):
     courses = request.session['courses']
+    if request.method == 'POST' and request.is_ajax():
+        type = request.POST.get('type', "")
+        course = request.POST.get('course', "").lstrip().rstrip()
+        if course != "":
+            (dept, number, name) = parseCourse("CBCheckbox:" + course)
+            if type == "Student":
+                alreadyAdded = list(Profile.objects.filter(studentcourse__name=name))
+                if len(alreadyAdded) == 0:
+                    student_course = StudentCourse(dept=dept, number=number, name=name, user_id=request.user.id)
+                    student_course.save()
+                    return JsonResponse({'course': course})
+                else:
+                    return JsonResponse({'alreadyAdded': True})
+            elif type == "Tutor":
+                alreadyAdded = list(Profile.objects.filter(tutorcourse__name=name))
+                if len(alreadyAdded) == 0:
+                    tutor_course = TutorCourse(dept=dept, number=number, name=name, user_id=request.user.id)
+                    tutor_course.save()
+                    return JsonResponse({'course': course})
+                else:
+                    return JsonResponse({'alreadyAdded': True})
     return render(request, 'login/courses.html', {'courses':courses})
 
 # Gets all courses of a section, where a section is like CS and courses are like CS 2150...
