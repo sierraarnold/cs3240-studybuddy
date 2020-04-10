@@ -7,7 +7,7 @@ from django.contrib import messages
 def send_new_message_push_notification(**kwargs):
     sender = User.objects.get(id=kwargs.get("sender_id"))
     recipient = User.objects.get(id=kwargs.get("recipient_id"))
-    notification = InAppMessage(recipient=recipient, sender=sender, title=kwargs.get("title"), message=sender.email + " sent you a message")
+    notification = InAppMessage(recipient=recipient, sender=sender, title=kwargs.get("title"), message=sender.email + " has requested you as a tutor!")
     notification.save()
     try:
         device = FCMDevice.objects.get(user=recipient)

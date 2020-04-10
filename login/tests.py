@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from .models import Profile, TutorCourse, StudentCourse, MobileNotification, InAppMessage
 from login.views import *
-from login.forms import UserForm, ProfileForm
+from login.forms import ProfileForm
 from selenium import webdriver
 import unittest
 import time
@@ -73,20 +73,20 @@ class ClassSaveTests(TestCase):
         self.assertNotEqual(len(TutorCourse.objects.filter(user=tester.profile)), 0)
         tester.delete()
 
-    def test_userForm(self):
-        c = Client()
-        tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
-        tester.save()
-        c.login(username='tester', password='12345')
-        form = UserForm({
-            'first_name': "tester2",
-            'last_name': "lastname",
-        }, instance=tester)
-        self.assertTrue(form.is_valid())
-        form.save()
-        self.assertEqual(tester.first_name, "tester2")
-        self.assertEqual(tester.last_name, "lastname")
-        tester.delete()
+    # def test_userForm(self):
+    #     c = Client()
+    #     tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
+    #     tester.save()
+    #     c.login(username='tester', password='12345')
+    #     form = UserForm({
+    #         'first_name': "tester2",
+    #         'last_name': "lastname",
+    #     }, instance=tester)
+    #     self.assertTrue(form.is_valid())
+    #     form.save()
+    #     self.assertEqual(tester.first_name, "tester2")
+    #     self.assertEqual(tester.last_name, "lastname")
+    #     tester.delete()
 
     def test_profileForm(self):
         c = Client()
@@ -94,6 +94,8 @@ class ClassSaveTests(TestCase):
         tester.save()
         c.login(username='tester', password='12345')
         form = ProfileForm({
+            'first_name': "joe",
+            'last_name': "joey",
             'username': "tester",
             'phone_number': "3018523444",
             'year': "Fourth",
@@ -101,6 +103,8 @@ class ClassSaveTests(TestCase):
         }, instance=tester.profile)
         self.assertTrue(form.is_valid())
         form.save()
+        self.assertEqual(tester.profile.first_name, "joe")
+        self.assertEqual(tester.profile.last_name, "joey")
         self.assertEqual(tester.profile.username, "tester")
         self.assertEqual(tester.profile.phone_number, "3018523444")
         tester.delete()

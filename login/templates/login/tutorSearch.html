@@ -185,7 +185,7 @@
             var cardheader = document.createElement('div');
             cardheader.className += "card-header row";
             var username = document.createElement('div');
-            username.innerHTML = '<h4>'+tutors[i].user.first_name + " " + tutors[i].user.last_name+'</h4>';
+            username.innerHTML = '<h4>'+tutors[i].first_name + " " + tutors[i].last_name+'</h4>';
             username.setAttribute('class', 'col');
             var request = document.createElement('button');
             request.className += "btn btn-secondary btn-sml col";
@@ -214,6 +214,9 @@
             '<div class="card"><div class="card-header">No Tutors available' +
             '</div><div class="card-body"><div><footer class="footer"></footer></div></div></div>')
           }
+          //else{
+            // List tutors available
+          //}
         }
 
         //Sends an ajax POST request with all student courses of profile
