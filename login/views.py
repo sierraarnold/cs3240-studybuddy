@@ -64,6 +64,8 @@ def renderTutorPage(request):
             courses = json.loads(request.POST.get('courses', '[]'))
             pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
             tutor = json.loads(request.POST.get('tutor', '{}'))
+            library = request.POST.get('library', "")
+            startTutoringAt = request.POST.get('startTutoringAt', "")
             if len(courses) > 0:
                 course_names = []
                 for class_ in courses:
@@ -72,6 +74,15 @@ def renderTutorPage(request):
             elif course != "":
                 course = course.split('-')[1].lstrip()
                 filtered_tutors = list(Profile.objects.filter(tutorcourse__name=course))
+            elif library != "":
+                filtered_tutors = list(Profile.objects.filter(location=library))
+            elif startTutoringAt != "":
+                user_profile = Profile.objects.get(id = request.user.profile.id)
+                if user_profile.location == startTutoringAt:
+                    startTutoringAt = "Not tutoring"
+                user_profile.location = startTutoringAt
+                user_profile.save()
+                return JsonResponse({'libraryAdded': user_profile.location})
             elif bool(pushToken_registration):
                 sender = request.user
                 recipient = request.user

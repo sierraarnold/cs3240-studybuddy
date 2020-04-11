@@ -91,3 +91,16 @@
     background-color: transparent;
     border: 0;
 }
+
+#tutorHeader {
+  display: flex;
+  flex: 1;
+  margin-left: 1%;
+  margin-right: 5%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card {
+  margin-top: 3px;
+}
