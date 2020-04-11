@@ -104,3 +104,11 @@
 .card {
   margin-top: 3px;
 }
+
+.btn-secondary {
+  background-color: #232D4B !important;
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active {
+  background-color: #435076 !important;
+}

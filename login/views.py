@@ -125,10 +125,10 @@ def update_profile(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
-        saveClasses(request.POST.items(), request.user.profile.id)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            saveClasses(request.POST.items(), request.user.profile.id)
             messages.success(request, 'Your profile was successfully updated')
             return redirect('login:home')
         else:
@@ -142,36 +142,19 @@ def update_profile(request):
         'classes': classes
     })
 
-"""
-    Processes courses passed in POST request
-    For all items in POST request:
-        If TutorCheckbox:
-            If newly added:
-                save tutor object
-            Else:
-                delete tutor object by filtering by the course id
-        If StudentCheckbox:
-            If newly added:
-                save student object
-            Else:
-                delete student object by filtering by the course id
-"""
 def saveClasses(postedItems, user_id):
+    TutorCourse.objects.filter(user_id=user_id).delete()
+    StudentCourse.objects.filter(user_id=user_id).delete()
     for key, value in postedItems:
-        if(key.startswith('CBNameTutor')):
-            if(value == 'new'):
+        if value == "course":
+            if(key.startswith('Tutor')):
                 (dept, number, name) = parseCourse(key)
                 tutor_course = TutorCourse(dept=dept, number=number, name=name, user_id=user_id)
                 tutor_course.save()
-            elif value != 'recentlyAdded':
-                TutorCourse.objects.filter(id=value).delete()
-        if(key.startswith('CBNameStudent')):
-            if(value == 'new'):
+            if(key.startswith('Student')):
                 (dept, number, name) = parseCourse(key)
                 student_course = StudentCourse(dept=dept, number=number, name=name, user_id=user_id)
                 student_course.save()
-            elif value != 'recentlyAdded':
-                StudentCourse.objects.filter(id=value).delete()
 
 """
     Gets all notifications - all sent by user and recieved
@@ -228,7 +211,7 @@ class ServiceWorkerView(View):
         return render(request, 'login/firebase-messaging-sw.js', content_type="application/x-javascript")
 
 """
-    Returns a tuple all all parts of checkbox course formatted as CBCheckbox:{coursename}
+    Returns a tuple all all parts of checkbox course formatted as Tutor:{coursename}
     where {coursename} is formatted as {dept} {number} - {name}
 """
 def parseCourse(course_name):
@@ -256,7 +239,7 @@ def courses(request):
         type = request.POST.get('type', "")
         course = request.POST.get('course', "").lstrip().rstrip()
         if course != "":
-            (dept, number, name) = parseCourse("CBCheckbox:" + course)
+            (dept, number, name) = parseCourse("Tutor:" + course)
             if type == "Student":
                 alreadyAdded = list(Profile.objects.filter(studentcourse__name=name))
                 if len(alreadyAdded) == 0:

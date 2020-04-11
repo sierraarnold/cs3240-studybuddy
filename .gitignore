@@ -6,6 +6,7 @@ __pycache__
 db.sqlite3
 media
 staticfiles
+secret_key.py
 
 # Backup files #
 *.bak
