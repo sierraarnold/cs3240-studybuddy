@@ -57,7 +57,7 @@ class ClassFileTests(TestCase):
 
 class ClassSaveTests(TestCase):
     def test_parseCourse(self):
-        course = "CBNameTutor:CS 1110 - Introduction to Programming"
+        course = "Tutor:CS 1110 - Introduction to Programming"
         parsed = parseCourse(course)
         self.assertEqual(parsed[0], 'CS')
         self.assertEqual(parsed[1], '1110')
@@ -65,7 +65,7 @@ class ClassSaveTests(TestCase):
 
     def test_saveClasses(self):
         c = Client()
-        postedItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
         tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
         tester.save()
         c.login(username='tester', password='12345')
@@ -98,6 +98,7 @@ class ClassSaveTests(TestCase):
             'phone_number': "3018523444",
             'year': "Fourth",
             'bio': "testing",
+            'location': "Not tutoring"
         }, instance=tester.profile)
         self.assertTrue(form.is_valid())
         form.save()
@@ -118,7 +119,7 @@ class TutorSearch(unittest.TestCase):
         tester = User.objects.create(username='tester', is_active=True, is_staff=True, is_superuser=True)
         tester.set_password('12345')
         tester.save()
-        postedItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
         c.login(username='tester', password='12345')
         saveClasses(postedItems.items(), tester.id)
         response = c.post(reverse('login:home'), {'course': 'CS 3240 - Advanced Software Development Techniques'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
@@ -132,8 +133,8 @@ class TutorSearch(unittest.TestCase):
         tester.set_password('12345')
         tester.save()
         tester2.save()
-        studentItems = {'CBNameStudent:CS 3240 - Advanced Software Development Techniques': 'new', 'CBNameStudent:CS 1234 - Test Course': 'new'}
-        tutorItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        studentItems = {'Student:CS 3240 - Advanced Software Development Techniques': 'course', 'CBNameStudent:CS 1234 - Test Course': 'course'}
+        tutorItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
         saveClasses(studentItems.items(), tester.id)
         saveClasses(tutorItems.items(), tester2.id)
         c.login(username='tester', password='12345')
