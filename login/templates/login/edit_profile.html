@@ -46,8 +46,8 @@
     <div class="row">
         <div class="col-8">
           <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
-            <label class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Classes I would like to tutor</label>
-            <label class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Classes I want help with</label>
+            <label class="list-group-item list-group-item-tab list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Classes I would like to tutor</label>
+            <label class="list-group-item list-group-item-tab list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Classes I want help with</label>
           </div>
         </div>
     </div>
@@ -58,16 +58,22 @@
           <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
             <div id="tutor_courses" class="list-group">
               {% for course in profile_form.tutor_courses %}
-                <input type="checkbox" name="CBNameTutor{{ forloop.counter0 }}" value="{{ course.id }}" id="CheckBoxTutor:{{course.dept}} {{course.number}} - {{ course.name}}" />
-                <label class="list-group-item list-group-item-course list-group-item-action" for="CheckBoxTutor:{{course.dept}} {{course.number}} - {{ course.name}}">{{ course.dept }} {{course.number}} - {{ course.name }}</label>
+                <div id="Tutor:{{ course.dept }} {{course.number}} - {{ course.name }}" class="list-group-item list-group-item-course row">
+                  <label>{{ course.dept }} {{course.number}} - {{ course.name }}</label>
+                  <button type="button" class="btn" onClick="removeClass(this)"><i class="fa fa-trash"></i></button>
+                  <input type="hidden" name="Tutor:{{ course.dept }} {{course.number}} - {{ course.name }}" value="course" />
+                </div>
               {% endfor %}
             </div>
           </div>
           <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
             <div id="student_courses" class="list-group">
               {% for course in profile_form.student_courses %}
-                <input type="checkbox" name="CBNameStudent{{ forloop.counter0 }}" value="{{ course.id }}" id="CheckBoxStudent:{{course.dept}} {{course.number}} - {{ course.name}}" />
-                <label class="list-group-item list-group-item-course list-group-item-action" for="CheckBoxStudent:{{course.dept}} {{course.number}} - {{ course.name}}">{{ course.dept }} {{course.number}}: {{ course.name }}</label>
+                <div id="Student:{{ course.dept }} {{course.number}} - {{ course.name }}" class="list-group-item list-group-item-course row">
+                  <label>{{ course.dept }} {{course.number}} - {{ course.name }}</label>
+                  <button type="button" class="btn" onClick="removeClass(this)"><i class="fa fa-trash"></i></button>
+                  <input type="hidden" name="Student:{{ course.dept }} {{course.number}} - {{ course.name }}" value="course" />
+                </div>
               {% endfor %}
             </div>
           </div>
@@ -75,22 +81,23 @@
       </div>
     </div>
 
+
     <!-- Bootstrap dropdown list for setting tutor's location on map -->
     <div class="row justify-content-center w-75 pt-5">
-    <div class="form-group">
-      <label for="sel1"><b><h6>Set active tutoring location:</h6></b></label>
-      <select class="form-control" id="sel1" name="location">
-        <option>Clemons Library</option>
-        <option>Alderman Library</option>
-        <option>1515 on the Corner</option>
-        <option>Clark Hall (Brown Science & Engineering Library)</option>
-        <option>Rice Hall</option>
-        <option>Inactive (hidden from map)</option>
-      </select>
+      <div class="form-group">
+        <label for="sel1"><b><h6>Set active tutoring location:</h6></b></label>
+        <select class="form-control" id="sel1" name="location">
+          <option>Clemons Library</option>
+          <option>Alderman Library</option>
+          <option>1515 on the Corner</option>
+          <option>Clark Hall (Brown Science & Engineering Library)</option>
+          <option>Rice Hall</option>
+          <option>Inactive (hidden from map)</option>
+        </select>
+      </div>
     </div>
-  </div>
 
-    <div class="row">
+    <div class="row w-75">
     <button type="submit" class="btn saveButton mt-5">Save</button>
     </div>
   </form>
@@ -100,24 +107,6 @@
 
 <script type="text/javascript">
 
-  /*
-    Every class list item has a checkbox.
-    If a checkbox is selected, it shows a white x and makes the item red.
-    Only checkboxes that are checked are sent in the POST request by default.
-    So, I had to make hidden checkboxes for newly added courses that are the opposite selection state
-    of recently addded course items so that I can send newly added, unchecked
-    courses in the POST request.
-  */
-  function handleSelectedClasses(){
-    var courses = $('[id^="CheckBox"]');
-    for(var i = 0; i < courses.length; i++){
-      if(courses[i].value == 'recentlyAdded'){
-        var copy = document.getElementById(courses[i].id + 'hidden');
-        copy.checked = !courses[i].checked;
-      }
-    }
-  }
-
   //Helper method to set multiple attributes of a JS element
   function setAttributes(el, attrs) {
     for(var key in attrs) {
@@ -125,39 +114,33 @@
     }
   }
 
-  /*
-    This function makes a new JS element with a list item and two checkboxes.
-    One checkbox is hidden and one is not.
-    If class is not already in list:
-        Get course list. Either tutor or student
-        Create label and shown checkbox
-        Set checkbox name to CBName{section}:{coursename}
-        Set checkbox id to CheckBox{section}:{coursename}, where section is either Tutor or Student
-        Set label text to {coursename}
-        Create copy of checkbox and set to hidden
-        Add checkboxes and label to list
-        Hide modal once added
-    Else:
-        Hide modal
-  */
   function addtoClasses(course){
     document.getElementById('course').value = '';
-    var id = 'CheckBox' + section + ":" + course;
     var section = document.getElementById('list-home-list').classList.contains("active") ? "Tutor" : "Student";
+    var id = section + ":" + course;
     if(!document.getElementById(id)){
       course = course.trim();
       var ul = document.getElementById(section.toLowerCase() + "_courses");
-      var li = document.createElement("label");
-      var check = document.createElement("input");
-      setAttributes(check,{'type': 'checkbox','name': 'CBName' + section + ":" + course,'value': 'recentlyAdded','id': id})
-      setAttributes(li, {'class': 'list-group-item list-group-item-course list-group-item-action', 'id': course, 'for': id});
-      li.appendChild(document.createTextNode(course));
-      var checkCopy = check.cloneNode(true);
-      setAttributes(checkCopy, {'id': id+'hidden', 'value': 'new', 'hidden': true, 'name': 'CBName' + section + ":" + course});
-      ul.appendChild(checkCopy);
-      ul.appendChild(check);
+      var li = document.createElement("div");
+      var label = document.createElement("label");
+      var button = document.createElement("button");
+      setAttributes(button, {'class': 'btn', 'type': 'button'});
+      var icon = document.createElement("i");
+      setAttributes(icon, {'class': 'fa fa-trash'})
+      var input = document.createElement("input");
+      setAttributes(input, {'type': 'hidden', 'name': id, 'value': 'course'})
+      button.appendChild(icon);
+      label.innerHTML = course;
+      setAttributes(li, {'class': 'list-group-item list-group-item-course row', 'id': course});
+      li.appendChild(label);
+      li.appendChild(button);
+      li.appendChild(input);
       ul.appendChild(li);
     }
+  }
+
+  function removeClass(e){
+    e.parentNode.parentNode.removeChild(e.parentNode);
   }
 
   /*

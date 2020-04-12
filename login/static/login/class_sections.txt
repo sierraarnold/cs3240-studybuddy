@@ -239,7 +239,7 @@
             "Institute of the Humanities and Global Culture"
         ]
     ],
-    "Arts & Sciences Curriculum and Requirementsto Save the Humanities": [
+    "Arts & Sciences Curriculum and Requirements": [
         [
             "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Engagements",
             "Engagements"
@@ -535,26 +535,10 @@
             "Global Sustainability"
         ]
     ],
-    "Special Listings and Raw Data": [
-        [
-            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CS",
-            "Complete UVa Schedule"
-        ],
-        [
-            "https://louslist.org/page.php?Semester=1202&Type=Group&Group=CLAS",
-            "Complete Arts & Sciences Schedule"
-        ],
-        [
-            "https://louslist.org/html/helpAandS.html",
-            "here"
-        ],
+    "Special Listings": [
         [
             "https://louslist.org/page.php?Semester=1202&Type=Group&Group=Topics",
             "Topics Courses"
-        ],
-        [
-            "https://louslist.org/requestEnrollmentData.php?Semester=1202",
-            "ZipArchive of complete enrollment data for the 1202 semester"
         ],
         [
             "https://louslist.org/page.php?Semester=1202&Type=Group&Group=TopicsClassesWithoutTopics",

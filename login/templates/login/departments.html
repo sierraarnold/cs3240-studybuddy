@@ -2,7 +2,10 @@
 {% load static %}
 {% load filters %}
 {% block content %}
-<head><title>Departments</title></head>
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'login/browseCourses.css' %}">
+  <title>Departments</title>
+</head>
   {% if department_list %}
       <div class="container">
         <h1>Departments</h1>

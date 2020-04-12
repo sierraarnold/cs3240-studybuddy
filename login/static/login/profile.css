@@ -1,51 +1,6 @@
-.list-group input[type="checkbox"] {
-  display: none;
-}
-
-.list-group input[type="checkbox"] + .list-group-item {
-  cursor: pointer;
-}
-
-.list-group input[type="checkbox"] + .list-group-item:before {
-  content: "\2713";
-  color: transparent;
-  font-weight: bold;
-  margin-right: 1em;
-}
-
-.list-group input[type="checkbox"]:checked + .list-group-item {
-  background-color: #DC143C;
-  color: #FFF;
-}
-
-.list-group input[type="checkbox"]:checked + .list-group-item:before {
-  color: inherit;
-  font-family: 'FontAwesome';
-  content: "\f00d";
-}
-
-.list-group input[type="radio"] {
-  display: none;
-}
-
-.list-group input[type="radio"] + .list-group-item {
-  cursor: pointer;
-}
-
-.list-group input[type="radio"] + .list-group-item:before {
-  content: "\2022";
-  color: transparent;
-  font-weight: bold;
-  margin-right: 1em;
-}
-
-.list-group input[type="radio"]:checked + .list-group-item {
-  background-color: #0275D8;
-  color: #FFF;
-}
-
-.list-group input[type="radio"]:checked + .list-group-item:before {
-  color: inherit;
+.list-group {
+  flex: 1;
+  display: flex;
 }
 
 .list-group-item {
@@ -54,14 +9,13 @@
   font-size: 15px;
   font-family: 'Roboto', sans-serif;
   border-color: white;
-  cursor: grab;
 }
 
+
+.list-group-item-tab {
+  cursor: grab;
+}
 .list-group-item-course {
-  user-select: none;
-  text-align: left;
-  font-size: 15px;
-  font-family: 'Roboto', sans-serif;
   border-color: lightgray;
 }
 
@@ -121,6 +75,9 @@ a {
 label {
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  flex:1;
 }
 
 p {
@@ -149,10 +106,6 @@ b {
   width:100%;
   align-self: center;
   justify-content: center;
-}
-
-.classSection {
-  width: 75%;
 }
 
 .container-fluid {
@@ -190,7 +143,7 @@ form {
 }
 
 .saveButton {
-  background-color: grey;
+  background-color: #232D4B;
   color: white;
   border-color: rgba(0,0,0,.14);
   border-radius: 3px;
@@ -202,10 +155,13 @@ form {
   padding: 8px 15px;
   text-align: center;
   transition: all 100ms ease-out;
+  width: 100%;
+  font-size: 20px;
 }
 
 .saveButton:hover {
-  background-color: A0A0A0;
+  background-color: 435076;
+  color: white;
   cursor: pointer;
 }
 
@@ -224,4 +180,8 @@ form {
 
 .addButton {
   background-color: white;
+}
+
+.span {
+  float: right;
 }
