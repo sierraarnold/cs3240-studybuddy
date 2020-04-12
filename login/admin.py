@@ -11,7 +11,7 @@ class CourseInlineStudent(admin.TabularInline):
 
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['username', 'phone_number', 'push_token']}),
+        (None, {'fields': ['username', 'phone_number', 'push_token', 'bio', 'year', 'location']}),
     ]
     inlines = [CourseInlineTutor, CourseInlineStudent]
     list_display = ('user', 'username', 'push_token')

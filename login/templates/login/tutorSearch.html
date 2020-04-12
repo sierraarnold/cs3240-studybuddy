@@ -34,7 +34,6 @@
                         <div class="dropdown-menu filterDropdown" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item filterDropdownItem" href="javascript:getMyClasses();">Tutors for my classes</a>
                           <a class="dropdown-item filterDropdownItem" href="#">Another action</a>
-                          <a class="dropdown-item filterDropdownItem" href="#">Something else here</a>
                         </div>
                       </div>
                   </div>
@@ -62,7 +61,7 @@
         var locations = [
           ['Clemons', 38.036528, -78.506079, "Clemons Library", "Library"],
           ['Alderman', 38.036727, -78.505325,  "Alderman Library", "Library"],
-          ['Clark', 38.033088, -78.507951,  "Charles L. Brown Science & Engineering Library", "Library"],
+          ['Clark Hall', 38.033088, -78.507951,  "Charles L. Brown Science & Engineering Library", "Library"],
           ['1515', 38.035386, -78.500454, "1515 on the Corner", "Study Space"],
           ['Rice Hall', 38.031838, -78.510867, "Rice Hall", "Study Space"]
         ];
@@ -83,8 +82,8 @@
                   map: map,
                   icon: icon,
                   title: locations[i][0],
-                  description0: locations[i][3],
-                  description1: locations[i][4],
+                  description0: locations[i][3].bold(),
+                  description1: locations[i][4].italics(),
                   infowindow: locationInfowindow
               });
               markers.push(marker);

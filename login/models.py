@@ -12,6 +12,7 @@ class Profile(models.Model):
     year = models.CharField(max_length=10, default="")
     bio = models.CharField(max_length=300, default="")
     push_token = models.CharField(max_length=200)
+    location = models.CharField(max_length=50, default="Inactive")
 
     def __str__(self):
         return self.username

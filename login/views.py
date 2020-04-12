@@ -111,24 +111,29 @@ def renderTutorPage(request):
 @transaction.atomic
 def update_profile(request):
     classes = get_classes_fromtxt()
+    profile = json.dumps(ProfileSerializer(request.user.profile).data)
     if request.method == 'POST':
-        #user_form = UserForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, instance=request.user.profile)
-        saveClasses(request.POST.items(), request.user.profile.id)
-        if profile_form.is_valid(): # and user_form.is_valid() 
-           # user_form.save()
+        if profile_form.is_valid():
+            saveClasses(request.POST.items(), request.user.profile.id)
             profile_form.save()
+            location = request.POST.get('location', "")
+            if location != "":
+                if location.startswith('Inactive'):
+                    location = 'Inactive'
+                prof = Profile.objects.get(id=request.user.profile.id)
+                prof.location = location
+                prof.save()
             messages.success(request, 'Your profile was successfully updated')
             return redirect('login:home')
         else:
             messages.error(request, 'Please correct the error below')
     else:
-        #user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
     return render(request, 'login/edit_profile.html', {
-       # 'user_form': user_form,
         'profile_form': profile_form,
-        'classes': classes
+        'classes': classes,
+        'profile': profile
     })
 
 """
