@@ -22,9 +22,6 @@
     <div class="col-md-12">
     {% csrf_token %}
 
-    <!-- User form - first name, last name -->
-    <!-- {{ user_form.as_p }} -->
-
     <!-- Bootstrap uneditable textfield for email -->
     <div class="form-group">
       <label for="exampleInputEmail1">Email address:</label>
@@ -80,8 +77,8 @@
     <!-- Bootstrap dropdown list for setting tutor's location on map -->
     <div class="row justify-content-center w-75 pt-5">
     <div class="form-group">
-      <label for="sel1"><b><h6>Set active tutoring location:</b></h6></label>
-      <select class="form-control" id="sel1">
+      <label for="sel1"><b><h6>Set active tutoring location:</h6></b></label>
+      <select class="form-control" id="sel1" name="location">
         <option>Clemons Library</option>
         <option>Alderman Library</option>
         <option>1515 on the Corner</option>
@@ -203,4 +200,20 @@
   var courses = JSON.parse("{{classes|escapejs}}")
   $.each(courses, function ( key, course ){ courseNames.push( key + ' - ' + course );} );
   $( '#course' ).typeahead({ items:5, source:courseNames, afterSelect: function (course) {addtoClasses(course, section)}});
+  
+  $( document ).ready(function() {
+    var select = document.getElementById('sel1');
+    var children = select.childNodes;
+    children.forEach(function(item){
+      if(item.nodeName == 'OPTION') {
+        var location = item.innerHTML.replace(/&amp;/g, '&');
+        var profile_location = JSON.parse("{{profile|escapejs}}").location
+        profile_location = (profile_location == 'Inactive') ? 'Inactive (hidden from map)' : profile_location
+        console.log(location, profile_location);
+        if(location == profile_location) {
+          item.setAttribute('selected', true);
+        }
+      }
+    });
+  });
 </script>
