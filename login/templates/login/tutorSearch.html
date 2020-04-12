@@ -91,8 +91,8 @@
                   map: map,
                   icon: icon,
                   title: locations[i][0],
-                  description0: locations[i][3],
-                  description1: locations[i][4],
+                  description0: locations[i][3].bold(),
+                  description1: locations[i][4].italics(),
                   infowindow: locationInfowindow
               });
               markers.push(marker);
