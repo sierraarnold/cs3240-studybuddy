@@ -43,11 +43,11 @@
                   -->
                   {% if user.is_authenticated %}
                     {% if request.session.notificationCount == 0 %}
-                      <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Messages</a></li>
+                      <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Notifications</a></li>
                       {% else %}
                         <li class="nav-item item" role="presentation">
                           <a class="nav-link" href="{% url 'login:notifications' %}">
-                            Messages<span class="badge badge-pill badge-danger">{{request.session.notificationCount}}</span>
+                            Notifications<span class="badge badge-pill badge-danger">{{request.session.notificationCount}}</span>
                           </a>
                         </li>
                     {% endif %}
