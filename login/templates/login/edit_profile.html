@@ -34,8 +34,9 @@
 
     <!-- Profile form - username, phonenumber -->
     {{ profile_form.as_p }}
-    </div>
-    </div>
+  </div>
+  </div>
+
 
     <!-- Row with two columns - one for student courses, one for tutor courses -->
     <div class="row">
@@ -75,6 +76,21 @@
         </div>
       </div>
     </div>
+
+    <!-- Bootstrap dropdown list for setting tutor's location on map -->
+    <div class="row justify-content-center w-75 pt-5">
+    <div class="form-group">
+      <label for="sel1"><b><h6>Set active tutoring location:</b></h6></label>
+      <select class="form-control" id="sel1">
+        <option>Clemons Library</option>
+        <option>Alderman Library</option>
+        <option>1515 on the Corner</option>
+        <option>Clark Hall (Brown Science & Engineering Library)</option>
+        <option>Rice Hall</option>
+        <option>Inactive (hidden from map)</option>
+      </select>
+    </div>
+  </div>
 
     <div class="row">
     <button type="submit" class="btn saveButton mt-5">Save</button>
