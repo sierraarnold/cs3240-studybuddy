@@ -79,7 +79,7 @@ def renderTutorPage(request):
             elif startTutoringAt != "":
                 user_profile = Profile.objects.get(id = request.user.profile.id)
                 if user_profile.location == startTutoringAt:
-                    startTutoringAt = "Not tutoring"
+                    startTutoringAt = "Inactive"
                 user_profile.location = startTutoringAt
                 user_profile.save()
                 return JsonResponse({'libraryAdded': user_profile.location})
