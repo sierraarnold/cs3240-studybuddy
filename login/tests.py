@@ -98,7 +98,7 @@ class ClassSaveTests(TestCase):
             'phone_number': "3018523444",
             'year': "Fourth",
             'bio': "testing",
-            'location': "Not tutoring"
+            'location': "Inactive"
         }, instance=tester.profile)
         self.assertTrue(form.is_valid())
         form.save()

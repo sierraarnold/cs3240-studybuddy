@@ -62,7 +62,7 @@
         var locations = [
           ['Clemons', 38.036528, -78.506079, "Clemons Library", "Library"],
           ['Alderman', 38.036727, -78.505325,  "Alderman Library", "Library"],
-          ['Clark', 38.033088, -78.507951,  "Charles L. Brown Science & Engineering Library", "Library"],
+          ['Clark', 38.033088, -78.507951,  "Clark Hall (Brown Science & Engineering Library)", "Library"],
           ['1515', 38.035386, -78.500454, "1515 on the Corner", "Study Space"],
           ['Rice Hall', 38.031838, -78.510867, "Rice Hall", "Study Space"]
         ];
@@ -75,14 +75,14 @@
           var icon = "{% static 'login/images/library.png' %}"
 
           for (var i = 0; i < locations.length; i++) {
-              var tutoring = JSON.parse("{{profile|escapejs}}").location == locations[i][0] ? "Stop tutoring" : "Start tutoring"
+              var tutoring = JSON.parse("{{profile|escapejs}}").location == locations[i][3] ? "Stop tutoring" : "Start tutoring"
               var locationInfowindow = new google.maps.InfoWindow({
                   content: '<div id="content">'+
                   '<div id="siteNotice">'+
                   '</div>'+
                   '<h5 id="firstHeading" class="firstHeading">' + locations[i][0] + '</h5>'+
                   '<div id="bodyContent">'+
-                    '<button id="startTutoring" class="btn btn-secondary" onclick="beginTutoring(\'' + locations[i][0] + '\')">' + tutoring + '</button>' +
+                    '<button id="startTutoring" class="btn btn-secondary" onclick="beginTutoring(\'' + locations[i][3] + '\')">' + tutoring + '</button>' +
                   '</div>'+
                   '</div>'
               });
@@ -125,13 +125,13 @@
               data : { startTutoringAt : library }
           }).done(function(response){
             for (var i = 0; i < markers.length; i++) {
-                var tutoring = response.libraryAdded == locations[i][0] ? "Stop tutoring" : "Start tutoring"
+                var tutoring = response.libraryAdded == locations[i][3] ? "Stop tutoring" : "Start tutoring"
                 markers[i].infowindow.setContent('<div id="content">'+
                     '<div id="siteNotice">'+
                     '</div>'+
                     '<h5 id="firstHeading" class="firstHeading">' + locations[i][0] + '</h5>'+
                     '<div id="bodyContent">'+
-                      '<button id="startTutoring" class="btn btn-secondary" onclick="beginTutoring(\'' + locations[i][0] + '\')">' + tutoring + '</button>' +
+                      '<button id="startTutoring" class="btn btn-secondary" onclick="beginTutoring(\'' + locations[i][3] + '\')">' + tutoring + '</button>' +
                     '</div>'+
                     '</div>')
             }
@@ -162,7 +162,7 @@
               url : '',
               type : "POST",
               dataType: "json",
-              data : { library : library.title }
+              data : { library : library.description0 }
           }).done(function(response){
             const infoNode = document.getElementById("info");
             const tutors = response['filtered_tutors'];
