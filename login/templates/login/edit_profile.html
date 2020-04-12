@@ -25,7 +25,7 @@
     <!-- Bootstrap uneditable textfield for email -->
     <div class="form-group">
       <label for="exampleInputEmail1">Email address:</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="email" disabled value={{user_form.email}}>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="email" disabled value={{user.email}}>
       <small id="emailHelp" class="form-text text-muted">If you want to change this, create a new account.</small>
     </div>
 
@@ -151,7 +151,7 @@
   var courses = JSON.parse("{{classes|escapejs}}")
   $.each(courses, function ( key, course ){ courseNames.push( key + ' - ' + course );} );
   $( '#course' ).typeahead({ items:5, source:courseNames, afterSelect: function (course) {addtoClasses(course)}});
-  
+
   $( document ).ready(function() {
     var select = document.getElementById('sel1');
     var children = select.childNodes;
