@@ -13,6 +13,7 @@ class Profile(models.Model):
     bio = models.CharField(max_length=300, default="")
     push_token = models.CharField(max_length=200)
     location = models.CharField(max_length=50, default="Inactive")
+    email = models.CharField(max_length=50, default="")
 
     def __str__(self):
         return self.username
@@ -35,16 +36,9 @@ class StudentCourse(models.Model):
     def __str__(self):
         return self.name
 
-class MobileNotification(models.Model):
-    recipient = models.ForeignKey(User, related_name='user_device_notifications', on_delete=models.CASCADE)
-    title = models.CharField(max_length=512, null=True, blank=True)
-    message = models.TextField()
-    status = models.CharField(max_length=10, default='unread')
-
-
 class InAppMessage(models.Model):
-    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
-    recipient = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(Profile, related_name='sent_messages', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(Profile, related_name='received_messages', on_delete=models.CASCADE)
     title = models.CharField(max_length=512)
     message = models.TextField()
     status = models.CharField(max_length=10, default='unread')
@@ -52,7 +46,7 @@ class InAppMessage(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(user=instance, email=instance.email)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
