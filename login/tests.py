@@ -3,7 +3,7 @@ from django.test import TestCase, Client, LiveServerTestCase
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Profile, TutorCourse, StudentCourse, MobileNotification, InAppMessage
+from .models import Profile, TutorCourse, StudentCourse, InAppMessage
 from login.views import *
 from login.forms import ProfileForm
 from selenium import webdriver
@@ -188,23 +188,13 @@ class RedirectTests(TestCase):
         response = self.client.get('/profile')
         self.assertRedirects(response, '/accounts/login/?next=/profile', status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-class MobileNotificationModelTests(TestCase):
-    def test_mobile_notification_model(self):
-        tester = User(email="abc@virginia.edu")
-        tester.save()
-        mn = MobileNotification(recipient=tester, title="Test", message= "This is a test message")
-        mn.save()
-        self.assertEqual(mn.title, "Test")
-        self.assertEqual(mn.message, "This is a test message")
-        self.assertEqual(mn.status, "unread")
-
 class InAppMessageModelTests(TestCase):
     def test_in_app_message_model(self):
         tester = User(email="abc2@virginia.edu")
         tester2 = User(email="cba@virginia.edu", username="tester2")
         tester.save()
         tester2.save()
-        inapp = InAppMessage(sender=tester, recipient=tester2, title="Test", message= "This is a test message")
+        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, title="Test", message= "This is a test message")
         inapp.save()
         self.assertEqual(inapp.title, "Test")
         self.assertEqual(inapp.message, "This is a test message")
