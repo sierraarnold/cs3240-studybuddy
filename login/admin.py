@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, TutorCourse, StudentCourse, MobileNotification, InAppMessage
+from .models import Profile, TutorCourse, StudentCourse, InAppMessage
 
 class CourseInlineTutor(admin.TabularInline):
     model = TutorCourse
@@ -11,7 +11,7 @@ class CourseInlineStudent(admin.TabularInline):
 
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['username', 'phone_number', 'push_token', 'bio', 'year', 'location']}),
+        (None, {'fields': ['username', 'phone_number', 'push_token', 'bio', 'year', 'location', 'first_name', 'last_name', 'email']}),
     ]
     inlines = [CourseInlineTutor, CourseInlineStudent]
     list_display = ('user', 'username', 'push_token')
@@ -29,12 +29,6 @@ class TutorCourseAdmin(admin.ModelAdmin):
     ]
     list_display = [field.name for field in TutorCourse._meta.get_fields()]
 
-class MobileAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {'fields': [field.name for field in MobileNotification._meta.get_fields()]}),
-    ]
-    list_display = [field.name for field in MobileNotification._meta.get_fields()]
-
 class InAppAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': [field.name for field in InAppMessage._meta.get_fields()]}),
@@ -44,5 +38,4 @@ class InAppAdmin(admin.ModelAdmin):
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(StudentCourse, StudentCourseAdmin)
 admin.site.register(TutorCourse, TutorCourseAdmin)
-admin.site.register(MobileNotification, MobileAdmin)
 admin.site.register(InAppMessage, InAppAdmin)

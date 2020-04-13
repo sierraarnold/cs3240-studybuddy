@@ -24,8 +24,6 @@
                           <h3 id='studySpace'>Study Space</h3>
                       </div>
                       <div class="info" id="info">
-                          <p id="description0"></p>
-                          <p id="description1"></p>
                       </div>
                       <div class="dropdown" id="filterButton">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,7 +31,11 @@
                         </button>
                         <div class="dropdown-menu filterDropdown" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item filterDropdownItem" href="javascript:getMyClasses();">Tutors for my classes</a>
-                          <a class="dropdown-item filterDropdownItem" href="#">Another action</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[0]);">Tutors at Clemons</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[1]);">Tutors at Alderman</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[2]);">Tutors at Clark</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[3]);">Tutors at 1515</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[4]);">Tutors at Rice Hall</a>
                         </div>
                       </div>
                   </div>
@@ -53,7 +55,6 @@
         </div>
       </div>
 
-
       <script src="https://cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.js"></script>
       <script type="text/javascript">
         var map;
@@ -61,7 +62,7 @@
         var locations = [
           ['Clemons', 38.036528, -78.506079, "Clemons Library", "Library"],
           ['Alderman', 38.036727, -78.505325,  "Alderman Library", "Library"],
-          ['Clark Hall', 38.033088, -78.507951,  "Charles L. Brown Science & Engineering Library", "Library"],
+          ['Clark', 38.033088, -78.507951,  "Clark Hall (Brown Science & Engineering Library)", "Library"],
           ['1515', 38.035386, -78.500454, "1515 on the Corner", "Study Space"],
           ['Rice Hall', 38.031838, -78.510867, "Rice Hall", "Study Space"]
         ];
@@ -74,58 +75,66 @@
           var icon = "{% static 'login/images/library.png' %}"
 
           for (var i = 0; i < locations.length; i++) {
+              var tutoring = JSON.parse("{{profile|escapejs}}").location == locations[i][3] ? "Stop tutoring" : "Start tutoring"
               var locationInfowindow = new google.maps.InfoWindow({
-                  content: locations[i][0],
+                  content: '<div id="content">'+
+                  '<div id="siteNotice">'+
+                  '</div>'+
+                  '<h5 id="firstHeading" class="firstHeading">' + locations[i][0] + '</h5>'+
+                  '<div id="bodyContent">'+
+                    '<button id="startTutoring" class="btn btn-secondary" onclick="beginTutoring(\'' + locations[i][3] + '\')">' + tutoring + '</button>' +
+                  '</div>'+
+                  '</div>'
               });
               var marker = new google.maps.Marker({
                   position: new google.maps.LatLng(locations[i][1], locations[i][2]),
                   map: map,
                   icon: icon,
                   title: locations[i][0],
-                  description0: locations[i][3].bold(),
-                  description1: locations[i][4].italics(),
+                  description0: locations[i][3],
+                  description1: locations[i][4],
                   infowindow: locationInfowindow
               });
               markers.push(marker);
               (function(marker, i) {
                   google.maps.event.addListener(marker, 'click', function() {
                       selectStudySpace(marker);
-                      hideAllInfoWindows(map);
-                      marker.infowindow.open(map, marker);
                   });
               })(marker, i);
           }
-
           selectStudySpace(markers[0]);
-          markers[0].infowindow.open(map, markers[0]);
-
-          //This would get user location
-          // if (navigator.geolocation) {
-          //   navigator.geolocation.getCurrentPosition(function(position) {
-          //     var pos = {
-          //       lat: position.coords.latitude,
-          //       lng: position.coords.longitude
-          //     };
-          //     // map.setCenter(pos);
-          //   }, function() {
-          //     handleLocationError(true, infoWindow, map.getCenter());
-          //   });
-          // } else {
-          //   handleLocationError(false, infoWindow, map.getCenter());
-          // }
-        }
-
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-          infoWindow.setPosition(pos);
-          infoWindow.setContent(browserHasGeolocation ?
-                                'Error: The Geolocation service failed.' :
-                                'Error: Your browser doesn\'t support geolocation.');
-          infoWindow.open(map);
         }
 
         function hideAllInfoWindows(map) {
            markers.forEach(function(marker) {
              marker.infowindow.close(map, marker);
+          });
+        }
+
+        function beginTutoring(library){
+          var csrftoken = getCookie('csrftoken');
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          });
+          $.ajax({
+              url : '',
+              type : "POST",
+              dataType: "json",
+              data : { startTutoringAt : library }
+          }).done(function(response){
+            for (var i = 0; i < markers.length; i++) {
+                var tutoring = response.libraryAdded == locations[i][3] ? "Stop tutoring" : "Start tutoring"
+                markers[i].infowindow.setContent('<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h5 id="firstHeading" class="firstHeading">' + locations[i][0] + '</h5>'+
+                    '<div id="bodyContent">'+
+                      '<button id="startTutoring" class="btn btn-secondary" onclick="beginTutoring(\'' + locations[i][3] + '\')">' + tutoring + '</button>' +
+                    '</div>'+
+                    '</div>')
+            }
           });
         }
 
@@ -136,15 +145,29 @@
           while (infoNode.firstChild) {
             infoNode.removeChild(infoNode.lastChild);
           }
-          const description0 = document.createElement('p');
-          const description1 = document.createElement('p');
-          description0.setAttribute('id', 'description0');
-          description1.setAttribute('id', 'description1');
-          description0.innerHTML = marker.description0;
-          description1.innerHTML = marker.description1;
-          infoNode.appendChild(description0);
-          infoNode.appendChild(description1);
+          hideAllInfoWindows(map);
           map.panTo(marker.position);
+          marker.infowindow.open(map, marker);
+          getTutorsForLibrary(marker);
+        }
+
+        function getTutorsForLibrary(library) {
+          var csrftoken = getCookie('csrftoken');
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+              }
+          });
+          $.ajax({
+              url : '',
+              type : "POST",
+              dataType: "json",
+              data : { library : library.description0 }
+          }).done(function(response){
+            const infoNode = document.getElementById("info");
+            const tutors = response['filtered_tutors'];
+            populateTutors(tutors, infoNode);
+          });
         }
 
         //Gets cookie for csrftoken
@@ -174,32 +197,44 @@
         */
         function populateTutors(tutors, infoNode){
           for(var i = 0; i<tutors.length; i++){
-            var courses = "";
+            var courses = [];
             for(var j = 0; j<tutors[i].tutorCourses.length; j++){
-              courses += tutors[i].tutorCourses[j].dept + " " + tutors[i].tutorCourses[j].number + " - " + tutors[i].tutorCourses[j].name + "<br>";
+              courses.push(tutors[i].tutorCourses[j].dept + " " + tutors[i].tutorCourses[j].number + " - " + tutors[i].tutorCourses[j].name);
             }
             const tutor = tutors[i];
             var card = document.createElement('div');
             card.setAttribute('class', 'card');
             var cardheader = document.createElement('div');
-            cardheader.className += "card-header row";
+            cardheader.className += "card-header";
             var username = document.createElement('div');
-            username.innerHTML = '<h4>'+tutors[i].first_name + " " + tutors[i].last_name+'</h4>';
-            username.setAttribute('class', 'col');
-            var request = document.createElement('button');
-            request.className += "btn btn-secondary btn-sml col";
-            request.onclick = function(){sendTutorMessage(tutor)} ;
-            request.innerHTML = "Request Tutor";
+            username.innerHTML = '<h4>' + tutors[i].first_name + " " + tutors[i].last_name + '</h4>';
+            username.setAttribute('id', 'tutorHeader');
             cardheader.appendChild(username);
-            cardheader.appendChild(request);
             var cardbody = document.createElement('div');
             cardbody.setAttribute('class', 'card-body');
             var cont = document.createElement('div');
             var pgraph = document.createElement('p');
-            pgraph.innerHTML = "Email: " + tutors[i].user.email + '<br />' + "Phone: " + tutors[i].phone_number + '<br />' + "Year: " + tutors[i].year + '<br />' + "Bio: " + tutors[i].bio +'<br /><br /><h5>Teaches:</h5>';
+            pgraph.innerHTML = "Email: " + tutors[i].user.email + '<br />' + "Phone: " + tutors[i].phone_number + '<br />' + "Year: " + tutors[i].year + '<br />' + "Bio: " + tutors[i].bio + '<br />' + "Location: " + tutors[i].location +'<br />';
             var footer = document.createElement('footer');
             footer.setAttribute('class', 'footer');
-            footer.innerHTML = courses;
+            var header = document.createElement('h5');
+            header.innerHTML = "Courses:\n";
+            footer.appendChild(header);
+            var theCourses = document.createElement('div');
+            for(var j = 0; j<courses.length; j++){
+              var row = document.createElement('div')
+              row.className += "courseRow"
+              var label = document.createElement('p')
+              label.innerHTML = courses[j]
+              var request = document.createElement('button')
+              request.className += "btn btn-outline-secondary btn-sml";
+              request.innerHTML = "Request"
+              request.onclick = createClickHandler(tutor, courses[j]);
+              row.appendChild(label)
+              row.appendChild(request)
+              theCourses.appendChild(row)
+            }
+            footer.appendChild(theCourses);
             cont.appendChild(pgraph);
             cont.appendChild(footer);
             cardbody.appendChild(cont);
@@ -213,9 +248,10 @@
             '<div class="card"><div class="card-header">No Tutors available' +
             '</div><div class="card-body"><div><footer class="footer"></footer></div></div></div>')
           }
-          //else{
-            // List tutors available
-          //}
+        }
+
+        var createClickHandler = function(tutor, course) {
+          return function() { sendTutorMessage(tutor, course) };
         }
 
         //Sends an ajax POST request with all student courses of profile
@@ -273,7 +309,7 @@
         }
 
         //Sends ajax POST request with the desired tutor to message
-        function sendTutorMessage(tutor){
+        function sendTutorMessage(tutor, course){
           var csrftoken = getCookie('csrftoken');
           $.ajaxSetup({
               beforeSend: function(xhr, settings) {
@@ -284,7 +320,7 @@
               url : '',
               type : "POST",
               dataType: "json",
-              data : { tutor : JSON.stringify(tutor) }
+              data : { tutor : JSON.stringify(tutor), requestedCourse: course }
           }).done(function(response){
             document.getElementById('toastBody2').innerHTML = "Message sent to " + response.tutor.username;
             $("#toast2").toast('show')

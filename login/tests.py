@@ -3,7 +3,7 @@ from django.test import TestCase, Client, LiveServerTestCase
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Profile, TutorCourse, StudentCourse, MobileNotification, InAppMessage
+from .models import Profile, TutorCourse, StudentCourse, InAppMessage
 from login.views import *
 from login.forms import ProfileForm
 from selenium import webdriver
@@ -57,7 +57,7 @@ class ClassFileTests(TestCase):
 
 class ClassSaveTests(TestCase):
     def test_parseCourse(self):
-        course = "CBNameTutor:CS 1110 - Introduction to Programming"
+        course = "Tutor:CS 1110 - Introduction to Programming"
         parsed = parseCourse(course)
         self.assertEqual(parsed[0], 'CS')
         self.assertEqual(parsed[1], '1110')
@@ -65,7 +65,7 @@ class ClassSaveTests(TestCase):
 
     def test_saveClasses(self):
         c = Client()
-        postedItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
         tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
         tester.save()
         c.login(username='tester', password='12345')
@@ -100,6 +100,7 @@ class ClassSaveTests(TestCase):
             'phone_number': "3018523444",
             'year': "Fourth",
             'bio': "testing",
+            'location': "Inactive"
         }, instance=tester.profile)
         self.assertTrue(form.is_valid())
         form.save()
@@ -122,7 +123,7 @@ class TutorSearch(unittest.TestCase):
         tester = User.objects.create(username='tester', is_active=True, is_staff=True, is_superuser=True)
         tester.set_password('12345')
         tester.save()
-        postedItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
         c.login(username='tester', password='12345')
         saveClasses(postedItems.items(), tester.id)
         response = c.post(reverse('login:home'), {'course': 'CS 3240 - Advanced Software Development Techniques'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
@@ -136,8 +137,8 @@ class TutorSearch(unittest.TestCase):
         tester.set_password('12345')
         tester.save()
         tester2.save()
-        studentItems = {'CBNameStudent:CS 3240 - Advanced Software Development Techniques': 'new', 'CBNameStudent:CS 1234 - Test Course': 'new'}
-        tutorItems = {'CBNameTutor:CS 3240 - Advanced Software Development Techniques': 'new'}
+        studentItems = {'Student:CS 3240 - Advanced Software Development Techniques': 'course', 'CBNameStudent:CS 1234 - Test Course': 'course'}
+        tutorItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
         saveClasses(studentItems.items(), tester.id)
         saveClasses(tutorItems.items(), tester2.id)
         c.login(username='tester', password='12345')
@@ -187,23 +188,13 @@ class RedirectTests(TestCase):
         response = self.client.get('/profile')
         self.assertRedirects(response, '/accounts/login/?next=/profile', status_code=302, target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-class MobileNotificationModelTests(TestCase):
-    def test_mobile_notification_model(self):
-        tester = User(email="abc@virginia.edu")
-        tester.save()
-        mn = MobileNotification(recipient=tester, title="Test", message= "This is a test message")
-        mn.save()
-        self.assertEqual(mn.title, "Test")
-        self.assertEqual(mn.message, "This is a test message")
-        self.assertEqual(mn.status, "unread")
-
 class InAppMessageModelTests(TestCase):
     def test_in_app_message_model(self):
         tester = User(email="abc2@virginia.edu")
         tester2 = User(email="cba@virginia.edu", username="tester2")
         tester.save()
         tester2.save()
-        inapp = InAppMessage(sender=tester, recipient=tester2, title="Test", message= "This is a test message")
+        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, title="Test", message= "This is a test message")
         inapp.save()
         self.assertEqual(inapp.title, "Test")
         self.assertEqual(inapp.message, "This is a test message")

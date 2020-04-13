@@ -5,31 +5,64 @@
   <head><title>StudyBuddy</title></head>
   <body>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'login/tutorSearch.css' %}">
-      <div class="container">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/profile.css' %}">
+      <div class="container h-100">
           <div class="map-example">
-              <!-- all_notifications is mobile notifications and device notifications combined -->
-              {% if all_notifications %}
+              <div class="row mt-md-3">
+                  <h1>Notifications</h1>
+                  <div class="col-8">
+                    <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
+                      <label class="list-group-item list-group-item-tab list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Recieved</label>
+                      <label class="list-group-item list-group-item-tab list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Sent</label>
+                    </div>
+                  </div>
+              </div>
 
-                <h1>Notifications</h1>
-                <ul class="list-group d-flex flex-wrap">
-                  <!-- Show a card with the sender username, sender email, and message -->
-                  {% for message in all_notifications|makeList %}
-                    <div class="card">
-                      <div class="card-header">
-                        {{message|get_value:"sender"|get_value:"username"}}
-                      </div>
-                      <div class="card-body">
-                        <h5 class="card-title">{{message|get_value:"sender"|get_value:"email"}}</h5>
-                        <p class="card-text">{{message|get_value:"message"}}</p>
+              <div class="row">
+                <div class="col-8">
+                  <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                      <div id="recieved" class="list-group">
+                        {% if recieved|makeList %}
+                          {% for message in recieved|makeList %}
+                            <div class="card">
+                              <div class="card-body">
+                                <p class="card-text">{{message|get_value:"sender"|get_value:"first_name"}} {{message|get_value:"sender"|get_value:"last_name"}} has requested you as a tutor! <br />Class: {{message|get_value:"message"}}<br /> Contact them via phone at {{message|get_value:"sender"|get_value:"phone_number"}} or via email at {{message|get_value:"sender"|get_value:"email"}}</p>
+                              </div>
+                            </div>
+                          {% endfor %}
+                        {% else %}
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">No notications recieved</h5>
+                          </div>
+                        </div>
+                        {% endif %}
                       </div>
                     </div>
-                  {% endfor %}
-                </ul>
-
-              {% else %}
-                  <p>No messages</p>
-              {% endif %}
+                    <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                      <div id="sent" class="list-group">
+                        {% if sent|makeList %}
+                          {% for message in sent|makeList %}
+                            <div class="card">
+                              <div class="card-body">
+                                <p class="card-text">You requested {{message|get_value:"recipient"|get_value:"first_name"}} {{message|get_value:"recipient"|get_value:"last_name"}} for {{message|get_value:"message"}}</p>
+                                <button class="btn btn-outline-secondary btn-sml" type="button" onClick="cancelRequest(this, '{{message|get_value:'id'}}')">Cancel</button>
+                              </div>
+                            </div>
+                          {% endfor %}
+                        {% else %}
+                        <div class="card">
+                          <div class="card-body">
+                            <h5 class="card-title">No notications sent</h5>
+                          </div>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
       </div>
 
@@ -41,6 +74,11 @@
       </div>
 
       <script type="text/javascript">
+
+        function cancelRequest(e, id){
+          e.parentNode.parentNode.removeChild(e.parentNode);
+          removeRequest(id);
+        }
 
         //Gets cookie for csrftoken
         function getCookie(name) {
@@ -60,7 +98,7 @@
         }
 
         // Does nothing right now
-        function getMyClasses(){
+        function removeRequest(id){
           var csrftoken = getCookie('csrftoken');
           $.ajaxSetup({
               beforeSend: function(xhr, settings) {
@@ -71,13 +109,11 @@
               url : '',
               type : "POST",
               dataType: "json",
-              data : {  }
+              data : { notificationID: id }
           }).done(function(response){
             console.log(response)
           });
         }
-
-        const notifications = JSON.parse("{{all_notifications|escapejs}}")
 
       </script>
 
