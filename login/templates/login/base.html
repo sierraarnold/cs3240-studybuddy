@@ -43,11 +43,11 @@
                   -->
                   {% if user.is_authenticated %}
                     {% if request.session.notificationCount == 0 %}
-                      <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Messages</a></li>
+                      <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Notifications</a></li>
                       {% else %}
                         <li class="nav-item item" role="presentation">
                           <a class="nav-link" href="{% url 'login:notifications' %}">
-                            Messages<span class="badge badge-pill badge-danger">{{request.session.notificationCount}}</span>
+                            Notifications<span class="badge badge-pill badge-danger">{{request.session.notificationCount}}</span>
                           </a>
                         </li>
                     {% endif %}
@@ -56,7 +56,7 @@
                       <a class="nav-link" href="{% url 'login:signout' %}">Logout</a>
                     </li>
                   {% else %}
-                    <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Messages</a></li>
+                    <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Notifications</a></li>
                     <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Edit Profile</a></li>
                     <a href="{% provider_login_url 'google' %}">
                       <button type="button" class="google-button">

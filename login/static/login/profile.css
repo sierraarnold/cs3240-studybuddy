@@ -185,3 +185,11 @@ form {
 .span {
   float: right;
 }
+
+.btn-outline-secondary {
+  border-color: #232D4B !important;
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+  background-color: #435076 !important;
+}
