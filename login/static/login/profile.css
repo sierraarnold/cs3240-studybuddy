@@ -4,7 +4,6 @@
 }
 
 .list-group-item {
-  user-select: none;
   text-align: left;
   font-size: 15px;
   font-family: 'Roboto', sans-serif;
@@ -34,7 +33,6 @@
 
 button {
   align-self: flex-start;
-  margin-left: 5%;
 }
 
 .dropdown-menu {
@@ -82,7 +80,6 @@ label {
 
 p {
   align-self: flex-start;
-  margin-left: 5%;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -172,10 +169,6 @@ form {
 .fa-plus-square:hover {
   color: A0A0A0;
   cursor: pointer;
-}
-
-.form-group {
-  margin-left: 5%;
 }
 
 .addButton {

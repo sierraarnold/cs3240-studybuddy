@@ -12,9 +12,7 @@
   </head>
   {% if courses %}
       <div class="container">
-        <div id="header" class="row">
-          <h1>Courses</h1>
-        </div>
+        <h1 class="mt-md-3">Courses</h1>
         <ul class="list-group d-flex flex-row flex-wrap">
           <!-- For every course render list item with the appropriate course name-->
           {% for course in courses|makeList %}
