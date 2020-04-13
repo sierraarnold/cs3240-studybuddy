@@ -12,8 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.contrib import messages
 from fcm_django.models import FCMDevice
-from .models import Profile, StudentCourse, TutorCourse, MobileNotification, InAppMessage
-from login.serializers import ProfileSerializer, StudentCourseSerializer, TutorCourseSerializer, MobileNotificationSerializer, InAppMessageSerializer
+from .models import Profile, StudentCourse, TutorCourse, InAppMessage
+from login.serializers import ProfileSerializer, StudentCourseSerializer, TutorCourseSerializer, InAppMessageSerializer
 from .tasks import send_new_message_push_notification
 
 # Simple signout function using Django's authentication
@@ -64,6 +64,7 @@ def renderTutorPage(request):
             courses = json.loads(request.POST.get('courses', '[]'))
             pushToken_registration = json.loads(request.POST.get('pushToken_registration', '{}'))
             tutor = json.loads(request.POST.get('tutor', '{}'))
+            requestedCourse = request.POST.get('requestedCourse', "")
             library = request.POST.get('library', "")
             startTutoringAt = request.POST.get('startTutoringAt', "")
             if len(courses) > 0:
@@ -97,7 +98,7 @@ def renderTutorPage(request):
                     FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
                 return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile})
             elif bool(tutor):
-                send_new_message_push_notification(sender_id=request.user.id, recipient_id=tutor['user']['id'], title="Message from " + request.user.email, message="Tutor request")
+                send_new_message_push_notification(sender_id=request.user.profile.id, recipient_id=tutor['user']['profile'], title=requestedCourse, message=requestedCourse)
             for i in range(len(filtered_tutors)):
                 filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
 
@@ -167,23 +168,21 @@ def saveClasses(postedItems, user_id):
     Returns json object of all notifications
 """
 def getNotifications(request):
-    inappmessages = list(InAppMessage.objects.filter(sender=request.user.id))
-    inappmessages += list(InAppMessage.objects.filter(recipient=request.user.id))
-    mobilenotifications = list(MobileNotification.objects.filter(recipient=request.user.id))
-    for i in range(len(inappmessages)):
-        inappmessages[i] = InAppMessageSerializer(inappmessages[i]).data
-        inappmessages[i]['recipient'] = dict(inappmessages[i]['recipient'])
-        inappmessages[i]['sender'] = dict(inappmessages[i]['sender'])
-    for i in range(len(mobilenotifications)):
-        mobilenotifications[i] = MobileNotificationSerializer(mobilenotifications[i]).data
-        mobilenotifications[i]['recipient'] = dict(mobilenotifications[i]['recipient'])
-    all_notifications = mobilenotifications + inappmessages
+    sent = list(InAppMessage.objects.filter(sender=request.user.id))
+    recieved = list(InAppMessage.objects.filter(recipient=request.user.id))
     notificationCount = 0
-    for notification in all_notifications:
-        if notification['status'] == 'unread' and notification['recipient']['id'] == request.user.id:
+    for i in range(len(sent)):
+        sent[i] = InAppMessageSerializer(sent[i]).data
+        sent[i]['recipient'] = dict(sent[i]['recipient'])
+        sent[i]['sender'] = dict(sent[i]['sender'])
+    for i in range(len(recieved)):
+        recieved[i] = InAppMessageSerializer(recieved[i]).data
+        recieved[i]['recipient'] = dict(recieved[i]['recipient'])
+        recieved[i]['sender'] = dict(recieved[i]['sender'])
+        if recieved[i]['status'] == 'unread':
             notificationCount += 1
     request.session['notificationCount'] = notificationCount
-    return (json.dumps(all_notifications))
+    return (json.dumps(sent), json.dumps(recieved))
 
 """
     Gets all notifications
@@ -195,20 +194,20 @@ def getNotifications(request):
 """
 @login_required
 def notifications(request):
-    all_notifications = getNotifications(request)
-    notificationList = json.loads(all_notifications)
-    for notification in notificationList:
-        if notification['status'] == 'unread' and notification['recipient']['id'] == request.user.id:
-            if notification['sender']:
-                message = InAppMessage.objects.get(id=notification['id'])
-                message.status = 'read'
-                message.save()
-            else:
-                message = MobileNotification.objects.get(id=notification['id'])
-                message.status = 'read'
-                message.save()
+    (sent, recieved) = getNotifications(request)
+    recievedList = json.loads(recieved)
+    for notification in recievedList:
+        if notification['status'] == 'unread':
+            message = InAppMessage.objects.get(id=notification['id'])
+            message.status = 'read'
+            message.save()
     request.session['notificationCount'] = 0
-    return render(request, 'login/notifications.html', {'all_notifications': all_notifications})
+    if request.method == 'POST' and request.is_ajax():
+        notificationID = request.POST.get('notificationID', "")
+        if notificationID != "":
+            InAppMessage.objects.get(id=notificationID).delete()
+            return JsonResponse({'success': True})
+    return render(request, 'login/notifications.html', {'sent': sent, 'recieved': recieved})
 
 # This class is needed for the server to find the service worker file to run js in background
 class ServiceWorkerView(View):

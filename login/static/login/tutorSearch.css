@@ -109,6 +109,23 @@
   background-color: #232D4B !important;
 }
 
+.btn-outline-secondary {
+  border-color: #232D4B !important;
+}
+
 .btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active {
   background-color: #435076 !important;
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+  background-color: #435076 !important;
+}
+
+.courseRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  margin-left: 1px;
+  align-items: center;
 }
