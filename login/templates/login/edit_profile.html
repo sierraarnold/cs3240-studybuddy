@@ -21,12 +21,12 @@
     <div class="row justify-content-center w-75">
       <div class="col-md-12">
       {% csrf_token %}
-
       <!-- Bootstrap uneditable textfield for email -->
       <div class="form-group">
         <label for="exampleInputEmail1">Email address:</label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="email" disabled value={{user.email}}>
         <small id="emailHelp" class="form-text text-muted">If you want to change this, create a new account.</small>
+
       </div>
 
       <!-- Profile form - username, phonenumber -->
