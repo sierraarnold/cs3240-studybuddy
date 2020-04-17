@@ -5,6 +5,8 @@ from django.core.serializers import serialize
 from django.urls import reverse
 import json
 import requests
+from django.utils import timezone
+import pytz
 from django.views.generic import View
 from bs4 import BeautifulSoup
 from .forms import ProfileForm
@@ -53,12 +55,13 @@ def signout(request):
 """
 def renderTutorPage(request):
     if not request.user.is_authenticated:
-        return render(request, 'login/tutorSearch.html')
+        return render(request, 'login/welcome.html')
     else:
+        timezone.activate(pytz.timezone("US/Eastern"))
         classes = get_classes_fromtxt()
         profile = json.dumps(ProfileSerializer(request.user.profile).data)
         filtered_tutors = []
-        getNotifications(request)
+        (requestsSent, requestsRecieved) = getNotifications(request)
         if request.method == 'POST' and request.is_ajax():
             course = request.POST.get('course', "")
             courses = json.loads(request.POST.get('courses', '[]'))
@@ -67,14 +70,15 @@ def renderTutorPage(request):
             requestedCourse = request.POST.get('requestedCourse', "")
             library = request.POST.get('library', "")
             startTutoringAt = request.POST.get('startTutoringAt', "")
+            requestOption = request.POST.get('requestOption', "")
             if len(courses) > 0:
                 course_names = []
                 for class_ in courses:
                     course_names.append(class_['name'])
                 filtered_tutors = list(Profile.objects.filter(tutorcourse__name__in=course_names))
             elif course != "":
-                course = course.split('-')[1].lstrip()
-                filtered_tutors = list(Profile.objects.filter(tutorcourse__name=course))
+                filtered_tutors = list(Profile.objects.filter(tutorcourse__name=course.split('-')[1].lstrip()))
+                course = course.split('-')[0].rstrip()
             elif library != "":
                 filtered_tutors = list(Profile.objects.filter(location=library))
             elif startTutoringAt != "":
@@ -98,12 +102,19 @@ def renderTutorPage(request):
                     FCMDevice(user=request.user, registration_id=pushToken_registration['registration_id'], type=pushToken_registration['type'], device_id=request.user.id, name=request.user.email).save()
                 return JsonResponse({'registration_id': pushToken_registration['registration_id'], 'type': pushToken_registration['type'], 'profile': profile})
             elif bool(tutor):
-                send_new_message_push_notification(sender_id=request.user.profile.id, recipient_id=tutor['user']['profile'], title=requestedCourse, message=requestedCourse)
+                if requestOption == "Request":
+                    send_new_message_push_notification(sender_id=request.user.profile.id, recipient_id=tutor['user']['profile'], message=requestedCourse)
+                    return JsonResponse({'tutor':tutor, 'requestOption': requestOption})
+                elif requestOption == "Cancel":
+                    toDelete = InAppMessage.objects.filter(sender=request.user.profile, recipient=tutor['user']['profile'], message=requestedCourse)
+                    if len(toDelete) > 0:
+                        toDelete[0].delete()
+                        return JsonResponse({'tutor':tutor, 'requestOption': requestOption})
             for i in range(len(filtered_tutors)):
                 filtered_tutors[i] = ProfileSerializer(filtered_tutors[i]).data
 
             return JsonResponse({'profile': profile, 'filtered_tutors': filtered_tutors, 'tutor':tutor, 'course': course})
-        return render(request, 'login/tutorSearch.html', {'profile': profile, 'classes': classes})
+        return render(request, 'login/tutorSearch.html', {'profile': profile, 'classes': classes, 'requestsSent': requestsSent})
 
 """
     Get all UVA courses
@@ -168,8 +179,14 @@ def saveClasses(postedItems, user_id):
     Returns json object of all notifications
 """
 def getNotifications(request):
-    sent = list(InAppMessage.objects.filter(sender=request.user.id))
-    recieved = list(InAppMessage.objects.filter(recipient=request.user.id))
+    sentQuerySet = InAppMessage.objects.filter(sender=request.user.id)
+    recievedQuerySet = InAppMessage.objects.filter(recipient=request.user.id)
+    for i in range(len(sentQuerySet)):
+        sentQuerySet[i].timestamp = timezone.localtime(sentQuerySet[i].timestamp).isoformat()
+    for i in range(len(recievedQuerySet)):
+        recievedQuerySet[i].timestamp = timezone.localtime(recievedQuerySet[i].timestamp).isoformat()
+    sent = list(sentQuerySet)
+    recieved = list(recievedQuerySet)
     notificationCount = 0
     for i in range(len(sent)):
         sent[i] = InAppMessageSerializer(sent[i]).data

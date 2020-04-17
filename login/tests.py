@@ -194,9 +194,8 @@ class InAppMessageModelTests(TestCase):
         tester2 = User(email="cba@virginia.edu", username="tester2")
         tester.save()
         tester2.save()
-        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, title="Test", message= "This is a test message")
+        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "This is a test message")
         inapp.save()
-        self.assertEqual(inapp.title, "Test")
         self.assertEqual(inapp.message, "This is a test message")
         self.assertEqual(inapp.status, "unread")
 class RedirectTests(TestCase):

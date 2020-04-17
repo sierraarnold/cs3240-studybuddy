@@ -30,7 +30,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="nav navbar-nav ml-auto">
                   <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:home' %}">Find a Tutor</a></li>
-                  <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:departments' %}">View Classes</a></li>
+                  <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:departments' %}">Browse Classes</a></li>
 
                   <!--
                     If authenticated:
@@ -98,7 +98,7 @@
 
   <!-- Bootstrap toast that shows notifications-->
   <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
-    <div id="toast1" class="toast">
+    <div id="toast1" class="toast" data-delay="2000">
       <button type="button" class="close closeButton" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
