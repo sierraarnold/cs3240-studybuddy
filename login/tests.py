@@ -22,7 +22,13 @@ class UserModelTests(TestCase):
 
 class SimpleLogin(unittest.TestCase):
     def setUp(self):
-        person = Profile(username = 'holly')
+        self.person = Profile(username = 'holly')
+        self.person2 = Profile(username = 'hew', email = "tester@virginia.edu")
+        
+    def test_username(self):
+        self.assertEqual(self.person.username, 'holly')
+    def test_email_default(self):
+        self.assertEqual(self.person.email, "")
 
 class ClassFileTests(TestCase):
     def test_get_departments_fromtxt(self):
