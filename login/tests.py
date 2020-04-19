@@ -29,6 +29,12 @@ class SimpleLogin(unittest.TestCase):
         self.assertEqual(self.person.username, 'holly')
     def test_email_default(self):
         self.assertEqual(self.person.email, "")
+    def test_email_nondefault(self):
+        self.assertEqual(self.person2.email, "tester@virginia.edu")
+    def test_pk(self):
+        person3 = Profile(username = 'holly', pk = 1)
+        person4 = Profile(username = 'holly', pk = 2)
+        self.assertNotEqual(person3, person4)
 
 class ClassFileTests(TestCase):
     def test_get_departments_fromtxt(self):
@@ -78,6 +84,18 @@ class ClassSaveTests(TestCase):
         saveClasses(postedItems.items(), tester.id)
         self.assertNotEqual(len(TutorCourse.objects.filter(user=tester.profile)), 0)
         tester.delete()
+    def test_not_save_Classes(self):
+        c = Client()
+        postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
+        tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester.save()
+        tester2 = User.objects.create(username='tester2', password='123452', is_active=True, is_staff=True, is_superuser=True)
+        tester2.save()
+        c.login(username='tester', password='12345')
+        saveClasses(postedItems.items(), tester.id)
+        self.assertEqual(len(TutorCourse.objects.filter(user=tester2.profile)), 0)
+        tester.delete()
+        tester2.delete()
 
     # def test_userForm(self):
     #     c = Client()
@@ -182,6 +200,9 @@ class HomepageTest(unittest.TestCase):
     def test_main(self):
         response = self.client.get('')
         self.assertEqual(response.status_code, 200)
+    def test_main_fail(self):
+        response = self.client.get('')
+        self.assertNotEqual(response.status_code, 302)
     def test_profile(self):
         response = self.client.get('/profile')
         self.assertEqual(response.status_code, 302)
