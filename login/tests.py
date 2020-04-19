@@ -29,6 +29,8 @@ class SimpleLogin(unittest.TestCase):
         self.assertEqual(self.person.username, 'holly')
     def test_email_default(self):
         self.assertEqual(self.person.email, "")
+    def test_email_nondefault(self):
+        self.assertEqual(self.person2.email, "tester@virginia.edu")
 
 class ClassFileTests(TestCase):
     def test_get_departments_fromtxt(self):
