@@ -31,9 +31,10 @@ class SimpleLogin(unittest.TestCase):
         self.assertEqual(self.person.email, "")
     def test_email_nondefault(self):
         self.assertEqual(self.person2.email, "tester@virginia.edu")
-    def test_(self):
-        person3 = Profile(username = 'holly2')
-        self.assertNotEqual(person3.pk, self.person.pk)
+    def test_pk(self):
+        person3 = Profile(username = 'holly', pk = 1)
+        person4 = Profile(username = 'holly', pk = 2)
+        self.assertNotEqual(person3, person4)
 
 class ClassFileTests(TestCase):
     def test_get_departments_fromtxt(self):
