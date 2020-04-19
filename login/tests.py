@@ -84,16 +84,18 @@ class ClassSaveTests(TestCase):
         saveClasses(postedItems.items(), tester.id)
         self.assertNotEqual(len(TutorCourse.objects.filter(user=tester.profile)), 0)
         tester.delete()
-    def test_delete_save_Classes(self):
+    def test_not_save_Classes(self):
         c = Client()
         postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
         tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
         tester.save()
+        tester2 = User.objects.create(username='tester2', password='123452', is_active=True, is_staff=True, is_superuser=True)
+        tester2.save()
         c.login(username='tester', password='12345')
         saveClasses(postedItems.items(), tester.id)
-        TutorCourse.objects.filter(userid=tester.id).delete()
-        self.assertEqual(len(TutorCourse.objects.filter(user=tester.profile)), 0)
+        self.assertEqual(len(TutorCourse.objects.filter(user=tester2.profile)), 0)
         tester.delete()
+        tester2.delete()
 
     # def test_userForm(self):
     #     c = Client()
