@@ -1,6 +1,7 @@
 {% extends "login/base.html" %}
 {% load static %}
 {% load filters %}
+{% load tz %}
 {% block content %}
   <head><title>StudyBuddy</title></head>
   <body>
@@ -27,7 +28,8 @@
                           {% for message in recieved|makeList %}
                             <div class="card">
                               <div class="card-body">
-                                <p class="card-text">{{message|get_value:"sender"|get_value:"first_name"}} {{message|get_value:"sender"|get_value:"last_name"}} has requested you as a tutor! <br />Class: {{message|get_value:"message"}}<br /> Contact them via phone at {{message|get_value:"sender"|get_value:"phone_number"}} or via email at {{message|get_value:"sender"|get_value:"email"}}</p>
+                                <p class="card-text">{{message|get_value:"timestamp"|toDate|localtime|date:"F j • g:iA "}}</p>
+                                <p class="card-text">{{message|get_value:"sender"|get_value:"first_name"}} {{message|get_value:"sender"|get_value:"last_name"}} has requested you as a tutor! <br /> {{message|get_value:"message"}}<br /> Contact them via phone at {{message|get_value:"sender"|get_value:"phone_number"}} or via email at {{message|get_value:"sender"|get_value:"email"}}</p>
                               </div>
                             </div>
                           {% endfor %}
@@ -46,6 +48,7 @@
                           {% for message in sent|makeList %}
                             <div class="card">
                               <div class="card-body">
+                                <p class="card-text">{{message|get_value:"timestamp"|toDate|localtime|date:"F j • g:iA "}}</p>
                                 <p class="card-text">You requested {{message|get_value:"recipient"|get_value:"first_name"}} {{message|get_value:"recipient"|get_value:"last_name"}} for {{message|get_value:"message"}}</p>
                                 <button class="btn btn-outline-secondary btn-sml" type="button" onClick="cancelRequest(this, '{{message|get_value:'id'}}')">Cancel</button>
                               </div>
@@ -68,7 +71,7 @@
 
       <!-- Toast notification -->
       <div class="toastDiv position-absolute">
-        <div id="toast2" class="toast" role="alert" data-delay="3000" data-autohide="true">
+        <div id="toast2" class="toast" role="alert" data-delay="2000">
             <div id="toastBody2" class="toast-body"></div>
         </div>
       </div>

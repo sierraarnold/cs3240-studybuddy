@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -39,8 +40,8 @@ class StudentCourse(models.Model):
 class InAppMessage(models.Model):
     sender = models.ForeignKey(Profile, related_name='sent_messages', on_delete=models.CASCADE)
     recipient = models.ForeignKey(Profile, related_name='received_messages', on_delete=models.CASCADE)
-    title = models.CharField(max_length=512)
     message = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=10, default='unread')
 
 @receiver(post_save, sender=User)

@@ -35,4 +35,4 @@ class InAppMessageSerializer(serializers.ModelSerializer):
     recipient = ProfileSerializer(many=False, read_only=True)
     class Meta:
         model = InAppMessage
-        fields = [ 'title', 'message', 'status', 'sender', 'recipient', 'id']
+        fields = [ 'message', 'status', 'sender', 'recipient', 'id', 'timestamp']

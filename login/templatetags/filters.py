@@ -1,6 +1,8 @@
 from django import template
 import django.utils.html as utils
+from django.utils import dateparse, timezone
 import json
+import pytz
 register = template.Library()
 
 #Helper methods for templates. Syntax in templates is using | with function name
@@ -20,3 +22,8 @@ def sort(lst):
 def makeList(the_string):
     lst = json.loads(the_string)
     return lst
+
+@register.filter
+def toDate(timestamp):
+    date = dateparse.parse_datetime(timestamp)
+    return date

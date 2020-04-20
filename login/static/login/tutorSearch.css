@@ -113,11 +113,11 @@
   border-color: #232D4B !important;
 }
 
-.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active {
+.btn-secondary:hover  {
   background-color: #435076 !important;
 }
 
-.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+.btn-outline-secondary:hover {
   background-color: #435076 !important;
 }
 
@@ -128,4 +128,9 @@
   justify-content: space-between;
   margin-left: 1px;
   align-items: center;
+}
+
+.searchPanel {
+  overflow-y: auto;
+  height: 600px;
 }
