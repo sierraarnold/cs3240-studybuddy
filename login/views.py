@@ -262,16 +262,16 @@ def courses(request):
         if course != "":
             (dept, number, name) = parseCourse("Tutor:" + course)
             if type == "Student":
-                alreadyAdded = list(Profile.objects.filter(studentcourse__name=name))
-                if len(alreadyAdded) == 0:
+                existingCourse = list(StudentCourse.objects.filter(user_id=request.user.id, name=name, number=number, dept=dept))
+                if len(existingCourse) == 0:
                     student_course = StudentCourse(dept=dept, number=number, name=name, user_id=request.user.id)
                     student_course.save()
                     return JsonResponse({'course': course})
                 else:
                     return JsonResponse({'alreadyAdded': True})
             elif type == "Tutor":
-                alreadyAdded = list(Profile.objects.filter(tutorcourse__name=name))
-                if len(alreadyAdded) == 0:
+                existingCourse = list(TutorCourse.objects.filter(user_id=request.user.id, name=name, number=number, dept=dept))
+                if len(existingCourse) == 0:
                     tutor_course = TutorCourse(dept=dept, number=number, name=name, user_id=request.user.id)
                     tutor_course.save()
                     return JsonResponse({'course': course})
