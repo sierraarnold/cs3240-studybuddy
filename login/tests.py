@@ -134,12 +134,57 @@ class ClassSaveTests(TestCase):
         self.assertEqual(tester.profile.phone_number, "3018523444")
         tester.delete()
 
+    def test_profileForm_case(self):
+        c = Client()
+        tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester.save()
+        c.login(username='tester', password='12345')
+        form = ProfileForm({
+            'first_name': "Joe",
+            'last_name': "Joey",
+            'username': "Tester",
+            'phone_number': "3018523444",
+            'year': "Fourth",
+            'bio': "testing",
+            'location': "Inactive"
+        }, instance=tester.profile)
+        self.assertTrue(form.is_valid())
+        form.save()
+        self.assertNotEqual(tester.profile.first_name, "joe")
+        self.assertNotEqual(tester.profile.last_name, "joey")
+        self.assertNotEqual(tester.profile.username, "tester")
+        self.assertEqual(tester.profile.phone_number, "3018523444")
+        tester.delete()
     def test_profileAndLogin(self):
+        c = Client()
+        tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester.save()
+        self.assertTrue(c.login(username='tester1', password='12345'))
+        tester.delete()
+    def test_profileAndLogin2(self):
+        c = Client()
+        tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester.save()
+        tester2 = User.objects.create(username='test', password='1234', is_active=True, is_staff=True, is_superuser=True)
+        tester2.save()
+        self.assertTrue(c.login(username='tester1', password='12345'))
+        tester.delete()
+        tester2.delete()
+    def test_profileAndLoginFail(self):
         c = Client()
         tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=True, is_superuser=True)
         tester.save()
         self.assertFalse(c.login(username='test', password='1234'))
         tester.delete()
+    def test_profileAndLoginFail2(self):
+        c = Client()
+        tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester.save()
+        tester2 = User.objects.create(username='test', password='1234', is_active=True, is_staff=True, is_superuser=True)
+        tester2.save()
+        self.assertFalse(c.login(username='tester1', password='1234'))
+        tester.delete()
+        tester2.delete()
 
 class TutorSearch(unittest.TestCase):
     def test_single_course_search(self):
@@ -206,6 +251,9 @@ class HomepageTest(unittest.TestCase):
     def test_profile(self):
         response = self.client.get('/profile')
         self.assertEqual(response.status_code, 302)
+    def test_profile_fail(self):
+        response = self.client.get('/profile')
+        self.assertNotEqual(response.status_code, 200)
 
 class RedirectTests(TestCase):
     def setUp(self):
@@ -224,6 +272,16 @@ class InAppMessageModelTests(TestCase):
         inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "This is a test message")
         inapp.save()
         self.assertEqual(inapp.message, "This is a test message")
+        self.assertEqual(inapp.status, "unread")
+class InAppMessageModelTests_empty(TestCase):
+    def test_in_app_message_model(self):
+        tester = User(email="abc2@virginia.edu")
+        tester2 = User(email="cba@virginia.edu", username="tester2")
+        tester.save()
+        tester2.save()
+        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "")
+        inapp.save()
+        self.assertEqual(inapp.message, "")
         self.assertEqual(inapp.status, "unread")
 class RedirectTests(TestCase):
     def setUp(self):
