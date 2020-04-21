@@ -163,13 +163,10 @@ class ClassSaveTests(TestCase):
         tester.delete()
     def test_profileAndLogin2(self):
         c = Client()
-        tester2 = User.objects.create(username='test', password='1234', is_active=False, is_staff=True, is_superuser=True)
-        tester2.save()
-        tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=False, is_superuser=True)
         tester.save()
         self.assertTrue(c.login(username='tester1', password='12345'))
         tester.delete()
-        tester2.delete()
     def test_profileAndLoginFail(self):
         c = Client()
         tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=True, is_superuser=True)
