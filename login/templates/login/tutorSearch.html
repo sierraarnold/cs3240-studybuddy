@@ -21,21 +21,21 @@
                   <!-- Search panel -->
                   <div class="col-lg-6">
                       <div class="heading">
-                          <h3 id='studySpace'>Study Space</h3>
+                          <h3 id='studySpace'></h3>
                       </div>
-                      <div class="info" id="info">
+                      <div class="info searchPanel" id="info">
                       </div>
                       <div class="dropdown" id="filterButton">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Filter
                         </button>
                         <div class="dropdown-menu filterDropdown" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item filterDropdownItem" href="javascript:getMyClasses();">Tutors for my classes</a>
-                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[0]);">Tutors at Clemons</a>
-                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[1]);">Tutors at Alderman</a>
-                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[2]);">Tutors at Clark</a>
-                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[3]);">Tutors at 1515</a>
-                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[4]);">Tutors at Rice Hall</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:getMyClasses();">My classes</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[0]);">Clemons</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[1]);">Alderman</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[2]);">Clark</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[3]);">1515</a>
+                          <a class="dropdown-item filterDropdownItem" href="javascript:selectStudySpace(markers[4]);">Rice Hall</a>
                         </div>
                       </div>
                   </div>
@@ -46,7 +46,7 @@
 
       <!-- Toast notification -->
       <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
-        <div id="toast2" class="toast">
+        <div id="toast2" class="toast" data-delay="2000">
           <button type="button" class="close closeButton" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -73,7 +73,6 @@
           });
           infoWindow = new google.maps.InfoWindow
           var icon = "{% static 'login/images/library.png' %}"
-
           for (var i = 0; i < locations.length; i++) {
               var tutoring = JSON.parse("{{profile|escapejs}}").location == locations[i][3] ? "Stop tutoring" : "Start tutoring"
               var locationInfowindow = new google.maps.InfoWindow({
@@ -196,25 +195,26 @@
           courses
         */
         function populateTutors(tutors, infoNode){
+          var requestsSent = JSON.parse("{{requestsSent|escapejs}}");
           for(var i = 0; i<tutors.length; i++){
-            var courses = [];
-            for(var j = 0; j<tutors[i].tutorCourses.length; j++){
-              courses.push(tutors[i].tutorCourses[j].dept + " " + tutors[i].tutorCourses[j].number + " - " + tutors[i].tutorCourses[j].name);
-            }
             const tutor = tutors[i];
+            var courses = [];
+            for(var j = 0; j<tutor.tutorCourses.length; j++){
+              courses.push(tutor.tutorCourses[j].dept + " " + tutor.tutorCourses[j].number + " - " + tutor.tutorCourses[j].name);
+            }
             var card = document.createElement('div');
             card.setAttribute('class', 'card');
             var cardheader = document.createElement('div');
             cardheader.className += "card-header";
             var username = document.createElement('div');
-            username.innerHTML = '<h4>' + tutors[i].first_name + " " + tutors[i].last_name + '</h4>';
+            username.innerHTML = '<h4>' + tutor.first_name + " " + tutor.last_name + '</h4>';
             username.setAttribute('id', 'tutorHeader');
             cardheader.appendChild(username);
             var cardbody = document.createElement('div');
             cardbody.setAttribute('class', 'card-body');
             var cont = document.createElement('div');
             var pgraph = document.createElement('p');
-            pgraph.innerHTML = "Email: " + tutors[i].user.email + '<br />' + "Phone: " + tutors[i].phone_number + '<br />' + "Year: " + tutors[i].year + '<br />' + "Bio: " + tutors[i].bio + '<br />' + "Location: " + tutors[i].location +'<br />';
+            pgraph.innerHTML = "Email: " + tutor.user.email + '<br />' + "Phone: " + tutor.phone_number + '<br />' + "Year: " + tutor.year + '<br />' + "Bio: " + tutor.bio + '<br />' + "Location: " + tutor.location +'<br />';
             var footer = document.createElement('footer');
             footer.setAttribute('class', 'footer');
             var header = document.createElement('h5');
@@ -228,7 +228,8 @@
               label.innerHTML = courses[j]
               var request = document.createElement('button')
               request.className += "btn btn-outline-secondary btn-sml";
-              request.innerHTML = "Request"
+              request.innerHTML = isRequested(tutor, courses[j], requestsSent);
+              request.setAttribute('id', tutor.user.id + ':' + courses[j])
               request.onclick = createClickHandler(tutor, courses[j]);
               row.appendChild(label)
               row.appendChild(request)
@@ -250,8 +251,27 @@
           }
         }
 
+        function isRequested(tutor, course, requestsSent){
+          for(var i = 0; i<requestsSent.length; i++){
+            if(requestsSent[i].message == course && tutor.user.id == requestsSent[i].recipient.user.id){
+              return "Cancel"
+            }
+          }
+          return "Request"
+        }
+
         var createClickHandler = function(tutor, course) {
-          return function() { sendTutorMessage(tutor, course) };
+          return function() {
+            var theButton = document.getElementById(tutor.user.id + ':' + course);
+            if(theButton.innerHTML == "Request"){
+              sendTutorMessage(tutor, course, "Request");
+              theButton.innerHTML = "Cancel";
+            }
+            else{
+              sendTutorMessage(tutor, course, "Cancel");
+              theButton.innerHTML = "Request";
+            }
+           };
         }
 
         //Sends an ajax POST request with all student courses of profile
@@ -309,7 +329,7 @@
         }
 
         //Sends ajax POST request with the desired tutor to message
-        function sendTutorMessage(tutor, course){
+        function sendTutorMessage(tutor, course, option){
           var csrftoken = getCookie('csrftoken');
           $.ajaxSetup({
               beforeSend: function(xhr, settings) {
@@ -320,12 +340,18 @@
               url : '',
               type : "POST",
               dataType: "json",
-              data : { tutor : JSON.stringify(tutor), requestedCourse: course }
+              data : { tutor : JSON.stringify(tutor), requestedCourse: course, requestOption: option }
           }).done(function(response){
-            document.getElementById('toastBody2').innerHTML = "Message sent to " + response.tutor.username;
+            if(response.requestOption == "Request"){
+              document.getElementById('toastBody2').innerHTML = "Requested " + response.tutor.first_name + " " + response.tutor.last_name;
+            }
+            else{
+              document.getElementById('toastBody2').innerHTML = "Cancelled request to " + response.tutor.first_name + " " + response.tutor.last_name;
+            }
             $("#toast2").toast('show')
           });
         }
+
 
         var courseNames = new Array();
         var courses = JSON.parse("{{classes|escapejs}}")

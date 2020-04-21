@@ -136,7 +136,7 @@ class ClassSaveTests(TestCase):
 
     def test_profileAndLogin(self):
         c = Client()
-        tester = User.objects.create(username='tester', password='12345', is_active=True, is_staff=True, is_superuser=True)
+        tester = User.objects.create(username='tester1', password='12345', is_active=True, is_staff=True, is_superuser=True)
         tester.save()
         self.assertFalse(c.login(username='test', password='1234'))
         tester.delete()
@@ -144,11 +144,11 @@ class ClassSaveTests(TestCase):
 class TutorSearch(unittest.TestCase):
     def test_single_course_search(self):
         c = Client()
-        tester = User.objects.create(username='tester', is_active=True, is_staff=True, is_superuser=True)
+        tester = User.objects.create(username='tester3', is_active=True, is_staff=True, is_superuser=True)
         tester.set_password('12345')
         tester.save()
         postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
-        c.login(username='tester', password='12345')
+        c.login(username='tester3', password='12345')
         saveClasses(postedItems.items(), tester.id)
         response = c.post(reverse('login:home'), {'course': 'CS 3240 - Advanced Software Development Techniques'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, 200)
@@ -183,7 +183,7 @@ class TutorSearch(unittest.TestCase):
         tester2.save()
         c.login(username='tester', password='12345')
         tutor = ProfileSerializer(tester2.profile).data
-        response = c.post(reverse('login:home'), {'tutor': json.dumps(tutor)}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response = c.post(reverse('login:home'), {'tutor': json.dumps(tutor), 'requestedCourse': "CS 1234 - Test Course", 'requestOption': "Request"}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(bool(response.json()['tutor']), True)
         inappmessages = list(InAppMessage.objects.filter(sender=tester.id))
@@ -221,9 +221,8 @@ class InAppMessageModelTests(TestCase):
         tester2 = User(email="cba@virginia.edu", username="tester2")
         tester.save()
         tester2.save()
-        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, title="Test", message= "This is a test message")
+        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "This is a test message")
         inapp.save()
-        self.assertEqual(inapp.title, "Test")
         self.assertEqual(inapp.message, "This is a test message")
         self.assertEqual(inapp.status, "unread")
 class RedirectTests(TestCase):

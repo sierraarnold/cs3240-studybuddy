@@ -78,7 +78,7 @@
   </div>
 
   <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
-    <div id="addedToast" class="toast">
+    <div id="addedToast" class="toast" data-delay="2000">
       <button type="button" class="close closeButton" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -90,7 +90,7 @@
   <script type="text/javascript">
 
     function handleCoursePress(course){
-      if("{{user.is_authenticated}}"){
+      if("{{user.is_authenticated}}" == "True"){
         $('#addTitle').text(course);
         $('#addModal').modal({
           backdrop: false

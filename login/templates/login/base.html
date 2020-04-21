@@ -30,7 +30,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="nav navbar-nav ml-auto">
                   <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:home' %}">Find a Tutor</a></li>
-                  <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:departments' %}">View Classes</a></li>
+                  <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:departments' %}">Browse Classes</a></li>
 
                   <!--
                     If authenticated:
@@ -43,11 +43,11 @@
                   -->
                   {% if user.is_authenticated %}
                     {% if request.session.notificationCount == 0 %}
-                      <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Notifications</a></li>
+                      <li class="nav-item item" role="presentation"><a class="nav-link" href="{% url 'login:notifications' %}">Requests</a></li>
                       {% else %}
                         <li class="nav-item item" role="presentation">
                           <a class="nav-link" href="{% url 'login:notifications' %}">
-                            Notifications<span class="badge badge-pill badge-danger">{{request.session.notificationCount}}</span>
+                            Requests<span class="badge badge-pill badge-danger">{{request.session.notificationCount}}</span>
                           </a>
                         </li>
                     {% endif %}
@@ -56,7 +56,7 @@
                       <a class="nav-link" href="{% url 'login:signout' %}">Logout</a>
                     </li>
                   {% else %}
-                    <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Notifications</a></li>
+                    <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Requests</a></li>
                     <li class="nav-item item" role="presentation"><a class="nav-link" data-toggle="modal" href="javascript:void(0)" data-target="#exampleModal" data-backdrop="false">Edit Profile</a></li>
                     <a href="{% provider_login_url 'google' %}">
                       <button type="button" class="google-button">
@@ -98,7 +98,7 @@
 
   <!-- Bootstrap toast that shows notifications-->
   <div aria-live="polite" aria-atomic="true" class="toastDiv position-absolute" role="alert">
-    <div id="toast1" class="toast">
+    <div id="toast1" class="toast" data-delay="2000">
       <button type="button" class="close closeButton" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
