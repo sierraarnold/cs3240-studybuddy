@@ -196,6 +196,7 @@
         */
         function populateTutors(tutors, infoNode){
           var requestsSent = JSON.parse("{{requestsSent|escapejs}}");
+          const profile = JSON.parse("{{profile|escapejs}}");
           for(var i = 0; i<tutors.length; i++){
             const tutor = tutors[i];
             var courses = [];
@@ -232,7 +233,9 @@
               request.setAttribute('id', tutor.user.id + ':' + courses[j])
               request.onclick = createClickHandler(tutor, courses[j]);
               row.appendChild(label)
-              row.appendChild(request)
+              if(profile.user.id != tutor.user.id) {
+                row.appendChild(request)
+              }
               theCourses.appendChild(row)
             }
             footer.appendChild(theCourses);
