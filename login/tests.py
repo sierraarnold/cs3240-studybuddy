@@ -297,7 +297,7 @@ class InAppMessageModelTests(TestCase):
         tester2.save()
         inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "This is a test message")
         inapp.save()
-        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "This is a 2nd test message")
+        inapp2 = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "This is a 2nd test message")
         inapp2.save()
         self.assertEqual(inapp.message, "This is a test message")
         self.assertEqual(inapp.status, "unread")
