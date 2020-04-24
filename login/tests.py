@@ -316,6 +316,7 @@ class InAppMessageModelTests(TestCase):
         self.assertEqual(inapp.status, "unread")
         tester.delete()
         tester2.delete()
+
 class TutorCourseModelTests(TestCase):
     def test_tutor_course_model(self):
         tester = User(email="cba@virginia.edu", username="tester")
@@ -336,9 +337,9 @@ class TutorCourseModelTests(TestCase):
         self.assertEqual(course.name, "CS 3240 - Advanced Software Development Techniques")
         self.assertEqual(course.dept, "Computer Science")
         self.assertEqual(course.number, 1234)
-        self.assertEqual(course.name, "CS 1110 - Introduction to Programming")
-        self.assertEqual(course.dept, "Computer Science")
-        self.assertEqual(course.number, 2345)
+        self.assertEqual(course2.name, "CS 1110 - Introduction to Programming")
+        self.assertEqual(course2.dept, "Computer Science")
+        self.assertEqual(course2.number, 2345)
         tester.delete()
 
 class StudentCourseModelTests(TestCase):
@@ -361,9 +362,9 @@ class StudentCourseModelTests(TestCase):
         self.assertEqual(course.name, "CS 3240 - Advanced Software Development Techniques")
         self.assertEqual(course.dept, "Computer Science")
         self.assertEqual(course.number, 1234)
-        self.assertEqual(course.name, "CS 1110 - Introduction to Programming")
-        self.assertEqual(course.dept, "Computer Science")
-        self.assertEqual(course.number, 2345)
+        self.assertEqual(course2.name, "CS 1110 - Introduction to Programming")
+        self.assertEqual(course2.dept, "Computer Science")
+        self.assertEqual(course2.number, 2345)
         tester.delete()
 
 class RedirectTests(TestCase):
