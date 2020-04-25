@@ -10,7 +10,7 @@ def send_new_message_push_notification(**kwargs):
     notification = InAppMessage(recipient=recipient, sender=sender, message=request)
     notification.save()
     try:
-        device = FCMDevice.objects.get(user=recipient)
+        device = FCMDevice.objects.get(user=recipient.user)
         device.send_message(title=sender.first_name + " " + sender.last_name + " requested you as a tutor!", body=notification.message)
     except:
         pass
