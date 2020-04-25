@@ -2,11 +2,56 @@
 {% load static %}
 {% block content %}
   <head><title>StudyBuddy</title></head>
-  <body>
+    <link rel="stylesheet" type="text/css" href="{% static 'login/welcome.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <section class="jumbotron text-center">
       <div class="container">
-        Welcome Page
+        <h1>Welcome to StudyBuddy</h1>
+        <p class="lead text-muted">
+          Need help with an assignment? <br /> Are office hours too crowded or at an inconvenient time? <br />
+          StudyBuddy connects you with fellow UVA students who can provide personal assistance.<br />
+          Want to tutor? Check in to a study space to appear in the search results.
+        </p>
+      </div>
+    </section>
+
+    <div class="container marketing">
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette1">
+        <div class="col-md-6">
+          <h2 class="featurette-heading">Update your profile</h2>
+          <p class="lead">Add classes you want help with or would like to tutor. Set your tutoring location if you are currently tutoring at a study space or leave it as inactive.</p>
+        </div>
+        <div class="col-md-6">
+          <img class="img-fluid mx-auto" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="map" src="{% static "login/images/courses.png" %}"/>
+        </div>
       </div>
 
-  </body>
+      <div class="row featurette">
+        <div class="col-md-7 order-md-2 text-center">
+          <h2 class="featurette-heading">Search for tutors</h2>
+          <p class="lead">Search for tutors by class or study space using the filter button.</p>
+        </div>
+        <div class="col-md-5 order-md-1">
+          <img class="img-fluid mx-auto" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="profile" src="{% static "login/images/profile.png" %}"/>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-7 text-center">
+          <h2 class="featurette-heading">Start tutoring with the click of a button</h2>
+          <p class="lead">Click the "Start tutoring" button to begin tutoring at a study space. Clicking on a study space also displays tutors for that location in the search results.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="img-fluid mx-auto" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="request" src="{% static "login/images/map.png" %}"/>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+    </div>
 {% endblock %}
