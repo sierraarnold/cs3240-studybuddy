@@ -153,7 +153,6 @@
       messaging.usePublicVapidKey("BNsUHpdad2rIShHNd90fyt733Um-wvNGMVl4bqE6njkVEC5W2GcHkKpvQH83M7Zq3ouqtT0-naS9LWvGb3CSRZ8");
     })
     .catch((error) => {
-      console.log(error)
     })
 
     /*
@@ -172,7 +171,6 @@
 
     // When a message is recieved show a toast notification
     messaging.onMessage(function(payload) {
-      console.log(payload)
       document.getElementById('toastBody').innerHTML = payload.notification.title + ": " + payload.notification.body;
       $("#toast1").toast('show')
     });

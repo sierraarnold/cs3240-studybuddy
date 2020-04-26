@@ -17,13 +17,11 @@ const messaging = firebase.messaging();
 
 //When website is in background show a browser notification
 messaging.setBackgroundMessageHandler(function(payload) {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
   const notificationTitle = 'Background Message Title';
   const notificationOptions = {
     body: payload.body,
     icon: 'static/login/images/favicon.ico',
     title: payload.title
-
   };
 
   return self.registration.showNotification(notificationTitle,
