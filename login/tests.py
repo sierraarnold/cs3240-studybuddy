@@ -33,6 +33,10 @@ class SimpleLogin(unittest.TestCase):
         self.assertEqual(self.person2.email, "tester@virginia.edu")
     def test_pk(self):
         person3 = Profile(username = 'holly', pk = 1)
+        self.assertEqual(person3.pk, 1)
+        person3.delete()
+    def test_pk_2(self):
+        person3 = Profile(username = 'holly', pk = 1)
         person4 = Profile(username = 'holly', pk = 2)
         self.assertNotEqual(person3, person4)
 
@@ -196,6 +200,16 @@ class TutorSearch(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()['filtered_tutors']), 1)
         tester.delete()
+    def test_single_course_search2(self):
+        c = Client()
+        tester = User.objects.create(username='tester3', is_active=True, is_staff=True, is_superuser=True)
+        tester.set_password('12345')
+        tester.save()
+        postedItems = {'Tutor:CS 3240 - Advanced Software Development Techniques': 'course'}
+        c.login(username='tester3', password='12345')
+        response = c.post(reverse('login:home'), {'course': 'CS 3240 - Advanced Software Development Techniques'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertNotEqual(len(response.json()['filtered_tutors']), 1)
+        tester.delete()
     def test_my_student_courses(self):
         c = Client()
         tester = User.objects.create(username='tester', is_active=True, is_staff=True, is_superuser=True)
@@ -270,6 +284,17 @@ class InAppMessageModelTests(TestCase):
         inapp.save()
         self.assertEqual(inapp.message, "This is a test message")
         self.assertEqual(inapp.status, "unread")
+        tester.delete()
+        tester2.delete()
+    def test_recipient(self):
+        tester = User(email="abc2@virginia.edu")
+        tester2 = User(email="cba@virginia.edu", username="tester2")
+        tester.save()
+        tester2.save()
+        inapp = InAppMessage(sender=tester.profile, recipient=tester2.profile, message= "This is a test message")
+        inapp.save()
+        self.assertEqual(inapp.sender, tester.profile)
+        self.assertEqual(inapp.recipient, tester2.profile)
         tester.delete()
         tester2.delete()
     def test_in_app_message_model_3user(self):
