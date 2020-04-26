@@ -341,6 +341,22 @@ class TutorCourseModelTests(TestCase):
         self.assertEqual(course2.dept, "Computer Science")
         self.assertEqual(course2.number, 2345)
         tester.delete()
+    def test_tutor_course_model_2users(self):
+        tester = User(email="cba@virginia.edu", username="tester")
+        tester.save()
+        tester2 = User(email="abc@virginia.edu", username="tester2")
+        tester2.save()
+        course = TutorCourse(name="CS 3240 - Advanced Software Development Techniques", dept="Computer Science", number=1234, user=tester.profile)
+        course.save()
+        course2 = TutorCourse(name="CS 3240 - Advanced Software Development Techniques", dept="Computer Science", number=1234, user=tester2.profile)
+        course2.save()
+        self.assertEqual(course.name, "CS 3240 - Advanced Software Development Techniques")
+        self.assertEqual(course.dept, "Computer Science")
+        self.assertEqual(course.number, 1234)
+        self.assertEqual(course2.name, "CS 3240 - Advanced Software Development Techniques")
+        self.assertEqual(course2.dept, "Computer Science")
+        self.assertEqual(course2.number, 1234)
+        tester.delete()
 
 class StudentCourseModelTests(TestCase):
     def test_student_course_model(self):
@@ -365,6 +381,22 @@ class StudentCourseModelTests(TestCase):
         self.assertEqual(course2.name, "CS 1110 - Introduction to Programming")
         self.assertEqual(course2.dept, "Computer Science")
         self.assertEqual(course2.number, 2345)
+        tester.delete()
+    def test_student_course_model_2users(self):
+        tester = User(email="cba@virginia.edu", username="tester")
+        tester.save()
+        tester2 = User(email="abc@virginia.edu", username="tester2")
+        tester2.save()
+        course = StudentCourse(name="CS 3240 - Advanced Software Development Techniques", dept="Computer Science", number=1234, user=tester.profile)
+        course.save()
+        course2 = StudentCourse(name="CS 3240 - Advanced Software Development Techniques", dept="Computer Science", number=1234, user=tester2.profile)
+        course2.save()
+        self.assertEqual(course.name, "CS 3240 - Advanced Software Development Techniques")
+        self.assertEqual(course.dept, "Computer Science")
+        self.assertEqual(course.number, 1234)
+        self.assertEqual(course2.name, "CS 3240 - Advanced Software Development Techniques")
+        self.assertEqual(course2.dept, "Computer Science")
+        self.assertEqual(course2.number, 1234)
         tester.delete()
 
 class RedirectTests(TestCase):
