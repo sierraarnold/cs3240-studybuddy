@@ -8,6 +8,13 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
+
+
+sources
+https://django-allauth.readthedocs.io/en/latest/views.html
+https://readthedocs.org/projects/django-allauth/downloads/pdf/latest/ 
+
+
 """
 
 import os

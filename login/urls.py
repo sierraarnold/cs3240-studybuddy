@@ -1,3 +1,8 @@
+
+""" 
+sources
+https://firebase.google.com/docs/cloud-messaging/js/client
+"""
 from django.urls import path
 from . import views
 

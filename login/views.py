@@ -1,3 +1,12 @@
+
+""" 
+sources
+https://docs.djangoproject.com/en/3.0/intro/tutorial01/
+https://django-allauth.readthedocs.io/en/latest/views.html
+https://readthedocs.org/projects/django-allauth/downloads/pdf/latest/ 
+https://firebase.google.com/docs/cloud-messaging/js/client
+"""
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, JsonResponse

@@ -1,3 +1,10 @@
+
+""" 
+sources
+https://docs.djangoproject.com/en/3.0/intro/tutorial01/
+https://django-allauth.readthedocs.io/en/latest/views.html
+https://readthedocs.org/projects/django-allauth/downloads/pdf/latest/ 
+"""
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save

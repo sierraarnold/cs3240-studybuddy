@@ -1,3 +1,8 @@
+
+""" 
+sources
+https://firebase.google.com/docs/cloud-messaging/js/client
+"""
 from .models import InAppMessage, Profile
 from fcm_django.models import FCMDevice
 from django.contrib import messages
