@@ -21,6 +21,8 @@ Sources/Tools Used:
 * Google OAuth
 * Google Fonts
 * Cloudflare
-* BeautifulSoup
+* BeautifulSoup4
 * Postgres
 * Django REST Framework
+* Fcm-django
+* FontAwesome

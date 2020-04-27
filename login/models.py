@@ -1,9 +1,18 @@
 
-""" 
+"""
 sources
 https://docs.djangoproject.com/en/3.0/intro/tutorial01/
 https://django-allauth.readthedocs.io/en/latest/views.html
-https://readthedocs.org/projects/django-allauth/downloads/pdf/latest/ 
+https://readthedocs.org/projects/django-allauth/downloads/pdf/latest/
+/***************************************************************************************
+*  REFERENCES
+*  Title: How to Extend Django User Model
+*  Author: N/A
+*  Date: 4/27/20
+*  Code version: N/A
+*  URL: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html
+*  Software License: N/A
+**************************************************************************************/
 """
 from django.db import models
 from django.contrib.auth.models import User

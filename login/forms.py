@@ -1,3 +1,14 @@
+"""
+/***************************************************************************************
+*  REFERENCES
+*  Title: How to Extend Django User Model
+*  Author: N/A
+*  Date: 4/27/20
+*  Code version: N/A
+*  URL: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html
+*  Software License: N/A
+**************************************************************************************/
+"""
 from django import forms
 from .models import Profile, StudentCourse, TutorCourse
 from django.contrib.auth.models import User

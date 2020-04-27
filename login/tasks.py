@@ -1,7 +1,8 @@
 
-""" 
+"""
 sources
 https://firebase.google.com/docs/cloud-messaging/js/client
+https://blog.devartis.com/sending-real-time-push-notifications-with-django-celery-and-redis-829c7f2a714f
 """
 from .models import InAppMessage, Profile
 from fcm_django.models import FCMDevice

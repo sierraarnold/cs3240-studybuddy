@@ -1,3 +1,12 @@
+/***************************************************************************************
+*  REFERENCES
+*  Title: Set up a JavaScript Firebase Cloud Messaging client app
+*  Author: N/A
+*  Date: 4/27/20
+*  Code version: 7.8.2
+*  URL: https://firebase.google.com/docs/cloud-messaging/js/client
+*  Software License: Apache 2.0 License
+**************************************************************************************/
 importScripts('https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/7.8.2/firebase-messaging.js');
 

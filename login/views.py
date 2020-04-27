@@ -1,10 +1,26 @@
 
-""" 
+"""
 sources
 https://docs.djangoproject.com/en/3.0/intro/tutorial01/
 https://django-allauth.readthedocs.io/en/latest/views.html
-https://readthedocs.org/projects/django-allauth/downloads/pdf/latest/ 
+https://readthedocs.org/projects/django-allauth/downloads/pdf/latest/
 https://firebase.google.com/docs/cloud-messaging/js/client
+/***************************************************************************************
+*  REFERENCES
+*  Title: fcm-django
+*  Author: N/A
+*  Date: 4/27/20
+*  Code version: 0.3.4
+*  URL: https://github.com/xtrinch/fcm-django
+*  Software License: MIT License
+*
+*  Title: Beautiful Soup Documentation
+*  Author: N/A
+*  Date: 4/27/20
+*  Code version: 4.9.0
+*  URL: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+*  Software License: MIT License
+**************************************************************************************/
 """
 
 from django.shortcuts import render, redirect

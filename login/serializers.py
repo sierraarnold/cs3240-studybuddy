@@ -1,3 +1,14 @@
+"""
+/***************************************************************************************
+*  REFERENCES
+*  Title: Django REST framework
+*  Author: N/A
+*  Date: 4/27/20
+*  Code version: 3.11.0
+*  URL: https://www.django-rest-framework.org/
+*  Software License: Encode OSS Ltd
+**************************************************************************************/
+"""
 from rest_framework import serializers
 from .models import Profile, TutorCourse, StudentCourse, InAppMessage
 from django.contrib.auth.models import User
