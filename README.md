@@ -1,11 +1,9 @@
 # CS3240 StudyBuddy Django Webapp
 Authors: Sierra Arnold, Matt Hunt, Holly Wikiera, John Fishbein
 
-You can access the webapp at studdybuddy.herokuapp.com.
-
 Local set up:
 
-- Activate virtual environment.
+- Activate a virtual environment.
 - pip install -r requirements.txt
 - python3 manage.py collectstatic
 - python3 manage.py runserver
