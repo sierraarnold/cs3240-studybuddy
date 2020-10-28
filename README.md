@@ -1,13 +1,15 @@
-# project-103-study-buddy
-Set up virtual environment and activate.
+# CS3240 StudyBuddy Django Webapp
+Authors: Sierra Arnold, Matt Hunt, Holly Wikiera, John Fishbein
 
-pip install -r requirements.txt
+You can access the webapp at studdybuddy.herokuapp.com.
 
-python3 manage.py collectstatic
+Local set up:
 
-python3 manage.py runserver
-
-View on http://127.0.0.1:8000/
+- Activate virtual environment.
+- pip install -r requirements.txt
+- python3 manage.py collectstatic
+- python3 manage.py runserver
+- View on http://127.0.0.1:8000/
 
 Sources/Tools Used:
 * Django
